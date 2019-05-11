@@ -41,11 +41,9 @@ pdf.autoVerificationReports = function(){
   doc.setFont('roboto');
     var t0 = performance.now();
 
-  doc.setFontSize(20);
-  displayWithLines("Raporty z automatycznej weryfikacji wniosku o przekazanie materiałów archiwalnych",margin,margin,180,lineHeight*1.5,doc);
+  doc.setFontSize(14);
+  createRectWithText("Raporty z automatycznej weryfikacji wniosku o przekazanie materiałów archiwalnych", margin/2,margin/2,195,20,doc, COLORS.BASIC);
   doc.setFontSize(12);
-
-  createRectWithText("Raporty z automatycznej weryfikacji wniosku o przekazanie materiałów archiwalnych", margin,margin,180,20,doc);
 
   currentY+=margin+lineHeight*5;
 
@@ -56,18 +54,22 @@ pdf.autoVerificationReports = function(){
   displayTitleAndDetail("Nazwa jednostki",raport.verifiedBy.unitName,lineHeight,sectionSpacing*2,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc);
   var fetches = [];
 
-  currentY+=lineHeight*3;
+  currentY+=lineHeight*4;
 
-  console.log()
   doc.autoTable({
     startY: currentY,
     head: [
         ["Typ","Opis","Wynik"]
     ],
-    margin: {left:margin},
+    margin: {left:margin/2},
     body: [[autoVerificationReportsTypeEnum[raport.results[0].type], raport.results[0].description , (raport.results[0].success) ? 'Powodzenie' : 'Niepowodzenie']],
-    styles: {font: 'roboto',halign:'center'},
-    headStyles: {fontStyle: 'roboto'}
+    styles: {font: 'roboto',halign:'left'},
+    headStyles: {fontStyle: 'roboto'},
+    columnStyles: {
+      0: {cellWidth: 50},
+      1: {cellWidth: 115},
+      2: {cellWidth: 30}
+    }
 });
 
     return Promise.all(fetches).then(() => {
@@ -96,157 +98,181 @@ pdf.autoVerificationReports = function(){
 }
 
 pdf.orderDetails = function(){
-    var details = {"id":297,"title":"nowe zlecenie","content":"tresc","relatedError":"1234","category":{"value":"Kategoria B"},"deadline":"2019-05-07","priority":{"label":"Średni","value":"MEDIUM"},"priorityString":"Średni","tasks":[{"id":358,"title":"czynność 1","status":"ORDERED","statusString":"Zlecona","attachments":[{"id":359,"referenceType":"S3","referenceTypeString":"S3","originalFileName":"nginix.png","fileName":"S3+eyJlcnJJZCI6MzU4LCJhdHRJZCI6MzU5LCJvcmlnaW5hbEZpbGVOYW1lIjoibmdpbml4LnBuZyJ9"},{"id":360,"referenceType":"S3","referenceTypeString":"S3","originalFileName":"VPN2.png","fileName":"S3+eyJlcnJJZCI6MzU4LCJhdHRJZCI6MzYwLCJvcmlnaW5hbEZpbGVOYW1lIjoiVlBOMi5wbmcifQ\u003d\u003d"}]},{"id":361,"title":"czynność dwa","status":"ORDERED","statusString":"Zlecona","attachments":[{"id":362,"referenceType":"S3","referenceTypeString":"S3","originalFileName":"Authentication external.png","fileName":"S3+eyJlcnJJZCI6MzYxLCJhdHRJZCI6MzYyLCJvcmlnaW5hbEZpbGVOYW1lIjoiQXV0aGVudGljYXRpb24gZXh0ZXJuYWwucG5nIn0\u003d"},{"id":363,"referenceType":"S3","referenceTypeString":"S3","originalFileName":"Authentication internal.png","fileName":"S3+eyJlcnJJZCI6MzYxLCJhdHRJZCI6MzYzLCJvcmlnaW5hbEZpbGVOYW1lIjoiQXV0aGVudGljYXRpb24gaW50ZXJuYWwucG5nIn0\u003d"}]}],"status":"TO_APPROVE","statusString":"Do aprobaty","orderedBy":{"id":2053,"firstName":"Mariusz","lastName":"Gmail2","login":"emailaddressmariuszklonowskigmailcomcnmariuszgmail2ouoddzialtestowyoar"},"totalTaskCount":2,"approvedTaskCount":0,"reports":[{"id":337,"workPeriodStart":"2019-05-07","workPeriodEnd":"2019-05-07","assignee":{"id":2606,"firstName":"maj_2","lastName":"test","login":"emailaddresstestersb4gmailcomcnmaj2testouoddzialtestowyoarchiwumtestow"},"reportStatus":"PENDING","reportStatusString":"Oczekujący","details":{"systemStatus":{"label":"Niestabilny","value":"UNSTABLE"},"actions":[{"id":338,"description":"1"}],"tests":[{"id":339,"description":"1"}]}}],"attachments":[{"id":356,"referenceType":"S3","referenceTypeString":"S3","originalFileName":"Export_import.docx","fileName":"S3+eyJlcnJJZCI6Mjk3LCJhdHRJZCI6MzU2LCJvcmlnaW5hbEZpbGVOYW1lIjoiRXhwb3J0X2ltcG9ydC5kb2N4In0\u003d"},{"id":357,"referenceType":"S3","referenceTypeString":"S3","originalFileName":"VPN.png","fileName":"S3+eyJlcnJJZCI6Mjk3LCJhdHRJZCI6MzU3LCJvcmlnaW5hbEZpbGVOYW1lIjoiVlBOLnBuZyJ9"}]};
-    var lineHeight = 6;
-    var margin = 15;
-    var EndingY = 15;
-    var sectionSpacing = 56;
-    var titleSize = 14;
-    var infoSize = 16;
-    var pageHeight = 210;
-    var workHistory = {
-        "content":[
-           {
-              "id":693,
-              "createDate":"2019-05-09T14:48:57",
-              "userId":2052,
-              "userLogin":"emailaddressmariuszklonowskiprimigeniusplcnmariuszglobalouoddzialtesto",
-              "userFirstName":"Mariusz",
-              "userLastName":"Global",
-              "userSystem":"System dla pracownika NDAP",
-              "referenceType":"WORK_ORDER",
-              "referenceId":297,
-              "referenceStatus":"",
-              "details":"",
-              "eventTypeText":"Aktualizacja zlecenia"
-           },
-           {
-              "id":692,
-              "createDate":"2019-05-09T14:48:00",
-              "userId":2052,
-              "userLogin":"emailaddressmariuszklonowskiprimigeniusplcnmariuszglobalouoddzialtesto",
-              "userFirstName":"Mariusz",
-              "userLastName":"Global",
-              "userSystem":"System dla pracownika NDAP",
-              "referenceType":"WORK_ORDER",
-              "referenceId":297,
-              "referenceStatus":"",
-              "details":"",
-              "eventTypeText":"Aktualizacja zlecenia"
-           },
-           {
-              "id":690,
-              "createDate":"2019-05-09T13:48:58",
-              "userId":2052,
-              "userLogin":"emailaddressmariuszklonowskiprimigeniusplcnmariuszglobalouoddzialtesto",
-              "userFirstName":"Mariusz",
-              "userLastName":"Global",
-              "userSystem":"System dla pracownika NDAP",
-              "referenceType":"WORK_ORDER",
-              "referenceId":297,
-              "referenceStatus":"",
-              "details":"",
-              "eventTypeText":"Aktualizacja zlecenia"
-           },
-           {
-              "id":669,
-              "createDate":"2019-05-07T12:34:38",
-              "userId":2606,
-              "userLogin":"emailaddresstestersb4gmailcomcnmaj2testouoddzialtestowyoarchiwumtestow",
-              "userFirstName":"maj_2",
-              "userLastName":"test",
-              "userSystem":"System dla pracownika NDAP",
-              "referenceType":"WORK_ORDER",
-              "referenceId":297,
-              "referenceStatus":"",
-              "eventType":"ORDER_REPORT_CREATE",
-              "details":"",
-              "eventTypeText":"Wprowadzenie danych raportu"
-           },
-           {
-              "id":668,
-              "createDate":"2019-05-07T12:34:22",
-              "userId":2606,
-              "userLogin":"emailaddresstestersb4gmailcomcnmaj2testouoddzialtestowyoarchiwumtestow",
-              "userFirstName":"maj_2",
-              "userLastName":"test",
-              "userSystem":"System dla pracownika NDAP",
-              "referenceType":"WORK_ORDER",
-              "referenceId":297,
-              "referenceStatus":"",
-              "details":"",
-              "eventTypeText":"Podjęcie zlecenia"
-           },
-           {
-              "id":607,
-              "createDate":"2019-05-07T06:45:17",
-              "userId":2053,
-              "userLogin":"emailaddressmariuszklonowskigmailcomcnmariuszgmail2ouoddzialtestowyoar",
-              "userFirstName":"Mariusz",
-              "userLastName":"Gmail2",
-              "userSystem":"System dla pracownika NDAP",
-              "referenceType":"WORK_ORDER",
-              "referenceId":297,
-              "referenceStatus":"",
-              "eventType":"ORDER_CREATE",
-              "details":"",
-              "eventTypeText":"Dodanie zlecenia"
-           }
-        ],
-        "totalElements":6
-     };
-    var raports = {
-        "id": 39,
-        "title": "Aktualizacja danych",
-        "content": "Zaktualizowanie danych na kontach użytkowników Archiwum Państwowego w Gdyni - inny adres",
-        "relatedError": "",
-        "category": {
-          "value": "Kategoria C"
-        },
-        "deadline": "2019-04-30",
-        "priority": {
-          "label": "Średni",
-          "value": "MEDIUM"
-        },
-        "priorityString": "Średni",
-        "tasks": [
-          {
-            "id": 72,
-            "title": "Aktualizacja adresu dla pięciu użytkowników",
-            "status": "DONE",
-            "statusString": "Wykonana",
-            "attachments": []
-          }
-        ],
-        "status": "TO_APPROVE",
-        "statusString": "Do aprobaty",
-        "orderedBy": {
-          "id": 2053,
-          "firstName": "Mariusz",
-          "lastName": "Gmail2",
-          "login": "emailaddressmariuszklonowskigmailcomcnmariuszgmail2ouoddzialtestowyoar"
-        },
-        "totalTaskCount": 1,
-        "approvedTaskCount": 0,
-        "reports": [
-          {
-            "id": 343,
-            "workPeriodStart": "2019-05-09",
-            "workPeriodEnd": "2019-05-09",
-            "assignee": {
-              "id": 2052,
-              "firstName": "Mariusz",
-              "lastName": "Global",
-              "login": "emailaddressmariuszklonowskiprimigeniusplcnmariuszglobalouoddzialtesto"
+  var details = {"id":297,"title":"nowe zlecenie","content":"tresc","relatedError":"1234","category":{"value":"Kategoria B"},"deadline":"2019-05-07","priority":{"label":"Średni","value":"MEDIUM"},"priorityString":"Średni","tasks":[{"id":358,"title":"czynność 1","status":"ORDERED","statusString":"Zlecona","attachments":[{"id":359,"referenceType":"S3","referenceTypeString":"S3","originalFileName":"nginix.png","fileName":"S3+eyJlcnJJZCI6MzU4LCJhdHRJZCI6MzU5LCJvcmlnaW5hbEZpbGVOYW1lIjoibmdpbml4LnBuZyJ9"},{"id":360,"referenceType":"S3","referenceTypeString":"S3","originalFileName":"VPN2.png","fileName":"S3+eyJlcnJJZCI6MzU4LCJhdHRJZCI6MzYwLCJvcmlnaW5hbEZpbGVOYW1lIjoiVlBOMi5wbmcifQ\u003d\u003d"}]},{"id":361,"title":"czynność dwa","status":"ORDERED","statusString":"Zlecona","attachments":[{"id":362,"referenceType":"S3","referenceTypeString":"S3","originalFileName":"Authentication external.png","fileName":"S3+eyJlcnJJZCI6MzYxLCJhdHRJZCI6MzYyLCJvcmlnaW5hbEZpbGVOYW1lIjoiQXV0aGVudGljYXRpb24gZXh0ZXJuYWwucG5nIn0\u003d"},{"id":363,"referenceType":"S3","referenceTypeString":"S3","originalFileName":"Authentication internal.png","fileName":"S3+eyJlcnJJZCI6MzYxLCJhdHRJZCI6MzYzLCJvcmlnaW5hbEZpbGVOYW1lIjoiQXV0aGVudGljYXRpb24gaW50ZXJuYWwucG5nIn0\u003d"}]}],"status":"TO_APPROVE","statusString":"Do aprobaty","orderedBy":{"id":2053,"firstName":"Mariusz","lastName":"Gmail2","login":"emailaddressmariuszklonowskigmailcomcnmariuszgmail2ouoddzialtestowyoar"},"totalTaskCount":2,"approvedTaskCount":0,"reports":[{"id":337,"workPeriodStart":"2019-05-07","workPeriodEnd":"2019-05-07","assignee":{"id":2606,"firstName":"maj_2","lastName":"test","login":"emailaddresstestersb4gmailcomcnmaj2testouoddzialtestowyoarchiwumtestow"},"reportStatus":"PENDING","reportStatusString":"Oczekujący","details":{"systemStatus":{"label":"Niestabilny","value":"UNSTABLE"},"actions":[{"id":338,"description":"1"}],"tests":[{"id":339,"description":"1"}]}}],"attachments":[{"id":356,"referenceType":"S3","referenceTypeString":"S3","originalFileName":"Export_import.docx","fileName":"S3+eyJlcnJJZCI6Mjk3LCJhdHRJZCI6MzU2LCJvcmlnaW5hbEZpbGVOYW1lIjoiRXhwb3J0X2ltcG9ydC5kb2N4In0\u003d"},{"id":357,"referenceType":"S3","referenceTypeString":"S3","originalFileName":"VPN.png","fileName":"S3+eyJlcnJJZCI6Mjk3LCJhdHRJZCI6MzU3LCJvcmlnaW5hbEZpbGVOYW1lIjoiVlBOLnBuZyJ9"}]};
+  var lineHeight = 6;
+  var margin = 15;
+  var EndingY = 10;
+  var sectionSpacing = 56;
+  var titleSize = 14;
+  var infoSize = 16;
+  var pageHeight = 210;
+  var workHistory = {
+      "content":[
+         {
+            "id":693,
+            "createDate":"2019-05-09T14:48:57",
+            "userId":2052,
+            "userLogin":"emailaddressmariuszklonowskiprimigeniusplcnmariuszglobalouoddzialtesto",
+            "userFirstName":"Mariusz",
+            "userLastName":"Global",
+            "userSystem":"System dla pracownika NDAP",
+            "referenceType":"WORK_ORDER",
+            "referenceId":297,
+            "referenceStatus":"",
+            "details":"",
+            "eventTypeText":"Aktualizacja zlecenia"
+         },
+         {
+            "id":692,
+            "createDate":"2019-05-09T14:48:00",
+            "userId":2052,
+            "userLogin":"emailaddressmariuszklonowskiprimigeniusplcnmariuszglobalouoddzialtesto",
+            "userFirstName":"Mariusz",
+            "userLastName":"Global",
+            "userSystem":"System dla pracownika NDAP",
+            "referenceType":"WORK_ORDER",
+            "referenceId":297,
+            "referenceStatus":"",
+            "details":"",
+            "eventTypeText":"Aktualizacja zlecenia"
+         },
+         {
+            "id":690,
+            "createDate":"2019-05-09T13:48:58",
+            "userId":2052,
+            "userLogin":"emailaddressmariuszklonowskiprimigeniusplcnmariuszglobalouoddzialtesto",
+            "userFirstName":"Mariusz",
+            "userLastName":"Global",
+            "userSystem":"System dla pracownika NDAP",
+            "referenceType":"WORK_ORDER",
+            "referenceId":297,
+            "referenceStatus":"",
+            "details":"",
+            "eventTypeText":"Aktualizacja zlecenia"
+         },
+         {
+            "id":669,
+            "createDate":"2019-05-07T12:34:38",
+            "userId":2606,
+            "userLogin":"emailaddresstestersb4gmailcomcnmaj2testouoddzialtestowyoarchiwumtestow",
+            "userFirstName":"maj_2",
+            "userLastName":"test",
+            "userSystem":"System dla pracownika NDAP",
+            "referenceType":"WORK_ORDER",
+            "referenceId":297,
+            "referenceStatus":"",
+            "eventType":"ORDER_REPORT_CREATE",
+            "details":"",
+            "eventTypeText":"Wprowadzenie danych raportu"
+         },
+         {
+            "id":668,
+            "createDate":"2019-05-07T12:34:22",
+            "userId":2606,
+            "userLogin":"emailaddresstestersb4gmailcomcnmaj2testouoddzialtestowyoarchiwumtestow",
+            "userFirstName":"maj_2",
+            "userLastName":"test",
+            "userSystem":"System dla pracownika NDAP",
+            "referenceType":"WORK_ORDER",
+            "referenceId":297,
+            "referenceStatus":"",
+            "details":"",
+            "eventTypeText":"Podjęcie zlecenia"
+         },
+         {
+            "id":607,
+            "createDate":"2019-05-07T06:45:17",
+            "userId":2053,
+            "userLogin":"emailaddressmariuszklonowskigmailcomcnmariuszgmail2ouoddzialtestowyoar",
+            "userFirstName":"Mariusz",
+            "userLastName":"Gmail2",
+            "userSystem":"System dla pracownika NDAP",
+            "referenceType":"WORK_ORDER",
+            "referenceId":297,
+            "referenceStatus":"",
+            "eventType":"ORDER_CREATE",
+            "details":"",
+            "eventTypeText":"Dodanie zlecenia"
+         }
+      ],
+      "totalElements":6
+   };
+  var raports = {
+      "id": 39,
+      "title": "Aktualizacja danych",
+      "content": "Zaktualizowanie danych na kontach użytkowników Archiwum Państwowego w Gdyni - inny adres",
+      "relatedError": "",
+      "category": {
+        "value": "Kategoria C"
+      },
+      "deadline": "2019-04-30",
+      "priority": {
+        "label": "Średni",
+        "value": "MEDIUM"
+      },
+      "priorityString": "Średni",
+      "tasks": [
+        {
+          "id": 72,
+          "title": "Aktualizacja adresu dla pięciu użytkowników",
+          "status": "DONE",
+          "statusString": "Wykonana",
+          "attachments": []
+        }
+      ],
+      "status": "TO_APPROVE",
+      "statusString": "Do aprobaty",
+      "orderedBy": {
+        "id": 2053,
+        "firstName": "Mariusz",
+        "lastName": "Gmail2",
+        "login": "emailaddressmariuszklonowskigmailcomcnmariuszgmail2ouoddzialtestowyoar"
+      },
+      "totalTaskCount": 1,
+      "approvedTaskCount": 0,
+      "reports": [
+        {
+          "id": 343,
+          "workPeriodStart": "2019-05-09",
+          "workPeriodEnd": "2019-05-09",
+          "assignee": {
+            "id": 2052,
+            "firstName": "Mariusz",
+            "lastName": "Global",
+            "login": "emailaddressmariuszklonowskiprimigeniusplcnmariuszglobalouoddzialtesto"
+          },
+          "reportStatus": "REJECTED",
+          "reportStatusString": "Odrzucony",
+          "details": {
+            "systemStatus": {
+              "label": "Stabilny",
+              "value": "STABLE"
             },
-            "reportStatus": "REJECTED",
-            "reportStatusString": "Odrzucony",
-            "details": {
-              "systemStatus": {
-                "label": "Stabilny",
-                "value": "STABLE"
+            "actions": [
+              {
+                "id": 344,
+                "description": "fdsa",
+                "infrastructureElement": "STATISTICS",
+                "infrastructureElementString": "Generowanie statystyk"
               },
-              "actions": [
+              {
+                "id": 345,
+                "description": "22",
+                "infrastructureElement": "APPLICATIONS",
+                "infrastructureElementString": "Wnioski"
+              },
+              {
+                  "id": 344,
+                  "description": "fdsa",
+                  "infrastructureElement": "STATISTICS",
+                  "infrastructureElementString": "Generowanie statystyk"
+                },
+                {
+                  "id": 345,
+                  "description": "22",
+                  "infrastructureElement": "APPLICATIONS",
+                  "infrastructureElementString": "Wnioski"
+                },
                 {
                   "id": 344,
                   "description": "fdsa",
@@ -260,79 +286,79 @@ pdf.orderDetails = function(){
                   "infrastructureElementString": "Wnioski"
                 },
                 {
-                    "id": 344,
-                    "description": "fdsa",
-                    "infrastructureElement": "STATISTICS",
-                    "infrastructureElementString": "Generowanie statystyk"
-                  },
-                  {
-                    "id": 345,
-                    "description": "22",
-                    "infrastructureElement": "APPLICATIONS",
-                    "infrastructureElementString": "Wnioski"
-                  },
-                  {
-                    "id": 344,
-                    "description": "fdsa",
-                    "infrastructureElement": "STATISTICS",
-                    "infrastructureElementString": "Generowanie statystyk"
-                  },
-                  {
-                    "id": 345,
-                    "description": "22",
-                    "infrastructureElement": "APPLICATIONS",
-                    "infrastructureElementString": "Wnioski"
-                  },
-                  {
-                    "id": 344,
-                    "description": "fdsa",
-                    "infrastructureElement": "STATISTICS",
-                    "infrastructureElementString": "Generowanie statystyk"
-                  },
-                  {
-                    "id": 345,
-                    "description": "22",
-                    "infrastructureElement": "APPLICATIONS",
-                    "infrastructureElementString": "Wnioski"
-                  },
-                  {
-                    "id": 344,
-                    "description": "fdsa",
-                    "infrastructureElement": "STATISTICS",
-                    "infrastructureElementString": "Generowanie statystyk"
-                  },
-                  {
-                    "id": 345,
-                    "description": "22",
-                    "infrastructureElement": "APPLICATIONS",
-                    "infrastructureElementString": "Wnioski"
-                  },
-                  {
-                    "id": 344,
-                    "description": "fdsa",
-                    "infrastructureElement": "STATISTICS",
-                    "infrastructureElementString": "Generowanie statystyk"
-                  },
-                  {
-                    "id": 345,
-                    "description": "22",
-                    "infrastructureElement": "APPLICATIONS",
-                    "infrastructureElementString": "Wnioski"
-                  },
-                  {
-                    "id": 344,
-                    "description": "fdsa",
-                    "infrastructureElement": "STATISTICS",
-                    "infrastructureElementString": "Generowanie statystyk"
-                  },
-                  {
-                    "id": 345,
-                    "description": "22",
-                    "infrastructureElement": "APPLICATIONS",
-                    "infrastructureElementString": "Wnioski"
-                  }
-              ],
-              "tests": [
+                  "id": 344,
+                  "description": "fdsa",
+                  "infrastructureElement": "STATISTICS",
+                  "infrastructureElementString": "Generowanie statystyk"
+                },
+                {
+                  "id": 345,
+                  "description": "22",
+                  "infrastructureElement": "APPLICATIONS",
+                  "infrastructureElementString": "Wnioski"
+                },
+                {
+                  "id": 344,
+                  "description": "fdsa",
+                  "infrastructureElement": "STATISTICS",
+                  "infrastructureElementString": "Generowanie statystyk"
+                },
+                {
+                  "id": 345,
+                  "description": "22",
+                  "infrastructureElement": "APPLICATIONS",
+                  "infrastructureElementString": "Wnioski"
+                },
+                {
+                  "id": 344,
+                  "description": "fdsa",
+                  "infrastructureElement": "STATISTICS",
+                  "infrastructureElementString": "Generowanie statystyk"
+                },
+                {
+                  "id": 345,
+                  "description": "22",
+                  "infrastructureElement": "APPLICATIONS",
+                  "infrastructureElementString": "Wnioski"
+                },
+                {
+                  "id": 344,
+                  "description": "fdsa",
+                  "infrastructureElement": "STATISTICS",
+                  "infrastructureElementString": "Generowanie statystyk"
+                },
+                {
+                  "id": 345,
+                  "description": "22",
+                  "infrastructureElement": "APPLICATIONS",
+                  "infrastructureElementString": "Wnioski"
+                }
+            ],
+            "tests": [
+              {
+                "id": 346,
+                "description": "fdsa",
+                "testResult": "POSITIVE",
+                "testResultString": "Pozytywny"
+              },
+              {
+                "id": 347,
+                "description": "test",
+                "testResult": "NEGATIVE",
+                "testResultString": "Negatywny"
+              },
+              {
+                  "id": 346,
+                  "description": "fdsa",
+                  "testResult": "POSITIVE",
+                  "testResultString": "Pozytywny"
+                },
+                {
+                  "id": 347,
+                  "description": "test",
+                  "testResult": "NEGATIVE",
+                  "testResultString": "Negatywny"
+                },
                 {
                   "id": 346,
                   "description": "fdsa",
@@ -346,591 +372,572 @@ pdf.orderDetails = function(){
                   "testResultString": "Negatywny"
                 },
                 {
-                    "id": 346,
-                    "description": "fdsa",
-                    "testResult": "POSITIVE",
-                    "testResultString": "Pozytywny"
-                  },
-                  {
-                    "id": 347,
-                    "description": "test",
-                    "testResult": "NEGATIVE",
-                    "testResultString": "Negatywny"
-                  },
-                  {
-                    "id": 346,
-                    "description": "fdsa",
-                    "testResult": "POSITIVE",
-                    "testResultString": "Pozytywny"
-                  },
-                  {
-                    "id": 347,
-                    "description": "test",
-                    "testResult": "NEGATIVE",
-                    "testResultString": "Negatywny"
-                  },
-                  {
-                    "id": 346,
-                    "description": "fdsa",
-                    "testResult": "POSITIVE",
-                    "testResultString": "Pozytywny"
-                  },
-                  {
-                    "id": 347,
-                    "description": "test",
-                    "testResult": "NEGATIVE",
-                    "testResultString": "Negatywny"
-                  },{
-                    "id": 346,
-                    "description": "fdsa",
-                    "testResult": "POSITIVE",
-                    "testResultString": "Pozytywny"
-                  },
-                  {
-                    "id": 347,
-                    "description": "test",
-                    "testResult": "NEGATIVE",
-                    "testResultString": "Negatywny"
-                  },{
-                    "id": 346,
-                    "description": "fdsa",
-                    "testResult": "POSITIVE",
-                    "testResultString": "Pozytywny"
-                  },
-                  {
-                    "id": 347,
-                    "description": "test",
-                    "testResult": "NEGATIVE",
-                    "testResultString": "Negatywny"
-                  }
-              ]
-            }
-          },
-          {
-            "id": 348,
-            "workPeriodStart": "2019-05-09",
-            "workPeriodEnd": "2019-05-23",
-            "assignee": {
-              "id": 2052,
-              "firstName": "Mariusz",
-              "lastName": "Global",
-              "login": "emailaddressmariuszklonowskiprimigeniusplcnmariuszglobalouoddzialtesto"
-            },
-            "reportStatus": "PENDING",
-            "reportStatusString": "Oczekujący",
-            "details": {
-              "systemStatus": {
-                "label": "Niestabilny",
-                "value": "UNSTABLE"
-              },
-              "actions": [
-                {
-                  "id": 349,
-                  "description": "fdas",
-                  "infrastructureElement": "APPLICATIONS",
-                  "infrastructureElementString": "Wnioski"
-                },
-                {
-                  "id": 350,
-                  "description": "fdsagf",
-                  "infrastructureElement": "PACKAGES",
-                  "infrastructureElementString": "Paczka archiwalna"
-                },
-                {
-                  "id": 351,
+                  "id": 346,
                   "description": "fdsa",
-                  "infrastructureElement": "STATISTICS",
-                  "infrastructureElementString": "Generowanie statystyk"
-                }
-              ],
-              "tests": [
-                {
-                  "id": 352,
-                  "description": "1dfsa",
                   "testResult": "POSITIVE",
                   "testResultString": "Pozytywny"
                 },
                 {
-                  "id": 353,
-                  "description": "222",
-                  "testResult": "POSITIVE",
-                  "testResultString": "Pozytywny"
-                }
-              ]
-            }
-          },
-          {
-            "id": 348,
-            "workPeriodStart": "2019-05-09",
-            "workPeriodEnd": "2019-05-23",
-            "assignee": {
-              "id": 2052,
-              "firstName": "Mariusz",
-              "lastName": "Global",
-              "login": "emailaddressmariuszklonowskiprimigeniusplcnmariuszglobalouoddzialtesto"
-            },
-            "reportStatus": "PENDING",
-            "reportStatusString": "Oczekujący",
-            "details": {
-              "systemStatus": {
-                "label": "Niestabilny",
-                "value": "UNSTABLE"
-              },
-              "actions": [
-                {
-                  "id": 349,
-                  "description": "fdas",
-                  "infrastructureElement": "APPLICATIONS",
-                  "infrastructureElementString": "Wnioski"
-                },
-                {
-                  "id": 350,
-                  "description": "fdsagf",
-                  "infrastructureElement": "PACKAGES",
-                  "infrastructureElementString": "Paczka archiwalna"
-                },
-                {
-                  "id": 351,
+                  "id": 347,
+                  "description": "test",
+                  "testResult": "NEGATIVE",
+                  "testResultString": "Negatywny"
+                },{
+                  "id": 346,
                   "description": "fdsa",
-                  "infrastructureElement": "STATISTICS",
-                  "infrastructureElementString": "Generowanie statystyk"
-                }
-              ],
-              "tests": [
-                {
-                  "id": 352,
-                  "description": "1dfsa",
                   "testResult": "POSITIVE",
                   "testResultString": "Pozytywny"
                 },
                 {
-                  "id": 353,
-                  "description": "222",
-                  "testResult": "POSITIVE",
-                  "testResultString": "Pozytywny"
-                }
-              ]
-            }
-          },
-          {
-            "id": 348,
-            "workPeriodStart": "2019-05-09",
-            "workPeriodEnd": "2019-05-23",
-            "assignee": {
-              "id": 2052,
-              "firstName": "Mariusz",
-              "lastName": "Global",
-              "login": "emailaddressmariuszklonowskiprimigeniusplcnmariuszglobalouoddzialtesto"
-            },
-            "reportStatus": "PENDING",
-            "reportStatusString": "Oczekujący",
-            "details": {
-              "systemStatus": {
-                "label": "Niestabilny",
-                "value": "UNSTABLE"
-              },
-              "actions": [
-                {
-                  "id": 349,
-                  "description": "fdas",
-                  "infrastructureElement": "APPLICATIONS",
-                  "infrastructureElementString": "Wnioski"
-                },
-                {
-                  "id": 350,
-                  "description": "fdsagf",
-                  "infrastructureElement": "PACKAGES",
-                  "infrastructureElementString": "Paczka archiwalna"
-                },
-                {
-                  "id": 351,
+                  "id": 347,
+                  "description": "test",
+                  "testResult": "NEGATIVE",
+                  "testResultString": "Negatywny"
+                },{
+                  "id": 346,
                   "description": "fdsa",
-                  "infrastructureElement": "STATISTICS",
-                  "infrastructureElementString": "Generowanie statystyk"
-                }
-              ],
-              "tests": [
-                {
-                  "id": 352,
-                  "description": "1dfsa",
                   "testResult": "POSITIVE",
                   "testResultString": "Pozytywny"
                 },
                 {
-                  "id": 353,
-                  "description": "222",
-                  "testResult": "POSITIVE",
-                  "testResultString": "Pozytywny"
+                  "id": 347,
+                  "description": "test",
+                  "testResult": "NEGATIVE",
+                  "testResultString": "Negatywny"
                 }
-              ]
-            }
-          },
-          {
-            "id": 348,
-            "workPeriodStart": "2019-05-09",
-            "workPeriodEnd": "2019-05-23",
-            "assignee": {
-              "id": 2052,
-              "firstName": "Mariusz",
-              "lastName": "Global",
-              "login": "emailaddressmariuszklonowskiprimigeniusplcnmariuszglobalouoddzialtesto"
-            },
-            "reportStatus": "PENDING",
-            "reportStatusString": "Oczekujący",
-            "details": {
-              "systemStatus": {
-                "label": "Niestabilny",
-                "value": "UNSTABLE"
-              },
-              "actions": [
-                {
-                  "id": 349,
-                  "description": "fdas",
-                  "infrastructureElement": "APPLICATIONS",
-                  "infrastructureElementString": "Wnioski"
-                },
-                {
-                  "id": 350,
-                  "description": "fdsagf",
-                  "infrastructureElement": "PACKAGES",
-                  "infrastructureElementString": "Paczka archiwalna"
-                },
-                {
-                  "id": 351,
-                  "description": "fdsa",
-                  "infrastructureElement": "STATISTICS",
-                  "infrastructureElementString": "Generowanie statystyk"
-                }
-              ],
-              "tests": [
-                {
-                  "id": 352,
-                  "description": "1dfsa",
-                  "testResult": "POSITIVE",
-                  "testResultString": "Pozytywny"
-                },
-                {
-                  "id": 353,
-                  "description": "222",
-                  "testResult": "POSITIVE",
-                  "testResultString": "Pozytywny"
-                }
-              ]
-            }
-          },
-          {
-            "id": 348,
-            "workPeriodStart": "2019-05-09",
-            "workPeriodEnd": "2019-05-23",
-            "assignee": {
-              "id": 2052,
-              "firstName": "Mariusz",
-              "lastName": "Global",
-              "login": "emailaddressmariuszklonowskiprimigeniusplcnmariuszglobalouoddzialtesto"
-            },
-            "reportStatus": "PENDING",
-            "reportStatusString": "Oczekujący",
-            "details": {
-              "systemStatus": {
-                "label": "Niestabilny",
-                "value": "UNSTABLE"
-              },
-              "actions": [
-                {
-                  "id": 349,
-                  "description": "fdas",
-                  "infrastructureElement": "APPLICATIONS",
-                  "infrastructureElementString": "Wnioski"
-                },
-                {
-                  "id": 350,
-                  "description": "fdsagf",
-                  "infrastructureElement": "PACKAGES",
-                  "infrastructureElementString": "Paczka archiwalna"
-                },
-                {
-                  "id": 351,
-                  "description": "fdsa",
-                  "infrastructureElement": "STATISTICS",
-                  "infrastructureElementString": "Generowanie statystyk"
-                }
-              ],
-              "tests": [
-                {
-                  "id": 352,
-                  "description": "1dfsa",
-                  "testResult": "POSITIVE",
-                  "testResultString": "Pozytywny"
-                },
-                {
-                  "id": 353,
-                  "description": "222",
-                  "testResult": "POSITIVE",
-                  "testResultString": "Pozytywny"
-                }
-              ]
-            }
+            ]
           }
-        ],
-        "attachments": []
-      };
-
-    var orderDetails = ["Treść zlecenia","Załączniki"];
-    var actionHeaders = ["Nazwa czynności", "Status", "Załączniki"];
-    var workHistoryHeaders = ["Data modyfikacji","Autor zmiany","Operacja","Status","Komentarz"];
-
-    function tasksToArray(){
-        let arr = new Array();
-        let content = details.tasks;
-        let contentLength = content.length;
-        
-        for(var i=0; i < contentLength ; i++){
-            let con = content[i];
-            arr.push([con.title, con.statusString, attachmentsToString(con.attachments) ]);
-        }
-        return arr;
-    }
-    
-    function attachmentsToString(attachments, doc){
-        let arr = new Array();
-        let content =  attachments;
-        let contentLength = content.length;
-        
-        for(var i=0; i < contentLength ; i++){
-            let con = content[i];
-            arr.push([con.originalFileName]);
-        }
-        
-        return arr.join('\n');
-        
-    }
-
-    function historyToArray(){
-        let arr = new Array();
-        let content = workHistory.content;
-        let contentLength = content.length;
-        
-        for(var i=0; i < contentLength ; i++){
-            let con = content[i];
-            arr.push([getDateAndTime(con.createDate), con.userFirstName+' '+con.userLastName, con.eventTypeText ]);
-        }
-        return arr;
-    }
-
-    function actionsToArray(reportIndex){
-        let arr = new Array();
-        let content = raports.reports[reportIndex].details.actions;
-        let contentLength = content.length;
-        
-        for(var i=0; i < contentLength ; i++){
-            let con = content[i];
-            arr.push([con.description,con.infrastructureElementString ]);
-        }
-        return arr;
-    }
-
-    function testsToArray(reportIndex){
-        let arr = new Array();
-        let content = raports.reports[reportIndex].details.tests;
-        let contentLength = content.length;
-        
-        for(var i=0; i < contentLength ; i++){
-            let con = content[i];
-            arr.push([con.description,con.testResultString ]);
-        }
-        return arr;
-    }
-
-    
-    function createWorkingRaports(reports,x,y, doc){
-
-    length = reports.length;
-
-    var taskHeaders = ["Wykonana czynność","Element infrastruktury"];
-    var testsHeaders = ["Opis testu","Wynik testu"];
-    drawHorizontalBorder(margin,y,margin,doc);
-
-    for(var i=0; i<length; i++){
-
-        //console.log("Current page: "+y);
-
-        r = reports[i];
-
-        y = addPageIfContentToLong(y,y+titleSize+infoSize,doc);
-        // if(y+titleSize+infoSize>=210)
-        // {
-        //     doc.addPage();
-        //     y = 0;
-        // }
-
-        y+=lineHeight*4;
-        displayTitleAndDetail("Osoba odpowiedzialna",r.assignee.firstName+' '+r.assignee.lastName, lineHeight, 50, x, y, titleSize, infoSize, doc);
-        displayTitleAndDetail("Stan systemu po wdrożeniu zmiany",r.details.systemStatus.label, lineHeight, 50, x+sectionSpacing, y, titleSize, infoSize, doc);
-        displayTitleAndDetail("Termin przeprowadzenia prac",r.workPeriodStart+' - '+r.workPeriodEnd, lineHeight, 50, x+sectionSpacing*3, y, titleSize, infoSize, doc);
-
-        
-        y = addPageIfContentToLong(y,y+70,doc);
-        // if(y+70>=210)
-        // {
-        //     console.log("Splitted!!!!!!!")
-        //     doc.addPage();
-        //     y = 0;
-        // }
-
-        y+=lineHeight*4;
-        doc.text("Wykonane czynności", margin, y+lineHeight);
-        doc.text("Testy", margin*2+sectionSpacing*2, y+lineHeight);
-
-        y+=lineHeight*2;
-
-        page =  doc.internal.getCurrentPageInfo().pageNumber;
-
-        console.log(page);
-        doc.autoTable({
-            startY: y,
-            head: [
-                taskHeaders
-            ],
-            tableWidth: sectionSpacing*2,
-            margin: {left:margin},
-            body: actionsToArray(i),
-            styles: {font: 'roboto',halign:'left'},
-            columnStyles: {
-                0: {cellWidth: sectionSpacing},
-                1: {cellWidth: sectionSpacing}
+        },
+        {
+          "id": 348,
+          "workPeriodStart": "2019-05-09",
+          "workPeriodEnd": "2019-05-23",
+          "assignee": {
+            "id": 2052,
+            "firstName": "Mariusz",
+            "lastName": "Global",
+            "login": "emailaddressmariuszklonowskiprimigeniusplcnmariuszglobalouoddzialtesto"
+          },
+          "reportStatus": "PENDING",
+          "reportStatusString": "Oczekujący",
+          "details": {
+            "systemStatus": {
+              "label": "Niestabilny",
+              "value": "UNSTABLE"
+            },
+            "actions": [
+              {
+                "id": 349,
+                "description": "fdas",
+                "infrastructureElement": "APPLICATIONS",
+                "infrastructureElementString": "Wnioski"
               },
-            headStyles: {fontStyle: 'roboto'},
-        });
-
-        if(page != doc.internal.getCurrentPageInfo().pageNumber)
-            doc.setPage(page);
-
-        doc.autoTable({
-            startY: y,
-            head: [
-                testsHeaders
-            ],
-            tableWidth: sectionSpacing*2,
-            margin: {left:margin*2+sectionSpacing*2},
-            body: testsToArray(i),
-            styles: {font: 'roboto'},
-            columnStyles: {
-                0: {cellWidth: sectionSpacing},
-                1: {cellWidth: sectionSpacing}
+              {
+                "id": 350,
+                "description": "fdsagf",
+                "infrastructureElement": "PACKAGES",
+                "infrastructureElementString": "Paczka archiwalna"
               },
-            headStyles: {fontStyle: 'roboto'},
-        });
+              {
+                "id": 351,
+                "description": "fdsa",
+                "infrastructureElement": "STATISTICS",
+                "infrastructureElementString": "Generowanie statystyk"
+              }
+            ],
+            "tests": [
+              {
+                "id": 352,
+                "description": "1dfsa",
+                "testResult": "POSITIVE",
+                "testResultString": "Pozytywny"
+              },
+              {
+                "id": 353,
+                "description": "222",
+                "testResult": "POSITIVE",
+                "testResultString": "Pozytywny"
+              }
+            ]
+          }
+        },
+        {
+          "id": 348,
+          "workPeriodStart": "2019-05-09",
+          "workPeriodEnd": "2019-05-23",
+          "assignee": {
+            "id": 2052,
+            "firstName": "Mariusz",
+            "lastName": "Global",
+            "login": "emailaddressmariuszklonowskiprimigeniusplcnmariuszglobalouoddzialtesto"
+          },
+          "reportStatus": "PENDING",
+          "reportStatusString": "Oczekujący",
+          "details": {
+            "systemStatus": {
+              "label": "Niestabilny",
+              "value": "UNSTABLE"
+            },
+            "actions": [
+              {
+                "id": 349,
+                "description": "fdas",
+                "infrastructureElement": "APPLICATIONS",
+                "infrastructureElementString": "Wnioski"
+              },
+              {
+                "id": 350,
+                "description": "fdsagf",
+                "infrastructureElement": "PACKAGES",
+                "infrastructureElementString": "Paczka archiwalna"
+              },
+              {
+                "id": 351,
+                "description": "fdsa",
+                "infrastructureElement": "STATISTICS",
+                "infrastructureElementString": "Generowanie statystyk"
+              }
+            ],
+            "tests": [
+              {
+                "id": 352,
+                "description": "1dfsa",
+                "testResult": "POSITIVE",
+                "testResultString": "Pozytywny"
+              },
+              {
+                "id": 353,
+                "description": "222",
+                "testResult": "POSITIVE",
+                "testResultString": "Pozytywny"
+              }
+            ]
+          }
+        },
+        {
+          "id": 348,
+          "workPeriodStart": "2019-05-09",
+          "workPeriodEnd": "2019-05-23",
+          "assignee": {
+            "id": 2052,
+            "firstName": "Mariusz",
+            "lastName": "Global",
+            "login": "emailaddressmariuszklonowskiprimigeniusplcnmariuszglobalouoddzialtesto"
+          },
+          "reportStatus": "PENDING",
+          "reportStatusString": "Oczekujący",
+          "details": {
+            "systemStatus": {
+              "label": "Niestabilny",
+              "value": "UNSTABLE"
+            },
+            "actions": [
+              {
+                "id": 349,
+                "description": "fdas",
+                "infrastructureElement": "APPLICATIONS",
+                "infrastructureElementString": "Wnioski"
+              },
+              {
+                "id": 350,
+                "description": "fdsagf",
+                "infrastructureElement": "PACKAGES",
+                "infrastructureElementString": "Paczka archiwalna"
+              },
+              {
+                "id": 351,
+                "description": "fdsa",
+                "infrastructureElement": "STATISTICS",
+                "infrastructureElementString": "Generowanie statystyk"
+              }
+            ],
+            "tests": [
+              {
+                "id": 352,
+                "description": "1dfsa",
+                "testResult": "POSITIVE",
+                "testResultString": "Pozytywny"
+              },
+              {
+                "id": 353,
+                "description": "222",
+                "testResult": "POSITIVE",
+                "testResultString": "Pozytywny"
+              }
+            ]
+          }
+        },
+        {
+          "id": 348,
+          "workPeriodStart": "2019-05-09",
+          "workPeriodEnd": "2019-05-23",
+          "assignee": {
+            "id": 2052,
+            "firstName": "Mariusz",
+            "lastName": "Global",
+            "login": "emailaddressmariuszklonowskiprimigeniusplcnmariuszglobalouoddzialtesto"
+          },
+          "reportStatus": "PENDING",
+          "reportStatusString": "Oczekujący",
+          "details": {
+            "systemStatus": {
+              "label": "Niestabilny",
+              "value": "UNSTABLE"
+            },
+            "actions": [
+              {
+                "id": 349,
+                "description": "fdas",
+                "infrastructureElement": "APPLICATIONS",
+                "infrastructureElementString": "Wnioski"
+              },
+              {
+                "id": 350,
+                "description": "fdsagf",
+                "infrastructureElement": "PACKAGES",
+                "infrastructureElementString": "Paczka archiwalna"
+              },
+              {
+                "id": 351,
+                "description": "fdsa",
+                "infrastructureElement": "STATISTICS",
+                "infrastructureElementString": "Generowanie statystyk"
+              }
+            ],
+            "tests": [
+              {
+                "id": 352,
+                "description": "1dfsa",
+                "testResult": "POSITIVE",
+                "testResultString": "Pozytywny"
+              },
+              {
+                "id": 353,
+                "description": "222",
+                "testResult": "POSITIVE",
+                "testResultString": "Pozytywny"
+              }
+            ]
+          }
+        },
+        {
+          "id": 348,
+          "workPeriodStart": "2019-05-09",
+          "workPeriodEnd": "2019-05-23",
+          "assignee": {
+            "id": 2052,
+            "firstName": "Mariusz",
+            "lastName": "Global",
+            "login": "emailaddressmariuszklonowskiprimigeniusplcnmariuszglobalouoddzialtesto"
+          },
+          "reportStatus": "PENDING",
+          "reportStatusString": "Oczekujący",
+          "details": {
+            "systemStatus": {
+              "label": "Niestabilny",
+              "value": "UNSTABLE"
+            },
+            "actions": [
+              {
+                "id": 349,
+                "description": "fdas",
+                "infrastructureElement": "APPLICATIONS",
+                "infrastructureElementString": "Wnioski"
+              },
+              {
+                "id": 350,
+                "description": "fdsagf",
+                "infrastructureElement": "PACKAGES",
+                "infrastructureElementString": "Paczka archiwalna"
+              },
+              {
+                "id": 351,
+                "description": "fdsa",
+                "infrastructureElement": "STATISTICS",
+                "infrastructureElementString": "Generowanie statystyk"
+              }
+            ],
+            "tests": [
+              {
+                "id": 352,
+                "description": "1dfsa",
+                "testResult": "POSITIVE",
+                "testResultString": "Pozytywny"
+              },
+              {
+                "id": 353,
+                "description": "222",
+                "testResult": "POSITIVE",
+                "testResultString": "Pozytywny"
+              }
+            ]
+          }
+        }
+      ],
+      "attachments": []
+    };
 
-        y=doc.autoTable.previous.finalY;
-        y+=lineHeight*4;
-        drawHorizontalBorder(margin,y,margin,doc);
+  var orderDetails = ["Treść zlecenia","Załączniki"];
+  var actionHeaders = ["Nazwa czynności", "Status", "Załączniki"];
+  var workHistoryHeaders = ["Data modyfikacji","Autor zmiany","Operacja","Status","Komentarz"];
 
-        console.log("Current page: "+y);
-    }
-    
+  function tasksToArray(){
+      let arr = new Array();
+      let content = details.tasks;
+      let contentLength = content.length;
+      
+      for(var i=0; i < contentLength ; i++){
+          let con = content[i];
+          arr.push([con.title, con.statusString, attachmentsToString(con.attachments) ]);
+      }
+      return arr;
+  }
+  
+  function attachmentsToString(attachments, doc){
+      let arr = new Array();
+      let content =  attachments;
+      let contentLength = content.length;
+      
+      for(var i=0; i < contentLength ; i++){
+          let con = content[i];
+          arr.push([con.originalFileName]);
+      }
+      
+      return arr.join('\n');
+      
+  }
+
+  function historyToArray(){
+      let arr = new Array();
+      let content = workHistory.content;
+      let contentLength = content.length;
+      
+      for(var i=0; i < contentLength ; i++){
+          let con = content[i];
+          arr.push([getDateAndTime(con.createDate), con.userFirstName+' '+con.userLastName, con.eventTypeText ]);
+      }
+      return arr;
+  }
+
+  function actionsToArray(reportIndex){
+      let arr = new Array();
+      let content = raports.reports[reportIndex].details.actions;
+      let contentLength = content.length;
+      
+      for(var i=0; i < contentLength ; i++){
+          let con = content[i];
+          arr.push([con.description,con.infrastructureElementString ]);
+      }
+      return arr;
+  }
+
+  function testsToArray(reportIndex){
+      let arr = new Array();
+      let content = raports.reports[reportIndex].details.tests;
+      let contentLength = content.length;
+      
+      for(var i=0; i < contentLength ; i++){
+          let con = content[i];
+          arr.push([con.description,con.testResultString ]);
+      }
+      return arr;
+  }
+
+  
+  function createWorkingRaports(reports,x,y, doc){
+
+  length = reports.length;
+
+  var taskHeaders = ["Wykonana czynność","Element infrastruktury"];
+  var testsHeaders = ["Opis testu","Wynik testu"];
+
+  for(var i=0; i<length; i++){
+
+
+      r = reports[i];
+
+      y = addPageIfContentToLong(y,titleSize+infoSize,doc);
+
+      y+=lineHeight*3;
+      drawCircleWithText(r.id.toString(),margin,y,7,doc);
+      y+=lineHeight*3;
+
+      displayTitleAndDetail("Osoba odpowiedzialna",r.assignee.firstName+' '+r.assignee.lastName, lineHeight, sectionSpacing, x, y, titleSize, infoSize, doc);
+      displayTitleAndDetail("Stan systemu po wdrożeniu zmiany",r.details.systemStatus.label, lineHeight, sectionSpacing, x+sectionSpacing, y, titleSize, infoSize, doc);
+      displayTitleAndDetail("Termin przeprowadzenia prac",r.workPeriodStart+' - '+r.workPeriodEnd, lineHeight, sectionSpacing*1.5, x+sectionSpacing*3, y, titleSize, infoSize, doc);
+
+      
+      y = addPageIfContentToLong(y,65,doc);
+
+      y+=lineHeight*4;
+      doc.text("Wykonane czynności", margin, y+lineHeight);
+      doc.text("Testy", margin*2+sectionSpacing*2, y+lineHeight);
+
+      y+=lineHeight*2;
+
+      page =  doc.internal.getCurrentPageInfo().pageNumber;
+
+      doc.autoTable({
+          startY: y,
+          head: [
+              taskHeaders
+          ],
+          tableWidth: sectionSpacing*2,
+          margin: {left:margin},
+          body: actionsToArray(i),
+          styles: {font: 'roboto',halign:'left'},
+          columnStyles: {
+              0: {cellWidth: sectionSpacing},
+              1: {cellWidth: sectionSpacing}
+            },
+          headStyles: {fontStyle: 'roboto'},
+      });
+
+      table1Y = doc.autoTable.previous.finalY;
+
+      if(page != doc.internal.getCurrentPageInfo().pageNumber)
+          doc.setPage(page);
+
+      doc.autoTable({
+          startY: y,
+          head: [
+              testsHeaders
+          ],
+          tableWidth: sectionSpacing*2,
+          margin: {left:margin*2+sectionSpacing*2},
+          body: testsToArray(i),
+          styles: {font: 'roboto'},
+          columnStyles: {
+              0: {cellWidth: sectionSpacing},
+              1: {cellWidth: sectionSpacing}
+            },
+          headStyles: {fontStyle: 'roboto'},
+      });
+
+      table2Y = doc.autoTable.previous.finalY;
+
+      y=Math.max(table1Y,table2Y);
+
+      y+=lineHeight*4;
+      drawHorizontalBorder(margin,y,margin,doc);
+
+  }
+  
 }
 
-    var doc = new jsPDF({
-        orientation: 'landscape'
-    });
-    doc.setFont('roboto');
-    var t0 = performance.now();
+  var doc = new jsPDF({
+      orientation: 'landscape'
+  });
+  doc.setFont('roboto');
+  var t0 = performance.now();
 
-    doc.text("Szczegóły zlecenia ID: "+details.id, margin, EndingY);
+  doc.setFontSize(20);
+  createRectWithText( "Szczegóły zlecenia ID: "+details.id, 10, 10, 90,16,doc);
+  doc.setFontSize(12);
 
-    displayTitleAndDetail("Tytuł zlecenia", details.title,lineHeight, 50, margin,EndingY+=lineHeight*2, titleSize ,infoSize, doc);
-    displayTitleAndDetail("Priorytet",details.title,lineHeight, 50, margin+sectionSpacing*2,EndingY, titleSize, infoSize, doc);
-    displayTitleAndDetail("Kategoria zlecenia",details.title,lineHeight, 50, margin+sectionSpacing*3,EndingY, titleSize, infoSize, doc);
+  EndingY+=lineHeight*3;
 
-    displayTitleAndDetail("Status",details.statusString , lineHeight, 50, margin,EndingY+=lineHeight*3, titleSize, infoSize, doc);
-    displayTitleAndDetail("Priorytet",details.priorityString , lineHeight, 50, margin+sectionSpacing,EndingY, titleSize, infoSize, doc);
-    displayTitleAndDetail("Termin wykonania", getDateAndTime(details.deadline) , lineHeight, 50, margin+sectionSpacing*2,EndingY, titleSize, infoSize, doc);
-    displayTitleAndDetail("Powiązany błąd, zgłoszony przez użytkownika", checkExistValue(details.relatedError, "Brak"), lineHeight, 50, margin+sectionSpacing*3,EndingY, titleSize, infoSize, doc);
+  displayTitleAndDetail("Tytuł zlecenia", details.title,lineHeight, 50, margin,EndingY+=lineHeight*2, titleSize ,infoSize, doc);
+  displayTitleAndDetail("Priorytet",details.title,lineHeight, 50, margin+sectionSpacing*2,EndingY, titleSize, infoSize, doc);
+  displayTitleAndDetail("Kategoria zlecenia",details.title,lineHeight, 50, margin+sectionSpacing*3,EndingY, titleSize, infoSize, doc);
 
-    displayTitleAndDetail("Zlecone przez", details.orderedBy.firstName+' '+details.orderedBy.lastName , lineHeight, 50, margin,EndingY+=lineHeight*3, titleSize, infoSize, doc);
+  displayTitleAndDetail("Status",details.statusString , lineHeight, 50, margin,EndingY+=lineHeight*3, titleSize, infoSize, doc);
+  displayTitleAndDetail("Priorytet",details.priorityString , lineHeight, 50, margin+sectionSpacing,EndingY, titleSize, infoSize, doc);
+  displayTitleAndDetail("Termin wykonania", getDateAndTime(details.deadline) , lineHeight, 50, margin+sectionSpacing*2,EndingY, titleSize, infoSize, doc);
+  displayTitleAndDetail("Powiązany błąd, zgłoszony przez użytkownika", checkExistValue(details.relatedError, "Brak"), lineHeight, 50, margin+sectionSpacing*3,EndingY, titleSize, infoSize, doc);
 
-    createRectWithText( "Szczegóły zlecenia", margin, EndingY+=lineHeight*3, 60,12,doc);
+  displayTitleAndDetail("Zlecone przez", details.orderedBy.firstName+' '+details.orderedBy.lastName , lineHeight, 50, margin,EndingY+=lineHeight*3, titleSize, infoSize, doc);
 
-    doc.autoTable({
-        startY: EndingY+=12,
-        head: [
-            orderDetails
-        ],
-        margin: {left:margin},
-        body: [[details.content, attachmentsToString(details.attachments, doc)]],
-        styles: {font: 'roboto',halign:'left'},
-        headStyles: {fontStyle: 'roboto'}
-    });
-    EndingY = doc.autoTable.previous.finalY;
+  createRectWithText( "Szczegóły zlecenia", 10, EndingY+=lineHeight*3, 70,12,doc,COLORS.DARK_GRAY);
+  EndingY+=lineHeight/2;
 
-    createRectWithText( "Czynności", margin, EndingY+=lineHeight*3, 60,12,doc);
+  doc.autoTable({
+      startY: EndingY+=12,
+      head: [
+          orderDetails
+      ],
+      margin: {left:margin},
+      body: [[details.content, attachmentsToString(details.attachments, doc)]],
+      styles: {font: 'roboto',halign:'left'},
+      headStyles: {fontStyle: 'roboto'}
+  });
 
-    doc.autoTable({
-        startY: EndingY+=12,
-        head: [
-            actionHeaders
-        ],
-        margin: {left:margin},
-        body: tasksToArray(),
-        styles: {font: 'roboto',halign:'left'},
-        headStyles: {fontStyle: 'roboto'}
-    });
-    EndingY = doc.autoTable.previous.finalY;
+  EndingY = doc.autoTable.previous.finalY;
 
-    createRectWithText( "Historia prac", margin, EndingY+=lineHeight*3, 60,12,doc);
+  createRectWithText( "Czynności", 10, EndingY+=lineHeight*3, 70,12,doc,COLORS.DARK_GRAY);
+  EndingY+=lineHeight/2;
 
-    doc.autoTable({
-        startY: EndingY+=12,
-        head: [
-            workHistoryHeaders
-        ],
-        margin: {left:margin},
-        body: historyToArray(),
-        styles: {font: 'roboto',halign:'left'},
-        headStyles: {fontStyle: 'roboto'}
-    });
+  doc.autoTable({
+      startY: EndingY+=12,
+      head: [
+          actionHeaders
+      ],
+      margin: {left:margin},
+      body: tasksToArray(),
+      styles: {font: 'roboto',halign:'left'},
+      headStyles: {fontStyle: 'roboto'}
+  });
 
-    EndingY = doc.autoTable.previous.finalY;
+  EndingY = doc.autoTable.previous.finalY;
 
-    createRectWithText( "Raport z wykonanych prac", margin, EndingY+=lineHeight*3, 70,12,doc);
+  createRectWithText( "Historia prac", 10, EndingY+=lineHeight*3, 70,12,doc,COLORS.DARK_GRAY);
+  EndingY+=lineHeight/2;
 
-    EndingY+=12;
+  doc.autoTable({
+      startY: EndingY+=12,
+      head: [
+          workHistoryHeaders
+      ],
+      margin: {left:margin},
+      body: historyToArray(),
+      styles: {font: 'roboto',halign:'left'},
+      headStyles: {fontStyle: 'roboto'}
+  });
 
-    createWorkingRaports(raports.reports,margin,EndingY,doc);
+  EndingY = doc.autoTable.previous.finalY;
 
-    doc.text("footer",margin,EndingY*4);
+  createRectWithText( "Raport z wykonanych prac", 10, EndingY+=lineHeight*3, 70,12,doc,COLORS.DARK_GRAY);
 
-    var fetches = [];
+  EndingY+=lineHeight/2;
 
-    return Promise.all(fetches).then(() => {
-        // console.log(content); doc.setFontSize(25);
+  EndingY+=12;
+
+  createWorkingRaports(raports.reports,margin,EndingY,doc);
+
+  doc.text("footer",margin,EndingY*4);
+
+  var fetches = [];
+
+  return Promise.all(fetches).then(() => {
+      // console.log(content); doc.setFontSize(25);
 
 
-        // if(logs.content.length>0){
-        //     // content.map((row) => {
-        //     //     tableBody = verificationRaport1.errors;
-        //     //     console.log(tableBody);
-        //     //     colFields.map((field) => {
-        //     //         tableBody.push(row[field]);
-        //     //     });
-        //     //     table.push(tableBody);
-        //     // });
-            
-        //     //generateTable(EndingY);
-        // }
-        
-        var t1 = performance.now();
-        // console.log(doc.output('datauristring'));
-        console.log("Finished in " + (t1 - t0) + " milliseconds.")
-        return doc;
-    });
+      // if(logs.content.length>0){
+      //     // content.map((row) => {
+      //     //     tableBody = verificationRaport1.errors;
+      //     //     console.log(tableBody);
+      //     //     colFields.map((field) => {
+      //     //         tableBody.push(row[field]);
+      //     //     });
+      //     //     table.push(tableBody);
+      //     // });
+          
+      //     //generateTable(EndingY);
+      // }
+      
+      var t1 = performance.now();
+      // console.log(doc.output('datauristring'));
+      console.log("Finished in " + (t1 - t0) + " milliseconds.")
+      return doc;
+  });
 }
+
 
 pdf.logsList = function () {
     //lista
     var lineHeight = 5;
     margin = 15;
-    var EndingY;
+    var EndingY = 0;
     var doc = new jsPDF();
     doc.setFont('roboto');
     
@@ -1484,7 +1491,7 @@ pdf.logsList = function () {
 
     function generateTable(y){
         doc.autoTable({
-            startY: y,
+            startY: EndingY,
             head: [
                 colHeaders
             ],
@@ -1506,10 +1513,14 @@ pdf.logsList = function () {
         return arr;
     }
 
-    doc.text("Lista logów",margin, lineHeight*3);
-    doc.setFontSize(10);
-    doc.text("Liczba: "+logs.totalElements,margin, lineHeight*4)
-    EndingY = lineHeight*6;
+    doc.setFontSize(20);
+    createRectWithText("Lista logów", 10, EndingY+=10, 100,16,doc);
+    doc.setFontSize(12);
+
+    EndingY+=lineHeight*5;
+
+    doc.text("Liczba: "+logs.totalElements,margin, EndingY)
+    EndingY+= lineHeight*2;
     
     content = [];
 
@@ -1556,7 +1567,7 @@ pdf.autoverificatbasicion = function () {
     //Weryfikacja
     var lineHeight = 5;
     margin = 15;
-    var EndingY;
+    var EndingY = 0;
     var doc = new jsPDF();
     doc.setFont('roboto');
     
@@ -1596,7 +1607,6 @@ pdf.autoverificatbasicion = function () {
      }
 
     function generateTable(y){
-        console.log(verificationRaport1.errors)
         doc.autoTable({
             startY: y,
             head: [
@@ -1627,9 +1637,11 @@ pdf.autoverificatbasicion = function () {
         return displayWithLines(detail, x, y+lineHeight);
     }
 
-    doc.text("Raport z autoweryfikacji: "+verificationRaport1.id, margin, lineHeight*3);
+    doc.setFontSize(20);
+    createRectWithText( "Raport z autoweryfikacji: "+verificationRaport1.id, 10, EndingY+=10, 100,16,doc);
+    doc.setFontSize(12);
     
-    EndingY = lineHeight*6;
+    EndingY+= lineHeight*6;
 
     displayTitleAndDetail("Typ walidacji",verificationRaport1.validationType , lineHeight , margin, EndingY,16,10);
     
@@ -1803,7 +1815,7 @@ pdf.errorDetails = function () {
     var infoFontSize = 12;
 
     var lineHeight = 5;
-    var margin = 10;
+    var margin = 15;
     var EndingY;
     var doc = new jsPDF({
         orientation: 'landscape'
@@ -1956,29 +1968,13 @@ pdf.errorDetails = function () {
         return arr;
     }
 
-    function getDateAndTime(dateString){
-        let date = new Date(dateString);
-        return date.getDay()+'/'+date.getMonth()+'/'+date.getFullYear()+ ' ' +date.getHours()+':'+date.getMinutes();
-    }
-
-    function displayWithLines(string, x, y, lineLength){
-       var words = doc.splitTextToSize(string, lineLength);  
-       console.log(words);
-       for(var i=0;i<words.length; i++){
-           console.log(x,y+i);
-           doc.text(words[i], x, y);
-           y+=lineHeight;
-       }
-       console.log(y);
-       return y;
-    }
-
     function generateTable(y){
         doc.autoTable({
             startY: y,
             head: [
                 colHeaders
             ],
+            margin: {left:margin},
             columnStyles:{
                 0: {cellWidth: 30},
                 1: {cellWidth: 30},
@@ -2032,7 +2028,7 @@ pdf.errorDetails = function () {
     doc.text('Opis błędu', margin, lineHeight*17);
     doc.setFontSize(infoFontSize);
 
-    EndingY = displayWithLines(details.content, margin, lineHeight*18, 277);
+    EndingY = displayWithLines(details.content, margin, lineHeight*18, 277,lineHeight,doc);
     
     EndingY+=lineHeight;
 
@@ -2044,6 +2040,7 @@ pdf.errorDetails = function () {
             fileHeaders
         ],
         body: files,
+        margin: {left:margin},
         styles: {font: 'roboto',
                 fontSize: titleFontSize},
                 theme: 'grid'
@@ -2133,23 +2130,39 @@ function checkExistValue(val, replacment){
         return val
 }
 
-function createRectWithText(text, x,y,w,h, doc){
-    doc.setFillColor(59,61,66);
+function createRectWithText(text, x,y,w,h, doc, color){
+    if(color == null){
+      color = COLORS.BASIC;
+    }
+    doc.setFillColor(color);
     doc.rect(x, y, w,h,'F');
     doc.setTextColor(1,1,1,1);
-    doc.text(text, x+w/2, y+(h/5)*3, 'center');
+    doc.text(text, x+w/2, y+(h/5)*3.3, 'center');
     doc.setTextColor(0,0,0);
 }
 
-function drawHorizontalBorder(x,y,margin,doc){
+function drawCircleWithText(text,x,y,r,doc,color){
+  if(color == null){
+    color = COLORS.BASIC;
+  }
+  doc.setFillColor(color);
+  doc.circle(x,y,r,'F');
+  doc.setTextColor(1,1,1,1);
+  doc.text(text,x,y+(r/5)*1.5,'center');
+  doc.setTextColor(0,0,0);
+}
+function drawHorizontalBorder(x,y,margin,doc,color){
     w = 270-margin*2;
     h=2;
-    doc.setFillColor(59,61,66);
+    if(color == null){
+      color = COLORS.BASIC;
+    }
+    doc.setFillColor(color);
     doc.rect(x,y,w,h,'F');
 }
 
-function addPageIfContentToLong(y,height, doc) {
-    if(height>=210)
+function addPageIfContentToLong(y,contentHeight, doc) {
+    if(y+contentHeight>=210)
         {
             doc.addPage();
             return 0;
@@ -2176,3 +2189,9 @@ const autoVerificationReportsTypeEnum = {
   SIGNATURE: "Sygnatura",
   CONTENT_LIST: "Lista zawartości"
 };
+
+const COLORS = {
+  BASIC: "#2980ba",
+  DARK_GRAY: "3B3D3C",
+  RED: "#db1818"
+}
