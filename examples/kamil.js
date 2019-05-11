@@ -1811,12 +1811,12 @@ pdf.error = function () {
 };
 
 pdf.errorDetails = function () {
-    var titleFontSize = 15;
-    var infoFontSize = 12;
-
+    var tFontSize = 15;
+    var dFontSize = 12;
+    var sectionSpacing = 60;
     var lineHeight = 5;
     var margin = 15;
-    var EndingY;
+    var EndingY = 0;
     var doc = new jsPDF({
         orientation: 'landscape'
     });
@@ -1986,50 +1986,34 @@ pdf.errorDetails = function () {
         });
     }
 
+
     doc.setFontSize(24);
-    doc.text('Szczegóły błędu: ' + details.id, margin, lineHeight*3, null, null, 'left');
+    createRectWithText('Szczegóły błędu: ' + details.id, margin/2, EndingY+=margin/2,90,20,doc);
 
-    doc.setFontSize(titleFontSize);
-    doc.text('Kategoria', margin, lineHeight*5)
-    doc.setFontSize(infoFontSize);
-    doc.text(details.category, margin, lineHeight*6)
+    EndingY+=lineHeight*6;
 
-    doc.setFontSize(titleFontSize);
-    doc.text('Podategoria', margin*12, lineHeight*5);
-    doc.setFontSize(infoFontSize);
-    doc.text(details.subcategory, margin*12, lineHeight*6);
+    displayTitleAndDetail('Kategoria', details.category, lineHeight,sectionSpacing, margin, EndingY,tFontSize,dFontSize,doc);
 
-    doc.setFontSize(titleFontSize);
-    doc.text('Kto zgłosił', margin, lineHeight*8);
-    doc.setFontSize(infoFontSize);
-    doc.text(details.createdBy.firstName+' '+details.createdBy.lastName, margin, lineHeight*9);
+    displayTitleAndDetail('Podategoria', details.subcategory, lineHeight, sectionSpacing, margin*12, EndingY, tFontSize, dFontSize,doc);
 
-    doc.setFontSize(titleFontSize);
-    doc.text('Data zgłoszenia', margin*6, lineHeight*8);
-    doc.setFontSize(infoFontSize);
-    doc.text( getDateAndTime(details.createdDate) , margin*6, lineHeight*9);
+    EndingY+=lineHeight*3;
 
-    doc.setFontSize(titleFontSize);
-    doc.text('Status błędu' , margin*12, lineHeight*8);
-    doc.setFontSize(infoFontSize);
-    doc.text(errorOrderStatusEnum[details.status], margin*12, lineHeight*9);
+    displayTitleAndDetail('Kto zgłosił',details.createdBy.firstName+' '+details.createdBy.lastName, lineHeight, sectionSpacing, margin, EndingY, tFontSize, dFontSize,doc);
 
-    doc.setFontSize(titleFontSize);
-    doc.text('Przypisane do' , margin, lineHeight*11);
-    doc.setFontSize(infoFontSize);
-    doc.text((details.assignee ? details.assignee.firstName +' '+ details.assignee.lastName: 'nieprzypisany') , margin, lineHeight*12);
+    displayTitleAndDetail('Data zgłoszenia', getDateAndTime(details.createdDate), lineHeight, sectionSpacing, margin*6, EndingY, tFontSize, dFontSize,doc);
 
-    doc.setFontSize(titleFontSize);
-    doc.text('Tytuł błędu', margin, lineHeight*14);
-    doc.setFontSize(infoFontSize);
-    doc.text(details.title, margin, lineHeight*15);
+    displayTitleAndDetail('Status błędu' , errorOrderStatusEnum[details.status], lineHeight, sectionSpacing, margin*12, EndingY, tFontSize, dFontSize,doc);
 
-    doc.setFontSize(titleFontSize);
-    doc.text('Opis błędu', margin, lineHeight*17);
-    doc.setFontSize(infoFontSize);
+    EndingY+=lineHeight*3;
 
-    EndingY = displayWithLines(details.content, margin, lineHeight*18, 277,lineHeight,doc);
-    
+    displayTitleAndDetail('Przypisane do' , (details.assignee ? details.assignee.firstName +' '+ details.assignee.lastName: 'nieprzypisany'), lineHeight, sectionSpacing*2, margin, EndingY, tFontSize, dFontSize,doc);
+
+    EndingY+=lineHeight*4;
+    EndingY = displayTitleAndDetail('Tytuł błędu', details.title, lineHeight, sectionSpacing, margin, EndingY, tFontSize, dFontSize,doc);
+    EndingY+=lineHeight/2;
+    EndingY = displayTitleAndDetail('Opis błędu', details.content, lineHeight, 277,margin, EndingY,tFontSize,dFontSize,doc);
+
+
     EndingY+=lineHeight;
 
     doc.autoTable({
@@ -2042,19 +2026,22 @@ pdf.errorDetails = function () {
         body: files,
         margin: {left:margin},
         styles: {font: 'roboto',
-                fontSize: titleFontSize},
+                fontSize: tFontSize},
                 theme: 'grid'
     });
 
-    EndingY += doc.previousAutoTable.height;
-    EndingY += lineHeight*2;
-
-    doc.setFontSize(titleFontSize);
-    doc.text('Historia zmian', 14, EndingY);
+    EndingY = doc.previousAutoTable.finalY;
     
-    EndingY+=lineHeight;
 
+    EndingY = addPageIfContentToLong(EndingY, 42+lineHeight*2, doc);
 
+    EndingY += lineHeight*2;
+    doc.setFontSize(tFontSize);
+    createRectWithText("Historia zmian",margin/2,EndingY,sectionSpacing,12,doc,COLORS.DARK_GRAY);
+    
+    EndingY+=12+lineHeight;
+
+    
     content = [];
 
     var fetches = [];
