@@ -2,7 +2,570 @@ var pdf = {};
 
 
 
+pdf.applicationForQuery = function(){
+  doc = new jsPDF({orientation: 'landscape'});
+  var json = {
+    "id": 4501,
+    "userIdentifier": "2019/05/24/049930",
+    "createDate": "2019-05-24T02:12:54.497",
+    "createdBy": {
+      "id": 2,
+      "firstName": "Adam",
+      "lastName": "Archiwista",
+      "email": "a@a.pl",
+      "unitId": 2,
+      "effectiveUnitId": 2,
+      "unitName": "NDAP",
+      "login": "1",
+      "fullName": "Adam Archiwista"
+    },
+    "assignee": {
+      "id": 2,
+      "firstName": "Adam",
+      "lastName": "Archiwista",
+      "email": "a@a.pl",
+      "unitId": 2,
+      "effectiveUnitId": 2,
+      "unitName": "NDAP",
+      "login": "1",
+      "fullName": "Adam Archiwista"
+    },
+    "caseId": "TO JEST ZNAK SPRAWY",
+    "executionDate": "2020-01-01",
+    "status": {
+      "value": "NEW",
+      "label": "Nowy"
+    },
+    "applicant": {
+      "type": {
+        "value": "PRIVATE_USER",
+        "label": "Użytkownik prywatny"
+      },
+      "postCode": "89-200",
+      "city": "Szubin",
+      "street": "Wiejska",
+      "streetNumber": "22",
+      "flatNumber": "",
+      "firstName": "Bartosz",
+      "lastName": "testowy", 
+      "email": "bartosz.kubacki@primigenius.pl",
+      "phone": "789789456"
+    },
+    "stateArchive": {
+      "id": 2,
+      "name": "AP Gliwice"
+    },
+    "queryType": {
+      "value": "GENEALOGICAL_RESEARCH",
+      "label": "Poszukiwania genealogiczne"
+    },
+    "queryPurpose": {
+      "value": "CONFIRMATION_OF_PL_CITIZENSHIP",
+      "label": "Potwierdzenie obywatelstwa polskiego"
+    },
+    "legalRule": {
+      "value": "pokrewieństwo"
+    },
+    "subsititation": "to jest uzasadnienie zamównienia",
+    "attachments": [
+      {
+        "fileName": "S3+eyJpZCI6NDUwMSwiYXR0SWQiOjI4MDEsIm9yaWdpbmFsRmlsZU5hbWUiOiJjb3JlLmxvZy0xODEzMTQ1LnR4dCJ9",
+        "originalFileName": "core.log-1813145.txt"
+      },
+      {
+        "fileName": "S3+eyJpZCI6NDUwMSwiYXR0SWQiOjI4MDIsIm9yaWdpbmFsRmlsZU5hbWUiOiJjb3JlLmxvZy0xODEzMTYzLnR4dCJ9",
+        "originalFileName": "core.log-1813163.txt"
+      }
+    ],
+    "order": {
+      "genealogicalResearch": {
+        "searchedPersonList": [
+          {
+            "firstName": "Jan",
+            "lastName": "Jankowski",
+            "fatherName": "Wiesław",
+            "bornDate": "2019-05-01",
+            "residencePlace": "Żnin",
+            "community": "Żnin",
+            "county": "żniński",
+            "faith": "takie tam",
+            "parish": "Szubin",
+            "kinship": "matka",
+            "other": "kowal"
+          }
+        ],
+        "searchPeriodList": [
+          {
+            "from": "2019-05-06",
+            "to": "2019-05-23"
+          }
+        ],
+        "searchFactList": [
+          {
+            "value": "Mateusz Morawiecki mówił dziś o zbiorniku retencyjnMateusz Morawiecki mówił dziś o zbiorniku retencyjnMateusz Morawiecki mówił dziś o zbiorniku retencyjnMateusz Morawiecki mówił dziś o zbiorniku retencyjnMateusz Morawiecki mówił dziś o zbiorniku retencyjnMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono mu kłamstwo. Mateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono mu kłamstwo. Mateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono mu kłamstwo. Mateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono mu kłamstwo. Mateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono mu kłamstwo. Mateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono mu kłamstwo."
+          }
+        ]
+      }
+    }
+  }
 
+  var json1 = {
+    "id": 4501,
+    "userIdentifier": "2019/05/24/049930",
+    "createDate": "2019-05-24T02:12:54.497",
+    "createdBy": {
+      "id": 2,
+      "firstName": "Adam",
+      "lastName": "Archiwista",
+      "email": "a@a.pl",
+      "unitId": 2,
+      "effectiveUnitId": 2,
+      "unitName": "NDAP",
+      "login": "1",
+      "fullName": "Adam Archiwista"
+    },
+    "assignee": {
+      "id": 2,
+      "firstName": "Adam",
+      "lastName": "Archiwista",
+      "email": "a@a.pl",
+      "unitId": 2,
+      "effectiveUnitId": 2,
+      "unitName": "NDAP",
+      "login": "1",
+      "fullName": "Adam Archiwista"
+    },
+    "caseId": "TO JEST ZNAK SPRAWY",
+    "executionDate": "2020-01-01",
+    "status": {
+      "value": "NEW",
+      "label": "Nowy"
+    },
+    "applicant": {
+      "type": {
+        "value": "PRIVATE_USER",
+        "label": "Użytkownik prywatny"
+      },
+      "postCode": "89-200",
+      "city": "Szubin Szubiński",
+      "street": "Jana janowego jankowskiego",
+      "streetNumber": "22",
+      "flatNumber": "21",
+      "firstName": "Bartosz",
+      "lastName":"Testowy2",
+      "email": "bartosz.kubacki@primigenius.pl",
+      "phone": "789789456"
+    },
+    "stateArchive": {
+      "id": 2,
+      "name": "AP Gliwice"
+    },
+    "queryType": {
+      "value": "GENEALOGICAL_RESEARCH",
+      "label": "Poszukiwania genealogiczne"
+    },
+    "queryPurpose": {
+      "value": "CONFIRMATION_OF_PL_CITIZENSHIP",
+      "label": "Potwierdzenie obywatelstwa polskiego"
+    },
+    "legalRule": {
+      "value": "pokrewieństwo"
+    },
+    "subsititation": "to jest uzasadnienie zamównienia",
+    "attachments": [
+      {
+        "fileName": "S3+eyJpZCI6NDUwMSwiYXR0SWQiOjI4MDEsIm9yaWdpbmFsRmlsZU5hbWUiOiJjb3JlLmxvZy0xODEzMTQ1LnR4dCJ9",
+        "originalFileName": "core.log-1813145.txt"
+      },
+      {
+        "fileName": "S3+eyJpZCI6NDUwMSwiYXR0SWQiOjI4MDIsIm9yaWdpbmFsRmlsZU5hbWUiOiJjb3JlLmxvZy0xODEzMTYzLnR4dCJ9",
+        "originalFileName": "core.log-1813163.txt"
+      },
+      
+      {
+        "fileName": "S3+eyJpZCI6NDUwMSwiYXR0SWQiOjI4MDIsIm9yaWdpbmFsRmlsZU5hbWUiOiJjb3JlLmxvZy0xODEzMTYzLnR4dCJ9",
+        "originalFileName": "core.log-1813163.txt"
+      },
+      
+      {
+        "fileName": "S3+eyJpZCI6NDUwMSwiYXR0SWQiOjI4MDIsIm9yaWdpbmFsRmlsZU5hbWUiOiJjb3JlLmxvZy0xODEzMTYzLnR4dCJ9",
+        "originalFileName": "core.log-1813163.txt"
+      },
+      {
+        "fileName": "S3+eyJpZCI6NDUwMSwiYXR0SWQiOjI4MDIsIm9yaWdpbmFsRmlsZU5hbWUiOiJjb3JlLmxvZy0xODEzMTYzLnR4dCJ9",
+        "originalFileName": "core.log-1813163.txt"
+      }
+    ],
+    "order": {
+      "genealogicalResearch": {
+        "searchedPersonList": [
+          {
+            "firstName": "Jan",
+            "lastName": "Jankowski",
+            "fatherName": "Wiesław",
+            "bornDate": "2019-05-01",
+            "residencePlace": "Żnin",
+            "community": "Żnin",
+            "county": "żniński",
+            "faith": "takie tam",
+            "parish": "Szubin",
+            "kinship": "matka",
+            "other": "kowal"
+          },
+                  {
+            "firstName": "Jan",
+            "lastName": "Jankowski",
+            "fatherName": "Wiesław",
+            "bornDate": "2019-05-01",
+            "residencePlace": "Żnin",
+            "community": "Żnin",
+            "county": "żniński",
+            "faith": "takie tam",
+            "parish": "Szubin",
+            "kinship": "matka",
+            "other": "kowal"
+          },
+                  {
+            "firstName": "Jan",
+            "lastName": "Jankowski",
+            "fatherName": "Wiesław",
+            "bornDate": "2019-05-01",
+            "residencePlace": "Żnin",
+            "community": "Żnin",
+            "county": "żniński",
+            "faith": "takie tam",
+            "parish": "Szubin",
+            "kinship": "matka",
+            "other": "kowal"
+          }
+        ],
+        "searchPeriodList": [
+          {
+            "from": "2019-05-06",
+            "to": "2019-05-23"
+          },
+                  {
+            "from": "2019-05-06",
+            "to": "2019-05-23"
+          }
+        ],
+        "searchFactList": [
+          {
+            "value": "Mateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono mu kłamstwo. Okazuje się jednak, że premier mógł zostać wprowadzony w błąd. Urzędnik z Krakowa przeprasza teraz premiera i tłumaczy sytuację."
+          },
+                  {
+            "value": "Mateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono mu kłamstwo. Okazuje się jednak, że premier mógł zostać wprowadzony w błąd. Urzędnik z Krakowa przeprasza teraz premiera i tłumaczy sytuacjęMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono mu kłamstwo. Okazuje się jednak, że premier mógł zostać wprowadzony w błąd. Urzędnik z Krakowa przeprasza teraz premiera i tłumaczy sytuacjęMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono mu kłamstwo. Okazuje się jednak, że premier mógł zostać wprowadzony w błąd. Urzędnik z Krakowa przeprasza teraz premiera i tłumaczy sytuację."
+          },
+                  {
+            "value": "Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko sssssssssssssssssssssssssssssssssss zarzucsssssssssssssssssssssssssssssssssss sssssssssssssssssssssssssssssssssss sssssssssssssssssssssssssssssssssss sssssssssssssssssssssssssssssssssssono muMateusz Morawiecki mówił dziś o zbiornikMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiornikMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiornikMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiornikMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiornikMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiornikMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiornikMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiornikMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiornikMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiornikMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiornikMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiornikMateusz  dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiornikretencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono mu kłamstwo. Okazuje się jednak, że premier mógł zostać wprowadzony w błąd. Urzędnik z Krakowa przeprasza teraz premiera i tłumaczy sytuację.Mateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono mu kłamstwo. Okazuje się jednak, że premier mógł zostać wprowadzony w błąd. Urzędnik z Krakowa przeprasza teraz premiera i tłumaczy sytuacjęMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono mu kłamstwo. Okazuje się jednak, że premier mógł zostać wprowadzony w błąd. Urzędnik z Krakowa przeprasza teraz premiera i tłumaczy sytuację"
+          }
+                  
+        ]
+      }
+    }
+  };
+
+  var history = {
+    "content": [
+    {
+    "id": 18,
+    "createDate": "2019-04-15T11:45:16",
+    "userId": 2000,
+    "userLogin": "emailaddressaglobalny1adresplcnadminglobalnyouoddzialtestowyoarchiwumt",
+    "userFirstName": "Admin",
+    "userLastName": "Globalny",
+    "userSystem": "System dla pracownika NDAP",
+    "referenceType": "ERROR",
+    "referenceId": 139,
+    "referenceStatus": "",
+    "eventType": "ERROR_STATUS_CHANGE",
+    "eventTypeText": "Zmiana statusu błędu"
+    },
+    {
+    "id": 17,
+    "createDate": "2019-04-15T11:42:37",
+    "userId": 2000,
+    "userLogin": "emailaddressaglobalny1adresplcnadminglobalnyouoddzialtestowyoarchiwumt",
+    "userFirstName": "Admin",
+    "userLastName": "Globalny",
+    "userSystem": "System dla pracownika NDAP",
+    "referenceType": "ERROR",
+    "referenceId": 139,
+    "referenceStatus": "",
+    "eventType": "ERROR_CREATE",
+    "details": " Komentarz Komentarz Komentarz Komentarz Komentarz Komentarz Komentarz Komentarz Komentarz Komentarz. Komentarz Komentarz Komentarz Komentarz Komentarz Komentarz Komentarz. Komentarz Komentarz Komentarz.",
+    "eventTypeText": "Zgłoszenie błędu"
+    },
+    {
+        "id": 18,
+        "createDate": "2019-04-15T11:45:16",
+        "userId": 2000,
+        "userLogin": "emailaddressaglobalny1adresplcnadminglobalnyouoddzialtestowyoarchiwumt",
+        "userFirstName": "Admin",
+        "userLastName": "Globalny",
+        "userSystem": "System dla pracownika NDAP",
+        "referenceType": "ERROR",
+        "referenceId": 139,
+        "referenceStatus": "",
+        "eventType": "ERROR_STATUS_CHANGE",
+        "eventTypeText": "Zmiana statusu błędu"
+        },
+        {
+        "id": 17,
+        "createDate": "2019-04-15T11:42:37",
+        "userId": 2000,
+        "userLogin": "emailaddressaglobalny1adresplcnadminglobalnyouoddzialtestowyoarchiwumt",
+        "userFirstName": "Admin",
+        "userLastName": "Globalny",
+        "userSystem": "System dla pracownika NDAP",
+        "referenceType": "ERROR",
+        "referenceId": 139,
+        "referenceStatus": "",
+        "eventType": "ERROR_CREATE",
+        "details": "",
+        "eventTypeText": "Zgłoszenie błędu"
+        },
+        {
+            "id": 18,
+            "createDate": "2019-04-15T11:45:16",
+            "userId": 2000,
+            "userLogin": "emailaddressaglobalny1adresplcnadminglobalnyouoddzialtestowyoarchiwumt",
+            "userFirstName": "Admin",
+            "userLastName": "Globalny",
+            "userSystem": "System dla pracownika NDAP",
+            "referenceType": "ERROR",
+            "referenceId": 139,
+            "referenceStatus": "",
+            "eventType": "ERROR_STATUS_CHANGE",
+            "eventTypeText": "Zmiana statusu błędu"
+            },
+            {
+            "id": 17,
+            "createDate": "2019-04-15T11:42:37",
+            "userId": 2000,
+            "userLogin": "emailaddressaglobalny1adresplcnadminglobalnyouoddzialtestowyoarchiwumt",
+            "userFirstName": "Admin",
+            "userLastName": "Globalny",
+            "userSystem": "System dla pracownika NDAP",
+            "referenceType": "ERROR",
+            "referenceId": 139,
+            "referenceStatus": "",
+            "eventType": "ERROR_CREATE",
+            "details": "",
+            "eventTypeText": "Zgłoszenie błędu"
+            }
+    ],
+    "totalElements": 2
+    };
+
+  replacer = "-";
+
+  sectionSpacing = 60;
+  margin = 15;
+  lineHeight = 5;
+  currentY = 0;
+
+  dFontSize=9;
+  tFontSize = dFontSize;
+  iFontSize = dFontSize*1.3;
+  var colHeaders = ['Data modyfikacji', "Autor zmiany", 'Operacja','Komentarz'];
+  doc.setFont('roboto');
+  var t0 = performance.now();
+
+  function getOriginalFileNames(){
+    files = json.attachments;
+    let arr = new Array();
+    let content = json.attachments;
+    let contentLength = content.length;
+      
+      for(var i=0; i < contentLength ; i++){
+          let con = content[i];
+          arr.push([con.originalFileName]);
+      }
+      return arr;
+  }
+
+  function displayResearch(){
+    var genealogicalResearch = json.order.genealogicalResearch;
+      var searchPersonList = genealogicalResearch.searchedPersonList;
+      var searchPeriodList = genealogicalResearch.searchPeriodList;
+      var searchFactList = genealogicalResearch.searchFactList;
+      
+      for(e in searchPersonList){
+        currentY = addPageIfContentToLong(currentY,40,doc);
+        if(currentY == 0)
+          currentY = margin;
+        s = searchPersonList[e];
+        createSubtitle("Poszukiwana osoba",margin,currentY,dFontSize*0.9,doc);
+        currentY+=lineHeight;
+        displayTitleAndDetail("Imię", s.firstName, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        displayTitleAndDetail("Nazwisko", s.lastName, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
+        displayTitleAndDetail("Imię ojca", s.fatherName, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+        displayTitleAndDetail("Data urodzenia", s.bornDate, lineHeight, sectionSpacing,margin+sectionSpacing*3,currentY,tFontSize,iFontSize,doc,replacer);
+        currentY+=lineHeight*2;
+        displayTitleAndDetail("Miejsce zamieszkania", s.residencePlace, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        displayTitleAndDetail("Gmina", s.community, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
+        displayTitleAndDetail("Powiat", s.county, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+        currentY+=lineHeight*2;
+        displayTitleAndDetail("Wyznanie", s.faith, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        displayTitleAndDetail("Parafia", s.parish, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+        currentY+=lineHeight*2;
+        displayTitleAndDetail("Stopień pokrewieństwa", s.kinship, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        displayTitleAndDetail("Informacje dot. pochodzenia, zawodu etc.", s.other, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+        currentY+=lineHeight*3;
+      }
+
+      currentY+=lineHeight;
+
+      for(e in searchPeriodList){
+        currentY = addPageIfContentToLong(currentY,20,doc);
+        if(currentY == 0)
+          currentY = margin;
+        s = searchPeriodList[e];
+        createSubtitle("Okres poszukiwania",margin,currentY,dFontSize*0.9,doc);
+        currentY+=lineHeight;
+        displayTitleAndDetail("Daty graniczne", s.from+' - '+s.to , lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        currentY+=lineHeight*3;
+      }
+
+      currentY+=lineHeight;
+
+      for(e in searchFactList){
+        
+        s = searchFactList[e];
+
+        lines = doc.splitTextToSize(s.value,sectionSpacing*4).length;
+
+        currentY = addPageIfContentToLong(currentY,20,doc);
+        if(currentY == 0)
+          currentY = margin;
+        
+        y1 = currentY;
+        createSubtitle("Zakres przedmiotowy poszukiwań",margin,currentY,dFontSize*0.9,doc);
+        currentY+=lineHeight;
+        currentY = displayTitleAndDetail("Fakty i zdarzenia, których mają dotyczyć poszukiwania", s.value, lineHeight, sectionSpacing*4,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        
+        currentY+=lineHeight*2;
+      }
+      
+  }
+
+  function historyToTableData(){
+    let arr = new Array();
+    let content = history.content;
+    let contentLength = content.length;
+    
+    for(var i=0; i < contentLength ; i++){
+        let con = content[i];
+        arr.push([getDateAndTime(con.createDate),con.userFirstName+' '+con.userLastName,con.eventTypeText, con.details])
+    }
+    return arr;
+}
+
+  doc.setFontSize(30);
+  doc.text("Wniosek o wykonanie kwerendy ID: "+json.id,margin,margin);
+  doc.setFontSize(dFontSize);
+  currentY = margin*1.5;
+  createRectWithText( "Szczegóły zamówienia", margin, currentY, 40,10,doc,COLORS.DARK_GRAY);
+  currentY+=lineHeight*3.5;
+  createSubtitle("Dane wnioskodawcy",margin,currentY,dFontSize,doc);
+  createSubtitle("Adres zamieszkania",margin+sectionSpacing*2,currentY,dFontSize,doc);
+  currentY+=lineHeight*1.5;
+  displayTitleAndDetail("Typ wnioskodawcy", json.applicant.type.label, lineHeight, sectionSpacing*1.25,margin,currentY,tFontSize,iFontSize,doc,replacer);
+  displayTitleAndDetail("Imię i nazwisko", json.applicant.firstName+' '+json.assignee.lastName, lineHeight, sectionSpacing,margin+sectionSpacing*1.25,currentY,tFontSize,iFontSize,doc,replacer);
+
+  displayTitleAndDetail("Miasto", json.applicant.city, lineHeight, sectionSpacing*0.7,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+  displayTitleAndDetail("Kod-pocztowy", json.applicant.postCode, lineHeight, sectionSpacing,margin+sectionSpacing*2.7,currentY,tFontSize,iFontSize,doc,replacer);
+  currentY+=lineHeight*2.5;
+  displayTitleAndDetail("E-mail", json.applicant.email, lineHeight, sectionSpacing*1.25,margin,currentY,tFontSize,iFontSize,doc,replacer);
+  displayTitleAndDetail("Telefon", json.applicant.phone, lineHeight, sectionSpacing,margin+sectionSpacing*1.25,currentY,tFontSize,iFontSize,doc,replacer);
+
+  
+  displayTitleAndDetail("Ulica", json.applicant.street, lineHeight, sectionSpacing*0.7,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+  displayTitleAndDetail("Nr. domu", json.applicant.streetNumber, lineHeight, sectionSpacing/2,margin+sectionSpacing*2.7,currentY,tFontSize,iFontSize,doc,replacer);
+  displayTitleAndDetail("Nr. mieszkania", json.applicant.flatNumber, lineHeight, sectionSpacing/2,margin+sectionSpacing*3.2,currentY,tFontSize,iFontSize,doc,replacer);
+
+  currentY+=lineHeight*3;
+  drawHorizontalBorder(margin,currentY,margin,doc);
+  currentY+=lineHeight*2;
+  createSubtitle("Dane kwerendy",margin,currentY,dFontSize,doc);
+
+  currentY+=lineHeight*1.5;
+  displayTitleAndDetail("Archiwum państwowe", json.stateArchive.name, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc);
+  displayTitleAndDetail("Podstawa prawna", json.legalRule.value, lineHeight, sectionSpacing*1.5,margin+sectionSpacing*2.7,currentY,tFontSize,iFontSize,doc);
+
+  currentY+=lineHeight*2.5;
+  displayTitleAndDetail("Rodzaj kwerendy", json.queryType.label, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc);
+  displayTitleAndDetail("Uzasadnienie zamówienia", json.subsititation, lineHeight, sectionSpacing*1.5,margin+sectionSpacing*2.7,currentY,tFontSize,iFontSize,doc);
+  currentY+=lineHeight*3;
+
+  doc.autoTable({
+    startY: currentY-lineHeight,
+    tableWidth: 'wrap',
+    head: [
+        ['Dokumenty']
+    ],
+    body: getOriginalFileNames(),
+    margin: {left:margin+sectionSpacing*2.7},
+    headStyles: {
+      fillColor: COLORS.BASIC
+    },
+    styles: {font: 'roboto',
+            fontSize: tFontSize,
+            halign: 'center'}
+  });
+
+  currentY = displayWithLines("Kwerenda w archiwum państwowym przeprowadzana jest w całym zasobie archiwalnym niezależnie od postaci przechowywanych materiałów archiwalnych.",margin, currentY,sectionSpacing*2.5,lineHeight,doc);
+  currentY+=lineHeight*.5;
+  displayTitleAndDetail("Cel kwerendy", json.queryPurpose.label, lineHeight, sectionSpacing*2.5,margin,currentY,tFontSize,iFontSize,doc);
+
+  currentY = Math.max(currentY,doc.autoTable.previous.finalY);
+  currentY+=lineHeight*2;
+  drawHorizontalBorder(margin,currentY,margin,doc);
+  currentY+=lineHeight*2;
+  createSubtitle("Przedmiot zamówienia",margin,currentY,dFontSize,doc);
+  currentY+=lineHeight*1.5;
+  
+  displayResearch();
+
+  drawHorizontalBorder(margin,currentY,margin,doc);
+  currentY+=lineHeight*2;
+  currentY = addPageIfContentToLong(currentY,20,doc);
+        if(currentY == 0)
+          currentY = margin;
+  createRectWithText( "Historia", margin, currentY, 40,10,doc,COLORS.DARK_GRAY);
+  currentY+=lineHeight*3.5;
+
+  doc.autoTable({
+    startY: currentY,
+    head: [
+        colHeaders
+    ],
+    margin: {left:margin},
+    headStyles: {
+      fillColor: COLORS.BASIC
+    },
+    columnStyles:{
+        0: {cellWidth: 30},
+        1: {cellWidth: 30},
+        2: {cellWidth: 45},
+        3: {cellWidth: 150},
+      },
+    body: historyToTableData(),
+    styles: {font: 'roboto'}
+});
+
+  var fetches = [];
+
+
+  return Promise.all(fetches).then(() => {
+    
+    var t1 = performance.now();
+
+    console.log("Finished in " + (t1 - t0) + " milliseconds.")
+    return doc;
+  });
+}
 
 pdf.autoVerificationReports = function(){
   doc = new jsPDF();
@@ -42,7 +605,7 @@ pdf.autoVerificationReports = function(){
     var t0 = performance.now();
 
   doc.setFontSize(14);
-  createRectWithText("Raporty z automatycznej weryfikacji wniosku o przekazanie materiałów archiwalnych", margin/2,margin/2,195,20,doc, COLORS.BASIC);
+  createRectWithText("Raporty z automatycznej weryfikacji wniosku o przekazanie materiałów archiwalnych", margin/2,margin/2,195,12,doc, COLORS.BASIC);
   doc.setFontSize(12);
 
   currentY+=margin+lineHeight*5;
@@ -52,7 +615,7 @@ pdf.autoVerificationReports = function(){
   currentY+=lineHeight*3;
   displayTitleAndDetail("Weryfikator",raport.verifiedBy.firstName+' '+raport.verifiedBy.lastName,lineHeight,sectionSpacing*2,margin,currentY,tFontSize,iFontSize,doc);
   displayTitleAndDetail("Nazwa jednostki",raport.verifiedBy.unitName,lineHeight,sectionSpacing*2,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc);
-  var fetches = [];
+  
 
   currentY+=lineHeight*4;
 
@@ -72,6 +635,7 @@ pdf.autoVerificationReports = function(){
     }
 });
 
+var fetches = [];
     return Promise.all(fetches).then(() => {
         // console.log(content); doc.setFontSize(25);
 
@@ -758,8 +1322,6 @@ pdf.orderDetails = function(){
 
       y = addPageIfContentToLong(y,titleSize+infoSize,doc);
 
-      y+=lineHeight*3;
-      drawCircleWithText(r.id.toString(),margin,y,7,doc);
       y+=lineHeight*3;
 
       displayTitleAndDetail("Osoba odpowiedzialna",r.assignee.firstName+' '+r.assignee.lastName, lineHeight, sectionSpacing, x, y, titleSize, infoSize, doc);
@@ -2081,8 +2643,8 @@ pdf.errorDetails = function () {
 
 
 
-
 //helper functions
+
 function getDateAndTime(dateString){
     function addZero(i) {
         if (i < 10) {
@@ -2097,17 +2659,24 @@ function getDateAndTime(dateString){
 function displayWithLines(string, x, y, lineLength, lineHeight, doc){
     var words = doc.splitTextToSize(string, lineLength);  
     for(var i=0;i<words.length; i++){
+        y = addPageIfContentToLong(y,lineHeight,doc);
+        y == 0 ? y=lineHeight : y = y;
+        
         doc.text(words[i], x, y);
         y+=lineHeight;
     }
     return y;
  }
 
-function displayTitleAndDetail(title, detail, lineHeight, lineLength, x, y, tFontSize, dFontSize, document){
+function displayTitleAndDetail(title, detail, lineHeight, lineLength, x, y, tFontSize, dFontSize, document, replacer){
+    
     document.setFontSize(tFontSize);
     document.text(title, x, y);
     document.setFontSize(dFontSize);
-    return displayWithLines(detail, x, y+lineHeight, lineLength, lineHeight, document);
+    if(detail == ""){
+      doc.text(replacer, x,y+lineHeight);
+    }else
+      return displayWithLines(detail, x, y+lineHeight, lineLength, lineHeight, document);
 }
 
 function checkExistValue(val, replacment){
@@ -2128,6 +2697,14 @@ function createRectWithText(text, x,y,w,h, doc, color){
     doc.setTextColor(0,0,0);
 }
 
+function createSubtitle(text,x,y,fontSize,doc){
+  doc.setFontSize(fontSize*1.7);
+  doc.setFont("Roboto-Bold");
+  doc.text(text,x,y);
+  doc.setFont("roboto");
+  doc.setFontSize(fontSize);
+}
+
 function drawCircleWithText(text,x,y,r,doc,color){
   if(color == null){
     color = COLORS.BASIC;
@@ -2140,16 +2717,17 @@ function drawCircleWithText(text,x,y,r,doc,color){
 }
 function drawHorizontalBorder(x,y,margin,doc,color){
     w = 270-margin*2;
-    h=2;
+    h=0.5;
     if(color == null){
-      color = COLORS.BASIC;
+      color = COLORS.LIGHT;
     }
     doc.setFillColor(color);
     doc.rect(x,y,w,h,'F');
 }
 
 function addPageIfContentToLong(y,contentHeight, doc) {
-    if(y+contentHeight>=210)
+  pageHeight= doc.internal.pageSize.height;
+    if(y+contentHeight>=pageHeight)
         {
             doc.addPage();
             return 0;
@@ -2178,7 +2756,8 @@ const autoVerificationReportsTypeEnum = {
 };
 
 const COLORS = {
-  BASIC: "#2980ba",
-  DARK_GRAY: "3B3D3C",
+  BLUE: "#2980ba",
+  BASIC: "3B3D3C",
+  LIGHT: "#E8E8E8",
   RED: "#db1818"
 }

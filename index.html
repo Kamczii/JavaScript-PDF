@@ -101,6 +101,7 @@
             <li><a href="#errorDetails">Szczegóły errora</a></li>
             <li><a href="#orderDetails">Szczegóły zlecenia</a></li>
             <li><a href="#autoVerificationReports">Autoweryfikacja raportu</a></li>
+            <li><a href="#applicationForQuery">Wniosek o wykonanie kwerendy</a></li>
         </ul>
 
         <button id="download-btn" class="pure-button">Download PDF</button>
@@ -196,6 +197,7 @@
 <script src="examples/examples.js"></script>
 <script src="examples/kamil.js"></script>
 <script src="roboto-normal.js"></script>
+<script src="Roboto-Bold-normal.js"></script>
 <!-- Some scripts to make the examples work nicely -->
 <script>
     window.onhashchange = function () {
@@ -220,7 +222,7 @@
             });
 
             if (shouldDownload) {
-                doc.save('table.pdf');
+                doc.save('primi.pdf');
             } else {
                 //document.getElementById("output").src = doc.output('datauristring');
                 document.getElementById("output").data = doc.output('datauristring');
