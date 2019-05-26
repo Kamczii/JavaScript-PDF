@@ -1,10 +1,1169 @@
 var pdf = {};
 
+pdf.notarialDeedResearch = function(){
+  doc = new jsPDF({orientation: 'landscape'});
+  var json = {
+    "id": 4503,
+    "userIdentifier": "2019/05/24/020661",
+    "createDate": "2019-05-24T14:43:39.89",
+    "createdBy": {
+      "id": 2,
+      "firstName": "Adam",
+      "lastName": "Archiwista",
+      "email": "a@a.pl",
+      "unitId": 2,
+      "effectiveUnitId": 2,
+      "unitName": "NDAP",
+      "login": "1",
+      "fullName": "Adam Archiwista"
+    },
+    "status": {
+      "value": "NEW",
+      "label": "Nowy"
+    },
+    "caseId": "TO JEST ZNAK SPRAWY",
+	"executionDate": "2020-01-01",
+    "assignee": {
+      "id": 2,
+      "firstName": "Adam",
+      "lastName": "Archiwista",
+      "email": "a@a.pl",
+      "unitId": 2,
+      "effectiveUnitId": 2,
+      "unitName": "NDAP",
+      "login": "1",
+      "fullName": "Adam Archiwista"
+    },
+    "applicant": {
+      "type": {
+        "value": "PRIVATE_USER",
+        "label": "Użytkownik prywatny"
+      },
+      "postCode": "89-200",
+      "city": "Szubin",
+      "street": "K, 22",
+      "streetNumber": "22",
+      "flatNumber": "K",
+      "firstName": "Bartosz",
+      "lastName": "Kubacki",
+      "email": "bartosz.kubacki@primigenius.pl",
+      "phone": "789789456"
+    },
+    "stateArchive": {
+      "id": 2,
+      "name": "AP Gliwice"
+    },
+    "queryType": {
+      "value": "CONFIRMATION_OF_REGISTRATION",
+      "label": "Potwierdzenie zameldowania"
+    },
+    "queryPurpose": {
+      "value": "INHERITANCE",
+      "label": "Spadkowy"
+    },
+    "issuingType": {
+      "value": "DIGITAL_COPY",
+      "label": "Kopia cyfrowa"
+    },
+    "legalRule": {
+      "value": "praca naukowa"
+    },
+    "subsititation": "ala ma kota",
+    "attachments": [
+      {
+        "fileName": "S3+eyJpZCI6NDUwMywiYXR0SWQiOjI4MDQsIm9yaWdpbmFsRmlsZU5hbWUiOiJwb2RwaXNfanMueG1sIn0=",
+        "originalFileName": "podpis_js.xml"
+      }
+    ],
+    "order": {
+      "notarialDeedResearch": {
+        "notarialDeedList": [
+          {
+            "notaryFirstName": "Bartosz",
+            "notaryLastName": "Kubacki",
+            "repositoryNumber": "789456",
+            "place": "Szubin",
+            "createDate": "2019-05-07"
+          }
+        ],
+        "notarialDeedSideList": [
+          {
+            "firstName": "Janusz",
+            "lastName":"Januszowy",
+            "role": {
+              "value": "BUYER",
+              "label": "kupujący"
+            },
+            "kinship": {
+              "id": 16,
+              "value": "rodzic"
+            }
+          }
+        ],
+        "subject": "dom",
+        "customInfo": "ala ma kota"
+      }
+    }
+  };
 
+  replacer = "-";
+
+  
+  margin = 15;
+  sectionSpacing = (doc.internal.pageSize.getWidth()-margin*2)/4;
+  lineHeight = 5;
+  currentY = 0;
+
+  dFontSize=9;
+  tFontSize = dFontSize;
+  iFontSize = dFontSize*1.3;
+  
+  function displayOrder() {
+    
+    currentY = addPageIfContentToLong(currentY,30,doc);
+      if(currentY == 0)
+        currentY = margin;
+    createSubtitle("Przedmiot zamówienia",margin,currentY,dFontSize,doc);
+    currentY+=lineHeight*1.5;
+
+    var list1 = json.order.notarialDeedResearch.notarialDeedList;
+    var list2 = json.order.notarialDeedResearch.notarialDeedSideList;
+
+    for(e in list1){
+      currentY = addPageIfContentToLong(currentY,20,doc);
+      if(currentY == 0)
+        currentY = margin;
+      s = list1[e];
+      createSubtitle("Akt notarialny",margin,currentY,dFontSize*0.9,doc);
+      currentY+=lineHeight;
+      displayTitleAndDetail("Imię notariusza", s.notaryFirstName, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      displayTitleAndDetail("Nazwisko notariusza", s.notaryLastName, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
+      displayTitleAndDetail("Numer repozytorium", s.repositoryNumber, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+      currentY+=lineHeight*2;
+      displayTitleAndDetail("Miejsowość sporządzenia aktu", s.place, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      displayTitleAndDetail("Data sporządzenia", getDateAndFormat(s.createDate), lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+      currentY+=lineHeight*2;
+    }
+    currentY+=lineHeight;
+
+    for(e in list2){
+      currentY = addPageIfContentToLong(currentY,20,doc);
+      if(currentY == 0)
+        currentY = margin;
+      s = list2[e];
+      createSubtitle("Strona aktu",margin,currentY,dFontSize*0.9,doc);
+      currentY+=lineHeight;
+      displayTitleAndDetail("Imię", s.firstName, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      displayTitleAndDetail("Nazwisko", s.lastName, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
+      displayTitleAndDetail("Rola", s.role.label, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+      currentY+=lineHeight*2;
+      displayTitleAndDetail("Stopień pokrewieństwa", s.kinship.value, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      currentY+=lineHeight*2;
+    }
+    currentY+=lineHeight;
+    currentY=displayTitleAndDetail("Przedmiot umowy (aktu)", json.order.notarialDeedResearch.subject, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+    currentY+=lineHeight;
+    currentY=displayTitleAndDetail("Informacje dodatkowe", json.order.notarialDeedResearch.customInfo, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+    currentY+=lineHeight;
+  }
+
+  doc.setFont('roboto');
+  var t0 = performance.now();
+
+  
+  doc.setFontSize(24);
+  doc.text("Wniosek o wykonanie kwerendy ID: "+json.userIdentifier,margin,margin);
+  doc.setFontSize(dFontSize);
+  currentY = margin*1.5;
+  
+  generateQueryHeader(json,doc,margin,currentY,dFontSize,lineHeight,sectionSpacing);
+
+  currentY = Math.max(currentY,doc.autoTable.previous.finalY);
+  currentY+=lineHeight*2;
+  drawHorizontalBorder(margin,currentY,margin,doc);
+  currentY+=lineHeight*2;
+  createSubtitle("Sposób wydania aktu",margin,currentY,dFontSize,doc);
+  currentY+=lineHeight;
+  doc.text(json.issuingType.label,margin,currentY);
+  currentY+=lineHeight*1.5;
+  drawHorizontalBorder(margin,currentY,margin,doc);
+  currentY+=lineHeight*2;
+  displayOrder();
+
+  drawHorizontalBorder(margin,currentY,margin,doc);
+  currentY+=lineHeight*2;
+  
+
+  generateHistoryTable(history,doc);
+
+  
+
+  var fetches = [];
+
+  return Promise.all(fetches).then(() => {
+    
+    var t1 = performance.now();
+
+    console.log("Finished in " + (t1 - t0) + " milliseconds.")
+    return doc;
+  });
+}
+
+pdf.propSearch = function(){
+  doc = new jsPDF({orientation: 'landscape'});
+  var json = {
+    "id": 4503,
+    "userIdentifier": "2019/05/24/020661",
+    "createDate": "2019-05-24T14:43:39.89",
+    "createdBy": {
+      "id": 2,
+      "firstName": "Adam",
+      "lastName": "Archiwista",
+      "email": "a@a.pl",
+      "unitId": 2,
+      "effectiveUnitId": 2,
+      "unitName": "NDAP",
+      "login": "1",
+      "fullName": "Adam Archiwista"
+    },
+    "status": {
+      "value": "NEW",
+      "label": "Nowy"
+    },
+    "caseId": "TO JEST ZNAK SPRAWY",
+	"executionDate": "2020-01-01",
+    "assignee": {
+      "id": 2,
+      "firstName": "Adam",
+      "lastName": "Archiwista",
+      "email": "a@a.pl",
+      "unitId": 2,
+      "effectiveUnitId": 2,
+      "unitName": "NDAP",
+      "login": "1",
+      "fullName": "Adam Archiwista"
+    },
+    "applicant": {
+      "type": {
+        "value": "PRIVATE_USER",
+        "label": "Użytkownik prywatny"
+      },
+      "postCode": "89-200",
+      "city": "Szubin",
+      "street": "K, 22",
+      "streetNumber": "22",
+      "flatNumber": "K",
+      "firstName": "Bartosz",
+      "lastName": "Kubacki",
+      "email": "bartosz.kubacki@primigenius.pl",
+      "phone": "789789456"
+    },
+    "stateArchive": {
+      "id": 2,
+      "name": "AP Gliwice"
+    },
+    "queryType": {
+      "value": "CONFIRMATION_OF_REGISTRATION",
+      "label": "Potwierdzenie zameldowania"
+    },
+    "queryPurpose": {
+      "value": "INHERITANCE",
+      "label": "Spadkowy"
+    },
+    "issuingType": {
+      "value": "DIGITAL_COPY",
+      "label": "Kopia cyfrowa"
+    },
+    "legalRule": {
+      "value": "praca naukowa"
+    },
+    "subsititation": "ala ma kota",
+    "attachments": [
+      {
+        "fileName": "S3+eyJpZCI6NDUwMywiYXR0SWQiOjI4MDQsIm9yaWdpbmFsRmlsZU5hbWUiOiJwb2RwaXNfanMueG1sIn0=",
+        "originalFileName": "podpis_js.xml"
+      }
+    ],
+    "order": {
+      "propertyResearch": {
+        "propertyOwnerList": [
+          {
+            "firstName": "Bartosz",
+            "lastName": "Kubacki",
+            "fatherName": "Bolesław",
+            "bornDate": "2019-05-06",
+            "kinship": {
+              "id": 16,
+              "value": "rodzic"
+            }
+          }
+        ],
+        "propertyList": [
+          {
+            "place": "Szubin",
+            "community": "Aleksandrów",
+            "county": "brzeziński",
+            "propertyNumber": "123321234",
+            "purchaseContext": {
+              "id": 23,
+              "value": "sprzedaż"
+            },
+            "purchaseYear": 4545,
+            "sellContext": {
+              "id": 20,
+              "value": "likwidacja serwitutów"
+            },
+            "sellYear": 8787
+          }
+        ]
+      }
+    }
+  };
+
+  replacer = "-";
+
+  
+  margin = 15;
+  sectionSpacing = (doc.internal.pageSize.getWidth()-margin*2)/4;
+  lineHeight = 5;
+  currentY = 0;
+
+  dFontSize=9;
+  tFontSize = dFontSize;
+  iFontSize = dFontSize*1.3;
+  
+  function displayOrder() {
+    
+    currentY = addPageIfContentToLong(currentY,30,doc);
+      if(currentY == 0)
+        currentY = margin;
+    createSubtitle("Przedmiot zamówienia",margin,currentY,dFontSize,doc);
+    currentY+=lineHeight*1.5;
+
+    var list1 = json.order.propertyResearch.propertyOwnerList;
+    var list2 = json.order.propertyResearch.propertyList;
+
+    for(e in list1){
+      currentY = addPageIfContentToLong(currentY,20,doc);
+      if(currentY == 0)
+        currentY = margin;
+      s = list1[e];
+      createSubtitle("Właściciel/współwłaściciel nieruchomości",margin,currentY,dFontSize*0.9,doc);
+      currentY+=lineHeight;
+      displayTitleAndDetail("Imię", s.firstName, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      displayTitleAndDetail("Nazwisko", s.lastName, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
+      displayTitleAndDetail("Imię ojca", s.fatherName, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+      displayTitleAndDetail("Data urodzenia", getDateAndFormat(s.bornDate), lineHeight, sectionSpacing,margin+sectionSpacing*3,currentY,tFontSize,iFontSize,doc,replacer);
+      currentY+=lineHeight*2;
+      displayTitleAndDetail("Stopień pokrewieństwa dla wnioskodawcy", s.kinship.value, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      currentY+=lineHeight*2;
+    }
+    currentY+=lineHeight;
+
+    for(e in list2){
+      currentY = addPageIfContentToLong(currentY,20,doc);
+      if(currentY == 0)
+        currentY = margin;
+      s = list2[e];
+      createSubtitle("Określenie nieruchomości",margin,currentY,dFontSize*0.9,doc);
+      currentY+=lineHeight;
+      displayTitleAndDetail("Miejscowość", s.place, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      displayTitleAndDetail("Gmina", s.community, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
+      displayTitleAndDetail("Powiat", s.county, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+      currentY+=lineHeight*2;
+      displayTitleAndDetail("Numer hipoteczny nieruchomości lub księgi wieczystej", s.propertyNumber, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      currentY+=lineHeight*2;
+      displayTitleAndDetail("Okoliczności nabycia nieruchomości", s.purchaseContext.value, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      displayTitleAndDetail("Rok nabycia", s.purchaseYear.toString(), lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+      currentY+=lineHeight*2;
+      displayTitleAndDetail("Okoliczności zbycia nieruchomości", s.sellContext.value, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      displayTitleAndDetail("Rok zbycia", s.sellYear.toString(), lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+      currentY+=lineHeight*2;
+    }
+  }
+
+  doc.setFont('roboto');
+  var t0 = performance.now();
+
+  
+  doc.setFontSize(24);
+  doc.text("Wniosek o wykonanie kwerendy ID: "+json.userIdentifier,margin,margin);
+  doc.setFontSize(dFontSize);
+  currentY = margin*1.5;
+  
+  generateQueryHeader(json,doc,margin,currentY,dFontSize,lineHeight,sectionSpacing);
+
+  currentY = Math.max(currentY,doc.autoTable.previous.finalY);
+  currentY+=lineHeight*2;
+  drawHorizontalBorder(margin,currentY,margin,doc);
+  currentY+=lineHeight*2;
+  createSubtitle("Sposób wydania aktu",margin,currentY,dFontSize,doc);
+  currentY+=lineHeight;
+  doc.text(json.issuingType.label,margin,currentY);
+  currentY+=lineHeight*1.5;
+  drawHorizontalBorder(margin,currentY,margin,doc);
+  currentY+=lineHeight*2;
+  displayOrder();
+
+  drawHorizontalBorder(margin,currentY,margin,doc);
+  currentY+=lineHeight*2;
+  
+
+  generateHistoryTable(history,doc);
+
+  
+
+  var fetches = [];
+
+  return Promise.all(fetches).then(() => {
+    
+    var t1 = performance.now();
+
+    console.log("Finished in " + (t1 - t0) + " milliseconds.")
+    return doc;
+  });
+}
+
+pdf.citizenshipConfirmation = function(){
+  doc = new jsPDF({orientation: 'landscape'});
+  var json = {
+    "id": 4503,
+    "userIdentifier": "2019/05/24/020661",
+    "createDate": "2019-05-24T14:43:39.89",
+    "createdBy": {
+      "id": 2,
+      "firstName": "Adam",
+      "lastName": "Archiwista",
+      "email": "a@a.pl",
+      "unitId": 2,
+      "effectiveUnitId": 2,
+      "unitName": "NDAP",
+      "login": "1",
+      "fullName": "Adam Archiwista"
+    },
+    "status": {
+      "value": "NEW",
+      "label": "Nowy"
+    },
+    "caseId": "TO JEST ZNAK SPRAWY",
+	"executionDate": "2020-01-01",
+    "assignee": {
+      "id": 2,
+      "firstName": "Adam",
+      "lastName": "Archiwista",
+      "email": "a@a.pl",
+      "unitId": 2,
+      "effectiveUnitId": 2,
+      "unitName": "NDAP",
+      "login": "1",
+      "fullName": "Adam Archiwista"
+    },
+    "applicant": {
+      "type": {
+        "value": "PRIVATE_USER",
+        "label": "Użytkownik prywatny"
+      },
+      "postCode": "89-200",
+      "city": "Szubin",
+      "street": "K, 22",
+      "streetNumber": "22",
+      "flatNumber": "K",
+      "firstName": "Bartosz",
+      "lastName": "Kubacki",
+      "email": "bartosz.kubacki@primigenius.pl",
+      "phone": "789789456"
+    },
+    "stateArchive": {
+      "id": 2,
+      "name": "AP Gliwice"
+    },
+    "queryType": {
+      "value": "CONFIRMATION_OF_REGISTRATION",
+      "label": "Potwierdzenie zameldowania"
+    },
+    "queryPurpose": {
+      "value": "INHERITANCE",
+      "label": "Spadkowy"
+    },
+    "issuingType": {
+      "value": "DIGITAL_COPY",
+      "label": "Kopia cyfrowa"
+    },
+    "legalRule": {
+      "value": "praca naukowa"
+    },
+    "subsititation": "ala ma kota",
+    "attachments": [
+      {
+        "fileName": "S3+eyJpZCI6NDUwMywiYXR0SWQiOjI4MDQsIm9yaWdpbmFsRmlsZU5hbWUiOiJwb2RwaXNfanMueG1sIn0=",
+        "originalFileName": "podpis_js.xml"
+      }
+    ],
+    "order": {
+      "citizenshipConfirmation": {
+        "personList": [
+          {
+            "period": {
+              "from": "2019-05-14",
+              "to": "2019-05-22"
+            },
+            "address": {
+              "place": "Szubin",
+              "community": "Aleksandrów Kujawski",
+              "county": "białobrzeski",
+              "street": "Wiejska",
+              "houseNumber": "45",
+              "flatNumber": "2"
+            },
+            "passportNumber": "pas 1222",
+            "passportIssueDate": "2019-05-28",
+            "leavingCountryInfo": "Polska",
+            "leavingCountryDate": "2019-05-20",
+            "firstName": "Bartosz",
+            "lastName": "Kubacki",
+            "fatherName": "Bolesław",
+            "bornDate": "2019-05-21",
+            "kinship": {
+              "id": 16,
+              "value": "rodzic"
+            }
+          },
+          {
+            "period": {
+              "from": "2019-05-14",
+              "to": "2019-05-22"
+            },
+            "address": {
+              "place": "Szubin",
+              "community": "Aleksandrów Kujawski",
+              "county": "białobrzeski",
+              "street": "Wiejska",
+              "houseNumber": "45",
+              "flatNumber": "2"
+            },
+            "passportNumber": "pas 1222",
+            "passportIssueDate": "2019-05-28",
+            "leavingCountryInfo": "Polska",
+            "leavingCountryDate": "2019-05-20",
+            "firstName": "Bartosz",
+            "lastName": "Kubacki",
+            "fatherName": "Bolesław",
+            "bornDate": "2019-05-21",
+            "kinship": {
+              "id": 16,
+              "value": "rodzic"
+            }
+          }
+        ],
+        "additionalInfo": "to są informacje dodatkowe"
+      }
+    }
+  };
+
+  console.log(doc.internal.pageSize.getWidth(),doc.internal.pageSize.getHeight())
+  replacer = "-";
+
+  
+  margin = 15;
+  sectionSpacing = (doc.internal.pageSize.getWidth()-margin*2)/4;
+  lineHeight = 5;
+  currentY = 0;
+
+  dFontSize=9;
+  tFontSize = dFontSize;
+  iFontSize = dFontSize*1.3;
+  
+  function displayOrder() {
+    
+    currentY = addPageIfContentToLong(currentY,30,doc);
+      if(currentY == 0)
+        currentY = margin;
+    createSubtitle("Przedmiot zamówienia",margin,currentY,dFontSize,doc);
+    currentY+=lineHeight*1.5;
+
+    var list = json.order.citizenshipConfirmation.personList;
+    for(e in list){
+      currentY = addPageIfContentToLong(currentY,40,doc);
+      if(currentY == 0)
+        currentY = margin;
+      s = list[e];
+      createSubtitle("Potwierdzenie obywatelstwa dla",margin,currentY,dFontSize*0.9,doc);
+      currentY+=lineHeight;
+      displayTitleAndDetail("Imię", s.firstName, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      displayTitleAndDetail("Nazwisko", s.lastName, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
+      displayTitleAndDetail("Imię ojca", s.fatherName.toString(), lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+      displayTitleAndDetail("Data urodzenia", getDateAndFormat(s.bornDate), lineHeight, sectionSpacing,margin+sectionSpacing*3,currentY,tFontSize,iFontSize,doc,replacer);
+      currentY+=lineHeight*2;
+      displayTitleAndDetail("Stopień pokrewieństwa dla wnioskodawcy", s.kinship.value, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      currentY+=lineHeight*2;
+      displayTitleAndDetail("Okres zameldowania/zamieszkania", getDateAndFormat(s.period.from)+'-'+getDateAndFormat(s.period.to), lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      currentY+=lineHeight*3;
+      createSubtitle("Miejsce zamieszkania",margin,currentY,dFontSize*0.9,doc);
+      currentY+=lineHeight;
+      displayTitleAndDetail("Miejscowość", s.address.place, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      displayTitleAndDetail("Gmina", s.address.community, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
+      displayTitleAndDetail("Powiat", s.address.county, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+      currentY+=lineHeight*2;
+      displayTitleAndDetail("Ulica", s.address.street, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      displayTitleAndDetail("Numer domu", s.address.houseNumber, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+      displayTitleAndDetail("Numer mieszkania", s.address.flatNumber, lineHeight, sectionSpacing,margin+sectionSpacing*3,currentY,tFontSize,iFontSize,doc,replacer);
+      currentY+=lineHeight*2;
+      displayTitleAndDetail("Numer paszportu", s.passportNumber, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      displayTitleAndDetail("Data wydania paszportu", getDateAndFormat(s.passportIssueDate), lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+      currentY+=lineHeight*2;
+      displayTitleAndDetail("Data wyjazdu z kraju",getDateAndFormat(s.leavingCountryDate), lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+      currentY=displayTitleAndDetail("Okoliczności wyjazdu z kraju", s.leavingCountryInfo, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      drawHorizontalBorder(margin,currentY,margin,doc);
+      currentY+=lineHeight*2;
+    }
+
+    currentY = addPageIfContentToLong(currentY,10,doc);
+      if(currentY == 0)
+        currentY = margin;
+    currentY=displayTitleAndDetail("Informacje dodatkowe",  json.order.citizenshipConfirmation.additionalInfo.repeat(12), lineHeight, sectionSpacing*4,margin,currentY,tFontSize,iFontSize,doc,replacer);
+    currentY+=lineHeight;
+  }
+
+  doc.setFont('roboto');
+  var t0 = performance.now();
+
+  
+  doc.setFontSize(24);
+  doc.text("Wniosek o wykonanie kwerendy ID: "+json.userIdentifier,margin,margin);
+  doc.setFontSize(dFontSize);
+  currentY = margin*1.5;
+  
+  generateQueryHeader(json,doc,margin,currentY,dFontSize,lineHeight,sectionSpacing);
+
+  currentY = Math.max(currentY,doc.autoTable.previous.finalY);
+  currentY+=lineHeight*2;
+  drawHorizontalBorder(margin,currentY,margin,doc);
+  currentY+=lineHeight*2;
+  createSubtitle("Sposób wydania aktu",margin,currentY,dFontSize,doc);
+  currentY+=lineHeight;
+  doc.text(json.issuingType.label,margin,currentY);
+  currentY+=lineHeight*1.5;
+  drawHorizontalBorder(margin,currentY,margin,doc);
+  currentY+=lineHeight*2;
+  displayOrder();
+
+  drawHorizontalBorder(margin,currentY,margin,doc);
+  currentY+=lineHeight*2;
+  
+
+  generateHistoryTable(history,doc);
+
+  
+
+  var fetches = [];
+
+  return Promise.all(fetches).then(() => {
+    
+    var t1 = performance.now();
+
+    console.log("Finished in " + (t1 - t0) + " milliseconds.")
+    return doc;
+  });
+}
+
+pdf.regConfirmation = function(){
+  doc = new jsPDF({orientation: 'landscape'});
+  var json = {
+    "id": 4503,
+    "userIdentifier": "2019/05/24/020661",
+    "createDate": "2019-05-24T14:43:39.89",
+    "createdBy": {
+      "id": 2,
+      "firstName": "Adam",
+      "lastName": "Archiwista",
+      "email": "a@a.pl",
+      "unitId": 2,
+      "effectiveUnitId": 2,
+      "unitName": "NDAP",
+      "login": "1",
+      "fullName": "Adam Archiwista"
+    },
+    "status": {
+      "value": "NEW",
+      "label": "Nowy"
+    },
+    "caseId": "TO JEST ZNAK SPRAWY",
+	"executionDate": "2020-01-01",
+    "assignee": {
+      "id": 2,
+      "firstName": "Adam",
+      "lastName": "Archiwista",
+      "email": "a@a.pl",
+      "unitId": 2,
+      "effectiveUnitId": 2,
+      "unitName": "NDAP",
+      "login": "1",
+      "fullName": "Adam Archiwista"
+    },
+    "applicant": {
+      "type": {
+        "value": "PRIVATE_USER",
+        "label": "Użytkownik prywatny"
+      },
+      "postCode": "89-200",
+      "city": "Szubin",
+      "street": "K, 22",
+      "streetNumber": "22",
+      "flatNumber": "K",
+      "firstName": "Bartosz",
+      "lastName": "Kubacki",
+      "email": "bartosz.kubacki@primigenius.pl",
+      "phone": "789789456"
+    },
+    "stateArchive": {
+      "id": 2,
+      "name": "AP Gliwice"
+    },
+    "queryType": {
+      "value": "CONFIRMATION_OF_REGISTRATION",
+      "label": "Potwierdzenie zameldowania"
+    },
+    "queryPurpose": {
+      "value": "INHERITANCE",
+      "label": "Spadkowy"
+    },
+    "issuingType": {
+      "value": "AUTHENTICATED_COPY",
+      "label": "uwierzytelniona kopia (odbiór w archiwum)"
+    },
+    "legalRule": {
+      "value": "praca naukowa"
+    },
+    "subsititation": "ala ma kota",
+    "attachments": [
+      {
+        "fileName": "S3+eyJpZCI6NDUwMywiYXR0SWQiOjI4MDQsIm9yaWdpbmFsRmlsZU5hbWUiOiJwb2RwaXNfanMueG1sIn0=",
+        "originalFileName": "podpis_js.xml"
+      }
+    ],
+    "order": {
+      "registrationConfirmation": {
+        "registrationConfirmationList": [
+          {
+            "firstName": "Bartosz",
+            "lastName": "Kubacki",
+            "fatherName": "Bolesław",
+            "bornDate": "2019-05-22",
+            "place": "Szubin",
+            "community": "Aleksandrów Łódzki",
+            "county": "białobrzeski",
+            "street": "Wawelska",
+            "houseNumber": "45",
+            "flatNumber": "K",
+            "faith": "takie tam",
+            "parish": "Szubin",
+            "other": "bla bla bla ",
+            "kinship": {
+              "id": 16,
+              "value": "rodzic"
+            }
+          },
+          {
+            "firstName": "Bartosz",
+            "lastName": "Kubacki",
+            "fatherName": "Bolesław",
+            "bornDate": "2019-05-22",
+            "place": "Szubin",
+            "community": "Aleksandrów Łódzki",
+            "county": "białobrzeski",
+            "street": "Wawelska",
+            "houseNumber": "45",
+            "flatNumber": "K",
+            "faith": "takie tam",
+            "parish": "Szubin",
+            "other": "bla bla bla ",
+            "kinship": {
+              "id": 16,
+              "value": "rodzic"
+            }
+          },
+          {
+            "firstName": "Bartosz",
+            "lastName": "Kubacki",
+            "fatherName": "Bolesław",
+            "bornDate": "2019-05-22",
+            "place": "Szubin",
+            "community": "Aleksandrów Łódzki",
+            "county": "białobrzeski",
+            "street": "Wawelska",
+            "houseNumber": "45",
+            "flatNumber": "K",
+            "faith": "takie tam",
+            "parish": "Szubin",
+            "other": "bla bla bla ",
+            "kinship": {
+              "id": 16,
+              "value": "rodzic"
+            }
+          },
+          {
+            "firstName": "Bartosz",
+            "lastName": "Kubacki",
+            "fatherName": "Bolesław",
+            "bornDate": "2019-05-22",
+            "place": "Szubin",
+            "community": "Aleksandrów Łódzki",
+            "county": "białobrzeski",
+            "street": "Wawelska",
+            "houseNumber": "45",
+            "flatNumber": "K",
+            "faith": "takie tam",
+            "parish": "Szubin",
+            "other": "bla bla bla ",
+            "kinship": {
+              "id": 16,
+              "value": "rodzic"
+            }
+          },
+          {
+            "firstName": "Bartosz",
+            "lastName": "Kubacki",
+            "fatherName": "Bolesław",
+            "bornDate": "2019-05-22",
+            "place": "Szubin",
+            "community": "Aleksandrów Łódzki",
+            "county": "białobrzeski",
+            "street": "Wawelska",
+            "houseNumber": "45",
+            "flatNumber": "K",
+            "faith": "takie tam",
+            "parish": "Szubin",
+            "other": "bla bla bla ",
+            "kinship": {
+              "id": 16,
+              "value": "rodzic"
+            }
+          }
+        ]
+      }
+    }
+  };
+
+  
+  replacer = "-";
+
+  sectionSpacing = 60;
+  margin = 15;
+  lineHeight = 5;
+  currentY = 0;
+
+  dFontSize=9;
+  tFontSize = dFontSize;
+  iFontSize = dFontSize*1.3;
+  
+  function displayRegistry(){
+    currentY = addPageIfContentToLong(currentY,30,doc);
+      if(currentY == 0)
+        currentY = margin;
+    createSubtitle("Przedmiot zamówienia",margin,currentY,dFontSize,doc);
+    currentY+=lineHeight*1.5;
+
+      var list = json.order.registrationConfirmation.registrationConfirmationList;
+      for(e in list){
+        currentY = addPageIfContentToLong(currentY,40,doc);
+        if(currentY == 0)
+          currentY = margin;
+        s = list[e];
+        createSubtitle("Potwierdzenie",margin,currentY,dFontSize*0.9,doc);
+        currentY+=lineHeight;
+        displayTitleAndDetail("Imię", s.firstName, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        displayTitleAndDetail("Nazwisko", s.lastName, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
+        displayTitleAndDetail("Imię ojca", s.fatherName.toString(), lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+        displayTitleAndDetail("Data urodzenia", getDateAndFormat(s.bornDate), lineHeight, sectionSpacing,margin+sectionSpacing*3,currentY,tFontSize,iFontSize,doc,replacer);
+        currentY+=lineHeight*2;
+        displayTitleAndDetail("Miejscowość", s.place, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        displayTitleAndDetail("Gmina", s.community, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
+        displayTitleAndDetail("Powiat", s.county, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+        currentY+=lineHeight*2;
+        displayTitleAndDetail("Ulica", s.street, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        displayTitleAndDetail("Numer domu", s.houseNumber, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+        displayTitleAndDetail("Numer mieszkania", s.flatNumber, lineHeight, sectionSpacing,margin+sectionSpacing*3,currentY,tFontSize,iFontSize,doc,replacer);
+        currentY+=lineHeight*2;
+        displayTitleAndDetail("Wyznanie", s.faith, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        displayTitleAndDetail("Parafia", s.parish, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+        currentY+=lineHeight*2;
+        currentY=displayTitleAndDetail("Informacje dot. pochodzenia, zawodu etc.", s.other, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        
+        currentY=displayTitleAndDetail("Stopień pokrewieństwa dla wnioskodawcy", s.kinship.value, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        drawHorizontalBorder(margin,currentY,margin,doc);
+        currentY+=lineHeight*2;
+      }
+  }
+
+  doc.setFont('roboto');
+  var t0 = performance.now();
+
+  
+  doc.setFontSize(24);
+  doc.text("Wniosek o wykonanie kwerendy ID: "+json.userIdentifier,margin,margin);
+  doc.setFontSize(dFontSize);
+  currentY = margin*1.5;
+  
+  generateQueryHeader(json,doc,margin,currentY,dFontSize,lineHeight,sectionSpacing);
+
+  currentY = Math.max(currentY,doc.autoTable.previous.finalY);
+  currentY+=lineHeight*2;
+  drawHorizontalBorder(margin,currentY,margin,doc);
+  currentY+=lineHeight*2;
+  createSubtitle("Sposób wydania aktu",margin,currentY,dFontSize,doc);
+  currentY+=lineHeight;
+  doc.text(json.issuingType.label,margin,currentY);
+  currentY+=lineHeight*1.5;
+  drawHorizontalBorder(margin,currentY,margin,doc);
+  currentY+=lineHeight*2;
+  displayRegistry();
+  
+  generateHistoryTable(history,doc);
+
+  
+
+  var fetches = [];
+
+  return Promise.all(fetches).then(() => {
+    
+    var t1 = performance.now();
+
+    console.log("Finished in " + (t1 - t0) + " milliseconds.")
+    return doc;
+  });
+}
+
+pdf.civilRegistry = function(){
+  doc = new jsPDF({orientation: 'landscape'});
+  var json = {
+    "id": 4502,
+    "userIdentifier": "2019/05/24/097281",
+    "createDate": "2019-05-24T14:37:08.939",
+    "executionDate": "2020-01-01",
+    "caseId": "TO JEST ZNAK SPRAWY",
+    "assignee": {
+      "id": 2,
+      "firstName": "Adam",
+      "lastName": "Archiwista",
+      "email": "a@a.pl",
+      "unitId": 2,
+      "effectiveUnitId": 2,
+      "unitName": "NDAP",
+      "login": "1",
+      "fullName": "Adam Archiwista"
+    },
+    "createdBy": {
+      "id": 2,
+      "firstName": "Adam",
+      "lastName": "Archiwista",
+      "email": "a@a.pl",
+      "unitId": 2,
+      "effectiveUnitId": 2,
+      "unitName": "NDAP",
+      "login": "1",
+      "fullName": "Adam Archiwista"
+    },
+    "status": {
+      "value": "NEW",
+      "label": "Nowy"
+    },
+    "applicant": {
+      "type": {
+        "value": "PRIVATE_USER",
+        "label": "Użytkownik prywatny"
+      },
+      "postCode": "89-200",
+      "city": "Szubin",
+      "street": "Wiejska",
+      "streetNumber": "22",
+      "flatNumber": "K",
+      "firstName": "Bartosz",
+      "lastName": "Kubacki",
+      "email": "bartosz.kubacki@primigenius.pl",
+      "phone": "789789456"
+    },
+    "stateArchive": {
+      "id": 2,
+      "name": "AP Gliwice"
+    },
+    "queryType": {
+      "value": "CIVIL_REGISTRY",
+      "label": "W aktach stanu cywilnego"
+    },
+    "queryPurpose": {
+      "value": "COMPENSATION_OF_BUG_RIVER_PROPERTY",
+      "label": "Rekompensata za mienie zabużańskie"
+    },
+    "issuingType": {
+      "value": "DIGITAL_COPY_PRINT",
+      "label": "wydruk kopii cyfrowej (odbiór w archiwum)"
+    },
+    "legalRule": {
+      "value": "pokrewieństwo"
+    },
+    "subsititation": "ala ma kota",
+    "attachments": [
+      {
+        "fileName": "S3+eyJpZCI6NDUwMiwiYXR0SWQiOjI4MDMsIm9yaWdpbmFsRmlsZU5hbWUiOiJCdWxrIEFpcnRpbWUgVHJhbnNmZXIgMTMudHh0In0=",
+        "originalFileName": "Bulk Airtime Transfer 13.txt"
+      }
+    ],
+    "order": {
+      "civilRegistry": {
+        "civilRegistryList": [
+          {
+            "registryType": {
+              "id": 40,
+              "value": "akt urodzenia"
+            },
+            "firstName": "Bartosz",
+            "lastName": "Kubacki",
+            "year": 1599,
+            "number": "1233/4444",
+            "place": "Warszawa",
+            "community": "Szubin",
+            "county": "nakielski",
+            "faith": "jakieś tam",
+            "parish": "Szubin",
+            "kinship": {
+              "id": 16,
+              "value": "rodzic"
+            }
+          },
+          {
+            "registryType": {
+              "id": 40,
+              "value": "akt urodzenia"
+            },
+            "firstName": "Bartosz",
+            "lastName": "Kubacki",
+            "year": 1599,
+            "number": "1233/4444",
+            "place": "Warszawa",
+            "community": "Szubin",
+            "county": "nakielski",
+            "faith": "jakieś tam",
+            "parish": "Szubin",
+            "kinship": {
+              "id": 16,
+              "value": "rodzic"
+            }
+          },
+          {
+            "registryType": {
+              "id": 40,
+              "value": "akt urodzenia"
+            },
+            "firstName": "Bartosz",
+            "lastName": "Kubacki",
+            "year": 1599,
+            "number": "1233/4444",
+            "place": "Warszawa",
+            "community": "Szubin",
+            "county": "nakielski",
+            "faith": "jakieś tam",
+            "parish": "Szubin",
+            "kinship": {
+              "id": 16,
+              "value": "rodzic"
+            }
+          }
+        ]
+      }
+    }
+  };
+
+  
+  replacer = "-";
+
+  sectionSpacing = 60;
+  margin = 15;
+  lineHeight = 5;
+  currentY = 0;
+
+  dFontSize=9;
+  tFontSize = dFontSize;
+  iFontSize = dFontSize*1.3;
+  
+  function displayRegistry(){
+    currentY = addPageIfContentToLong(currentY,30,doc);
+      if(currentY == 0)
+        currentY = margin;
+    createSubtitle("Przedmiot zamówienia",margin,currentY,dFontSize,doc);
+    currentY+=lineHeight*1.5;
+    createSubtitle("Akt stanu cywilnego",margin,currentY,dFontSize*.9,doc);
+    currentY+=lineHeight*1.5;
+    var list = json.order.civilRegistry.civilRegistryList;
+      for(e in list){
+        currentY = addPageIfContentToLong(currentY,40,doc);
+        if(currentY == 0)
+          currentY = margin;
+        s = list[e];
+        displayTitleAndDetail("Rodzaj akt", s.registryType.value, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        currentY+=lineHeight*2;
+        displayTitleAndDetail("Imię", s.firstName, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        displayTitleAndDetail("Nazwisko", s.lastName, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
+        displayTitleAndDetail("Rok", s.year.toString(), lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+        displayTitleAndDetail("Numer aktu", s.number, lineHeight, sectionSpacing,margin+sectionSpacing*3,currentY,tFontSize,iFontSize,doc,replacer);
+        currentY+=lineHeight*2;
+        displayTitleAndDetail("Miejsce zdarzenia", s.place, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        displayTitleAndDetail("Gmina", s.community, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
+        displayTitleAndDetail("Powiat", s.county, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+        currentY+=lineHeight*2;
+        displayTitleAndDetail("Wyznanie", s.faith, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        displayTitleAndDetail("Parafia", s.parish, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+        currentY+=lineHeight*2;
+        displayTitleAndDetail("Stopień pokrewieństwa", s.kinship.value, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        currentY+=lineHeight*3;
+        createSubtitle("Zakres przedmiotowy poszukiwań",margin,currentY,dFontSize*0.9,doc);
+        currentY+=lineHeight;
+        currentY=displayTitleAndDetail("Fakty i zdarzenia, których mają dotyczyć poszukiwania", "Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. ", lineHeight, sectionSpacing*4,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        drawHorizontalBorder(margin,currentY,margin,doc);
+        currentY+=lineHeight*2;
+      }
+  }
+
+  doc.setFont('roboto');
+  var t0 = performance.now();
+
+  
+  doc.setFontSize(24);
+  doc.text("Wniosek o wykonanie kwerendy ID: "+json.userIdentifier,margin,margin);
+  doc.setFontSize(dFontSize);
+  currentY = margin*1.5;
+  
+  generateQueryHeader(json,doc,margin,currentY,dFontSize,lineHeight,sectionSpacing);
+
+  currentY = Math.max(currentY,doc.autoTable.previous.finalY);
+  currentY+=lineHeight*2;
+  drawHorizontalBorder(margin,currentY,margin,doc);
+  currentY+=lineHeight*2;
+  createSubtitle("Sposób wydania aktu",margin,currentY,dFontSize,doc);
+  currentY+=lineHeight;
+  doc.text(json.issuingType.label,margin,currentY);
+  currentY+=lineHeight*1.5;
+  drawHorizontalBorder(margin,currentY,margin,doc);
+  currentY+=lineHeight*2;
+  displayRegistry();
+  
+  generateHistoryTable(history,doc);
+
+  
+
+  var fetches = [];
+
+  return Promise.all(fetches).then(() => {
+    
+    var t1 = performance.now();
+
+    console.log("Finished in " + (t1 - t0) + " milliseconds.")
+    return doc;
+  });
+}
 
 pdf.applicationForQuery = function(){
   doc = new jsPDF({orientation: 'landscape'});
-  var json = {
+  var json1 = {
     "id": 4501,
     "userIdentifier": "2019/05/24/049930",
     "createDate": "2019-05-24T02:12:54.497",
@@ -109,7 +1268,7 @@ pdf.applicationForQuery = function(){
     }
   }
 
-  var json1 = {
+  var json = {
     "id": 4501,
     "userIdentifier": "2019/05/24/049930",
     "createDate": "2019-05-24T02:12:54.497",
@@ -265,98 +1424,7 @@ pdf.applicationForQuery = function(){
     }
   };
 
-  var history = {
-    "content": [
-    {
-    "id": 18,
-    "createDate": "2019-04-15T11:45:16",
-    "userId": 2000,
-    "userLogin": "emailaddressaglobalny1adresplcnadminglobalnyouoddzialtestowyoarchiwumt",
-    "userFirstName": "Admin",
-    "userLastName": "Globalny",
-    "userSystem": "System dla pracownika NDAP",
-    "referenceType": "ERROR",
-    "referenceId": 139,
-    "referenceStatus": "",
-    "eventType": "ERROR_STATUS_CHANGE",
-    "eventTypeText": "Zmiana statusu błędu"
-    },
-    {
-    "id": 17,
-    "createDate": "2019-04-15T11:42:37",
-    "userId": 2000,
-    "userLogin": "emailaddressaglobalny1adresplcnadminglobalnyouoddzialtestowyoarchiwumt",
-    "userFirstName": "Admin",
-    "userLastName": "Globalny",
-    "userSystem": "System dla pracownika NDAP",
-    "referenceType": "ERROR",
-    "referenceId": 139,
-    "referenceStatus": "",
-    "eventType": "ERROR_CREATE",
-    "details": " Komentarz Komentarz Komentarz Komentarz Komentarz Komentarz Komentarz Komentarz Komentarz Komentarz. Komentarz Komentarz Komentarz Komentarz Komentarz Komentarz Komentarz. Komentarz Komentarz Komentarz.",
-    "eventTypeText": "Zgłoszenie błędu"
-    },
-    {
-        "id": 18,
-        "createDate": "2019-04-15T11:45:16",
-        "userId": 2000,
-        "userLogin": "emailaddressaglobalny1adresplcnadminglobalnyouoddzialtestowyoarchiwumt",
-        "userFirstName": "Admin",
-        "userLastName": "Globalny",
-        "userSystem": "System dla pracownika NDAP",
-        "referenceType": "ERROR",
-        "referenceId": 139,
-        "referenceStatus": "",
-        "eventType": "ERROR_STATUS_CHANGE",
-        "eventTypeText": "Zmiana statusu błędu"
-        },
-        {
-        "id": 17,
-        "createDate": "2019-04-15T11:42:37",
-        "userId": 2000,
-        "userLogin": "emailaddressaglobalny1adresplcnadminglobalnyouoddzialtestowyoarchiwumt",
-        "userFirstName": "Admin",
-        "userLastName": "Globalny",
-        "userSystem": "System dla pracownika NDAP",
-        "referenceType": "ERROR",
-        "referenceId": 139,
-        "referenceStatus": "",
-        "eventType": "ERROR_CREATE",
-        "details": "",
-        "eventTypeText": "Zgłoszenie błędu"
-        },
-        {
-            "id": 18,
-            "createDate": "2019-04-15T11:45:16",
-            "userId": 2000,
-            "userLogin": "emailaddressaglobalny1adresplcnadminglobalnyouoddzialtestowyoarchiwumt",
-            "userFirstName": "Admin",
-            "userLastName": "Globalny",
-            "userSystem": "System dla pracownika NDAP",
-            "referenceType": "ERROR",
-            "referenceId": 139,
-            "referenceStatus": "",
-            "eventType": "ERROR_STATUS_CHANGE",
-            "eventTypeText": "Zmiana statusu błędu"
-            },
-            {
-            "id": 17,
-            "createDate": "2019-04-15T11:42:37",
-            "userId": 2000,
-            "userLogin": "emailaddressaglobalny1adresplcnadminglobalnyouoddzialtestowyoarchiwumt",
-            "userFirstName": "Admin",
-            "userLastName": "Globalny",
-            "userSystem": "System dla pracownika NDAP",
-            "referenceType": "ERROR",
-            "referenceId": 139,
-            "referenceStatus": "",
-            "eventType": "ERROR_CREATE",
-            "details": "",
-            "eventTypeText": "Zgłoszenie błędu"
-            }
-    ],
-    "totalElements": 2
-    };
+  
 
   replacer = "-";
 
@@ -368,22 +1436,11 @@ pdf.applicationForQuery = function(){
   dFontSize=9;
   tFontSize = dFontSize;
   iFontSize = dFontSize*1.3;
-  var colHeaders = ['Data modyfikacji', "Autor zmiany", 'Operacja','Komentarz'];
+  
   doc.setFont('roboto');
   var t0 = performance.now();
 
-  function getOriginalFileNames(){
-    files = json.attachments;
-    let arr = new Array();
-    let content = json.attachments;
-    let contentLength = content.length;
-      
-      for(var i=0; i < contentLength ; i++){
-          let con = content[i];
-          arr.push([con.originalFileName]);
-      }
-      return arr;
-  }
+  
 
   function displayResearch(){
     var genealogicalResearch = json.order.genealogicalResearch;
@@ -401,7 +1458,7 @@ pdf.applicationForQuery = function(){
         displayTitleAndDetail("Imię", s.firstName, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
         displayTitleAndDetail("Nazwisko", s.lastName, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
         displayTitleAndDetail("Imię ojca", s.fatherName, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
-        displayTitleAndDetail("Data urodzenia", s.bornDate, lineHeight, sectionSpacing,margin+sectionSpacing*3,currentY,tFontSize,iFontSize,doc,replacer);
+        displayTitleAndDetail("Data urodzenia", getDateAndFormat(s.bornDate), lineHeight, sectionSpacing,margin+sectionSpacing*3,currentY,tFontSize,iFontSize,doc,replacer);
         currentY+=lineHeight*2;
         displayTitleAndDetail("Miejsce zamieszkania", s.residencePlace, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
         displayTitleAndDetail("Gmina", s.community, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
@@ -412,7 +1469,7 @@ pdf.applicationForQuery = function(){
         currentY+=lineHeight*2;
         displayTitleAndDetail("Stopień pokrewieństwa", s.kinship, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
         displayTitleAndDetail("Informacje dot. pochodzenia, zawodu etc.", s.other, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
-        currentY+=lineHeight*3;
+        currentY+=lineHeight*2;
       }
 
       currentY+=lineHeight;
@@ -424,8 +1481,8 @@ pdf.applicationForQuery = function(){
         s = searchPeriodList[e];
         createSubtitle("Okres poszukiwania",margin,currentY,dFontSize*0.9,doc);
         currentY+=lineHeight;
-        displayTitleAndDetail("Daty graniczne", s.from+' - '+s.to , lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
-        currentY+=lineHeight*3;
+        displayTitleAndDetail("Daty graniczne", getDateAndFormat(s.from)+' - '+getDateAndFormat(s.to) , lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        currentY+=lineHeight*2;
       }
 
       currentY+=lineHeight;
@@ -450,74 +1507,16 @@ pdf.applicationForQuery = function(){
       
   }
 
-  function historyToTableData(){
-    let arr = new Array();
-    let content = history.content;
-    let contentLength = content.length;
-    
-    for(var i=0; i < contentLength ; i++){
-        let con = content[i];
-        arr.push([getDateAndTime(con.createDate),con.userFirstName+' '+con.userLastName,con.eventTypeText, con.details])
-    }
-    return arr;
-}
+  
 
-  doc.setFontSize(30);
-  doc.text("Wniosek o wykonanie kwerendy ID: "+json.id,margin,margin);
+  doc.setFontSize(24);
+  doc.text("Wniosek o wykonanie kwerendy ID: "+json.userIdentifier,margin,margin);
   doc.setFontSize(dFontSize);
   currentY = margin*1.5;
-  createRectWithText( "Szczegóły zamówienia", margin, currentY, 40,10,doc,COLORS.DARK_GRAY);
-  currentY+=lineHeight*3.5;
-  createSubtitle("Dane wnioskodawcy",margin,currentY,dFontSize,doc);
-  createSubtitle("Adres zamieszkania",margin+sectionSpacing*2,currentY,dFontSize,doc);
-  currentY+=lineHeight*1.5;
-  displayTitleAndDetail("Typ wnioskodawcy", json.applicant.type.label, lineHeight, sectionSpacing*1.25,margin,currentY,tFontSize,iFontSize,doc,replacer);
-  displayTitleAndDetail("Imię i nazwisko", json.applicant.firstName+' '+json.assignee.lastName, lineHeight, sectionSpacing,margin+sectionSpacing*1.25,currentY,tFontSize,iFontSize,doc,replacer);
-
-  displayTitleAndDetail("Miasto", json.applicant.city, lineHeight, sectionSpacing*0.7,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
-  displayTitleAndDetail("Kod-pocztowy", json.applicant.postCode, lineHeight, sectionSpacing,margin+sectionSpacing*2.7,currentY,tFontSize,iFontSize,doc,replacer);
-  currentY+=lineHeight*2.5;
-  displayTitleAndDetail("E-mail", json.applicant.email, lineHeight, sectionSpacing*1.25,margin,currentY,tFontSize,iFontSize,doc,replacer);
-  displayTitleAndDetail("Telefon", json.applicant.phone, lineHeight, sectionSpacing,margin+sectionSpacing*1.25,currentY,tFontSize,iFontSize,doc,replacer);
 
   
-  displayTitleAndDetail("Ulica", json.applicant.street, lineHeight, sectionSpacing*0.7,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
-  displayTitleAndDetail("Nr. domu", json.applicant.streetNumber, lineHeight, sectionSpacing/2,margin+sectionSpacing*2.7,currentY,tFontSize,iFontSize,doc,replacer);
-  displayTitleAndDetail("Nr. mieszkania", json.applicant.flatNumber, lineHeight, sectionSpacing/2,margin+sectionSpacing*3.2,currentY,tFontSize,iFontSize,doc,replacer);
-
-  currentY+=lineHeight*3;
-  drawHorizontalBorder(margin,currentY,margin,doc);
-  currentY+=lineHeight*2;
-  createSubtitle("Dane kwerendy",margin,currentY,dFontSize,doc);
-
-  currentY+=lineHeight*1.5;
-  displayTitleAndDetail("Archiwum państwowe", json.stateArchive.name, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc);
-  displayTitleAndDetail("Podstawa prawna", json.legalRule.value, lineHeight, sectionSpacing*1.5,margin+sectionSpacing*2.7,currentY,tFontSize,iFontSize,doc);
-
-  currentY+=lineHeight*2.5;
-  displayTitleAndDetail("Rodzaj kwerendy", json.queryType.label, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc);
-  displayTitleAndDetail("Uzasadnienie zamówienia", json.subsititation, lineHeight, sectionSpacing*1.5,margin+sectionSpacing*2.7,currentY,tFontSize,iFontSize,doc);
-  currentY+=lineHeight*3;
-
-  doc.autoTable({
-    startY: currentY-lineHeight,
-    tableWidth: 'wrap',
-    head: [
-        ['Dokumenty']
-    ],
-    body: getOriginalFileNames(),
-    margin: {left:margin+sectionSpacing*2.7},
-    headStyles: {
-      fillColor: COLORS.BASIC
-    },
-    styles: {font: 'roboto',
-            fontSize: tFontSize,
-            halign: 'center'}
-  });
-
-  currentY = displayWithLines("Kwerenda w archiwum państwowym przeprowadzana jest w całym zasobie archiwalnym niezależnie od postaci przechowywanych materiałów archiwalnych.",margin, currentY,sectionSpacing*2.5,lineHeight,doc);
-  currentY+=lineHeight*.5;
-  displayTitleAndDetail("Cel kwerendy", json.queryPurpose.label, lineHeight, sectionSpacing*2.5,margin,currentY,tFontSize,iFontSize,doc);
+  
+  generateQueryHeader(json,doc,margin,currentY,dFontSize,lineHeight,sectionSpacing);
 
   currentY = Math.max(currentY,doc.autoTable.previous.finalY);
   currentY+=lineHeight*2;
@@ -530,33 +1529,13 @@ pdf.applicationForQuery = function(){
 
   drawHorizontalBorder(margin,currentY,margin,doc);
   currentY+=lineHeight*2;
-  currentY = addPageIfContentToLong(currentY,20,doc);
-        if(currentY == 0)
-          currentY = margin;
-  createRectWithText( "Historia", margin, currentY, 40,10,doc,COLORS.DARK_GRAY);
-  currentY+=lineHeight*3.5;
+  
 
-  doc.autoTable({
-    startY: currentY,
-    head: [
-        colHeaders
-    ],
-    margin: {left:margin},
-    headStyles: {
-      fillColor: COLORS.BASIC
-    },
-    columnStyles:{
-        0: {cellWidth: 30},
-        1: {cellWidth: 30},
-        2: {cellWidth: 45},
-        3: {cellWidth: 150},
-      },
-    body: historyToTableData(),
-    styles: {font: 'roboto'}
-});
+  generateHistoryTable(history,doc);
+
+
 
   var fetches = [];
-
 
   return Promise.all(fetches).then(() => {
     
@@ -627,7 +1606,7 @@ pdf.autoVerificationReports = function(){
     margin: {left:margin/2},
     body: [[autoVerificationReportsTypeEnum[raport.results[0].type], raport.results[0].description , (raport.results[0].success) ? 'Powodzenie' : 'Niepowodzenie']],
     styles: {font: 'roboto',halign:'left'},
-    headStyles: {fontStyle: 'roboto'},
+    headStyles: {fontStyle: 'roboto',fillColor: COLORS.BASIC},
     columnStyles: {
       0: {cellWidth: 50},
       1: {cellWidth: 115},
@@ -1352,7 +2331,7 @@ pdf.orderDetails = function(){
               0: {cellWidth: sectionSpacing},
               1: {cellWidth: sectionSpacing}
             },
-          headStyles: {fontStyle: 'roboto'},
+          headStyles: {fontStyle: 'roboto',fillColor: COLORS.BASIC},
       });
 
       table1Y = doc.autoTable.previous.finalY;
@@ -1373,7 +2352,7 @@ pdf.orderDetails = function(){
               0: {cellWidth: sectionSpacing},
               1: {cellWidth: sectionSpacing}
             },
-          headStyles: {fontStyle: 'roboto'},
+          headStyles: {fontStyle: 'roboto',fillColor: COLORS.BASIC},
       });
 
       table2Y = doc.autoTable.previous.finalY;
@@ -1421,7 +2400,7 @@ pdf.orderDetails = function(){
       margin: {left:margin},
       body: [[details.content, attachmentsToString(details.attachments, doc)]],
       styles: {font: 'roboto',halign:'left'},
-      headStyles: {fontStyle: 'roboto'}
+      headStyles: {fontStyle: 'roboto',fillColor: COLORS.BASIC}
   });
 
   EndingY = doc.autoTable.previous.finalY;
@@ -1437,7 +2416,7 @@ pdf.orderDetails = function(){
       margin: {left:margin},
       body: tasksToArray(),
       styles: {font: 'roboto',halign:'left'},
-      headStyles: {fontStyle: 'roboto'}
+      headStyles: {fontStyle: 'roboto',fillColor: COLORS.BASIC}
   });
 
   EndingY = doc.autoTable.previous.finalY;
@@ -1453,7 +2432,7 @@ pdf.orderDetails = function(){
       margin: {left:margin},
       body: historyToArray(),
       styles: {font: 'roboto',halign:'left'},
-      headStyles: {fontStyle: 'roboto'}
+      headStyles: {fontStyle: 'roboto',fillColor: COLORS.BASIC}
   });
 
   EndingY = doc.autoTable.previous.finalY;
@@ -1471,29 +2450,12 @@ pdf.orderDetails = function(){
   var fetches = [];
 
   return Promise.all(fetches).then(() => {
-      // console.log(content); doc.setFontSize(25);
-
-
-      // if(logs.content.length>0){
-      //     // content.map((row) => {
-      //     //     tableBody = verificationRaport1.errors;
-      //     //     console.log(tableBody);
-      //     //     colFields.map((field) => {
-      //     //         tableBody.push(row[field]);
-      //     //     });
-      //     //     table.push(tableBody);
-      //     // });
-          
-      //     //generateTable(EndingY);
-      // }
       
       var t1 = performance.now();
-      // console.log(doc.output('datauristring'));
       console.log("Finished in " + (t1 - t0) + " milliseconds.")
       return doc;
   });
 }
-
 
 pdf.logsList = function () {
     //lista
@@ -2059,7 +3021,7 @@ pdf.logsList = function () {
             ],
             body: logsToArray(),
             styles: {font: 'roboto',halign:'left'},
-            headStyles: {fontStyle: 'roboto'}
+            headStyles: {fontStyle: 'roboto',fillColor: COLORS.BASIC}
         });
     }
     
@@ -2176,7 +3138,7 @@ pdf.autoverificatbasicion = function () {
             ],
             body: errorsToArray(),
             styles: {font: 'roboto',halign:'left'},
-            headStyles: {fontStyle: 'roboto'}
+            headStyles: {fontStyle: 'roboto',fillColor: COLORS.BASIC}
         });
     }
     
@@ -2536,6 +3498,9 @@ pdf.errorDetails = function () {
             head: [
                 colHeaders
             ],
+            headStyles: {
+      fillColor: COLORS.BASIC
+    },
             margin: {left:margin},
             columnStyles:{
                 0: {cellWidth: 30},
@@ -2585,6 +3550,9 @@ pdf.errorDetails = function () {
         head: [
             fileHeaders
         ],
+        headStyles: {
+          fillColor: COLORS.BASIC
+        },
         body: files,
         margin: {left:margin},
         styles: {font: 'roboto',
@@ -2644,16 +3612,230 @@ pdf.errorDetails = function () {
 
 
 //helper functions
+function generateQueryHeader(json,doc,margin,currentY,dFontSize,lineHeight,sectionSpacing){
+  displayTitleAndDetail("Status", json.status.label, lineHeight, sectionSpacing/2,margin,currentY,tFontSize,iFontSize,doc,replacer);
+  displayTitleAndDetail("Data wykonania", getDateAndFormat(json.executionDate), lineHeight, sectionSpacing/2,margin+sectionSpacing/2,currentY,tFontSize,iFontSize,doc,replacer);
+  displayTitleAndDetail("Znak sprawy", json.caseId, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
+  displayTitleAndDetail("Przypisany pracownik", json.assignee.firstName+' '+json.assignee.lastName, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+  displayTitleAndDetail("Data utworzenia", getDateAndFormat(json.createDate), lineHeight, sectionSpacing,margin+sectionSpacing*3,currentY,tFontSize,iFontSize,doc,replacer);
+
+  currentY = margin*2.5;
+  createRectWithText( "Szczegóły zamówienia", margin, currentY, 50,10,doc,COLORS.DARK_GRAY);
+  currentY+=lineHeight*3.5;
+
+  createSubtitle("Dane wnioskodawcy",margin,currentY,dFontSize,doc);
+  createSubtitle("Adres zamieszkania",margin+sectionSpacing*2,currentY,dFontSize,doc);
+  currentY+=lineHeight*1.5;
+  displayTitleAndDetail("Typ wnioskodawcy", json.applicant.type.label, lineHeight, sectionSpacing*1.25,margin,currentY,tFontSize,iFontSize,doc,replacer);
+  displayTitleAndDetail("Imię i nazwisko", json.applicant.firstName+' '+json.applicant.lastName, lineHeight, sectionSpacing,margin+sectionSpacing*1.25,currentY,tFontSize,iFontSize,doc,replacer);
+
+  displayTitleAndDetail("Miasto", json.applicant.city, lineHeight, sectionSpacing*0.7,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+  displayTitleAndDetail("Kod-pocztowy", json.applicant.postCode, lineHeight, sectionSpacing,margin+sectionSpacing*2.7,currentY,tFontSize,iFontSize,doc,replacer);
+  currentY+=lineHeight*2.5;
+  displayTitleAndDetail("E-mail", json.applicant.email, lineHeight, sectionSpacing*1.25,margin,currentY,tFontSize,iFontSize,doc,replacer);
+  displayTitleAndDetail("Telefon", json.applicant.phone, lineHeight, sectionSpacing,margin+sectionSpacing*1.25,currentY,tFontSize,iFontSize,doc,replacer);
+
+  
+  displayTitleAndDetail("Ulica", json.applicant.street, lineHeight, sectionSpacing*0.7,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+  displayTitleAndDetail("Nr. domu", json.applicant.streetNumber, lineHeight, sectionSpacing/2,margin+sectionSpacing*2.7,currentY,tFontSize,iFontSize,doc,replacer);
+  displayTitleAndDetail("Nr. mieszkania", json.applicant.flatNumber, lineHeight, sectionSpacing/2,margin+sectionSpacing*3.2,currentY,tFontSize,iFontSize,doc,replacer);
+
+  currentY+=lineHeight*3;
+  drawHorizontalBorder(margin,currentY,margin,doc);
+  currentY+=lineHeight*2;
+  createSubtitle("Dane kwerendy",margin,currentY,dFontSize,doc);
+
+  currentY+=lineHeight*1.5;
+  displayTitleAndDetail("Archiwum państwowe", json.stateArchive.name, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc);
+  displayTitleAndDetail("Podstawa prawna", json.legalRule.value, lineHeight, sectionSpacing*1.5,margin+sectionSpacing*2.7,currentY,tFontSize,iFontSize,doc);
+
+  currentY+=lineHeight*2.5;
+  displayTitleAndDetail("Rodzaj kwerendy", json.queryType.label, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc);
+  displayTitleAndDetail("Uzasadnienie zamówienia", json.subsititation, lineHeight, sectionSpacing*1.5,margin+sectionSpacing*2.7,currentY,tFontSize,iFontSize,doc);
+  currentY+=lineHeight*3;
+
+  doc.autoTable({
+    startY: currentY-lineHeight,
+    tableWidth: 'wrap',
+    head: [
+        ['Dokumenty']
+    ],
+    body: getOriginalFileNames(),
+    margin: {left:margin+sectionSpacing*2.7},
+    headStyles: {
+      fillColor: COLORS.BASIC
+    },
+    styles: {font: 'roboto',
+            fontSize: tFontSize,
+            halign: 'center'}
+  });
+
+  currentY = displayWithLines("Kwerenda w archiwum państwowym przeprowadzana jest w całym zasobie archiwalnym niezależnie od postaci przechowywanych materiałów archiwalnych.",margin, currentY,sectionSpacing*2.5,lineHeight,doc);
+  currentY+=lineHeight*.5;
+  displayTitleAndDetail("Cel kwerendy", json.queryPurpose.label, lineHeight, sectionSpacing*2.5,margin,currentY,tFontSize,iFontSize,doc);
+
+  function getOriginalFileNames(){
+    files = json.attachments;
+    let arr = new Array();
+    let content = json.attachments;
+    let contentLength = content.length;
+      
+      for(var i=0; i < contentLength ; i++){
+          let con = content[i];
+          arr.push([con.originalFileName]);
+      }
+      return arr;
+  }
+}
+
+function generateHistoryTable(history,doc){
+  var colHeaders = ['Data modyfikacji', "Autor zmiany", 'Operacja','Komentarz'];
+  var history = {
+    "content": [
+    {
+    "id": 18,
+    "createDate": "2019-04-15T11:45:16",
+    "userId": 2000,
+    "userLogin": "emailaddressaglobalny1adresplcnadminglobalnyouoddzialtestowyoarchiwumt",
+    "userFirstName": "Admin",
+    "userLastName": "Globalny",
+    "userSystem": "System dla pracownika NDAP",
+    "referenceType": "ERROR",
+    "referenceId": 139,
+    "referenceStatus": "",
+    "eventType": "ERROR_STATUS_CHANGE",
+    "eventTypeText": "Zmiana statusu błędu"
+    },
+    {
+    "id": 17,
+    "createDate": "2019-04-15T11:42:37",
+    "userId": 2000,
+    "userLogin": "emailaddressaglobalny1adresplcnadminglobalnyouoddzialtestowyoarchiwumt",
+    "userFirstName": "Admin",
+    "userLastName": "Globalny",
+    "userSystem": "System dla pracownika NDAP",
+    "referenceType": "ERROR",
+    "referenceId": 139,
+    "referenceStatus": "",
+    "eventType": "ERROR_CREATE",
+    "details": " Komentarz Komentarz Komentarz Komentarz Komentarz Komentarz Komentarz Komentarz Komentarz Komentarz. Komentarz Komentarz Komentarz Komentarz Komentarz Komentarz Komentarz. Komentarz Komentarz Komentarz.",
+    "eventTypeText": "Zgłoszenie błędu"
+    },
+    {
+        "id": 18,
+        "createDate": "2019-04-15T11:45:16",
+        "userId": 2000,
+        "userLogin": "emailaddressaglobalny1adresplcnadminglobalnyouoddzialtestowyoarchiwumt",
+        "userFirstName": "Admin",
+        "userLastName": "Globalny",
+        "userSystem": "System dla pracownika NDAP",
+        "referenceType": "ERROR",
+        "referenceId": 139,
+        "referenceStatus": "",
+        "eventType": "ERROR_STATUS_CHANGE",
+        "eventTypeText": "Zmiana statusu błędu"
+        },
+        {
+        "id": 17,
+        "createDate": "2019-04-15T11:42:37",
+        "userId": 2000,
+        "userLogin": "emailaddressaglobalny1adresplcnadminglobalnyouoddzialtestowyoarchiwumt",
+        "userFirstName": "Admin",
+        "userLastName": "Globalny",
+        "userSystem": "System dla pracownika NDAP",
+        "referenceType": "ERROR",
+        "referenceId": 139,
+        "referenceStatus": "",
+        "eventType": "ERROR_CREATE",
+        "details": "",
+        "eventTypeText": "Zgłoszenie błędu"
+        },
+        {
+            "id": 18,
+            "createDate": "2019-04-15T11:45:16",
+            "userId": 2000,
+            "userLogin": "emailaddressaglobalny1adresplcnadminglobalnyouoddzialtestowyoarchiwumt",
+            "userFirstName": "Admin",
+            "userLastName": "Globalny",
+            "userSystem": "System dla pracownika NDAP",
+            "referenceType": "ERROR",
+            "referenceId": 139,
+            "referenceStatus": "",
+            "eventType": "ERROR_STATUS_CHANGE",
+            "eventTypeText": "Zmiana statusu błędu"
+            },
+            {
+            "id": 17,
+            "createDate": "2019-04-15T11:42:37",
+            "userId": 2000,
+            "userLogin": "emailaddressaglobalny1adresplcnadminglobalnyouoddzialtestowyoarchiwumt",
+            "userFirstName": "Admin",
+            "userLastName": "Globalny",
+            "userSystem": "System dla pracownika NDAP",
+            "referenceType": "ERROR",
+            "referenceId": 139,
+            "referenceStatus": "",
+            "eventType": "ERROR_CREATE",
+            "details": "",
+            "eventTypeText": "Zgłoszenie błędu"
+            }
+    ],
+    "totalElements": 2
+    };
+    function historyToTableData(){
+      let arr = new Array();
+      let content = history.content;
+      let contentLength = content.length;
+      
+      for(var i=0; i < contentLength ; i++){
+          let con = content[i];
+          arr.push([getDateAndTime(con.createDate),con.userFirstName+' '+con.userLastName,con.eventTypeText, con.details])
+      }
+      return arr;
+  }
+
+  currentY = addPageIfContentToLong(currentY,20,doc);
+        if(currentY == 0)
+          currentY = margin;
+  createRectWithText( "Historia", margin, currentY, 40,10,doc,COLORS.DARK_GRAY);
+  currentY+=lineHeight*3.5;
+
+  doc.autoTable({
+    startY: currentY,
+    head: [
+        colHeaders
+    ],
+    margin: {left:margin},
+    headStyles: {
+      fillColor: COLORS.BASIC
+    },
+    columnStyles:{
+        0: {cellWidth: 30},
+        1: {cellWidth: 30},
+        2: {cellWidth: 45},
+        3: {cellWidth: 150},
+      },
+    body: historyToTableData(),
+    styles: {font: 'roboto'}
+});
+}
+
+
+function addZero(i) {
+  if (i < 10) {
+    i = "0" + i;
+  }
+  return i;
+}
 
 function getDateAndTime(dateString){
-    function addZero(i) {
-        if (i < 10) {
-          i = "0" + i;
-        }
-        return i;
-      }
     let date = new Date(dateString);
-    return addZero(date.getDay())+'/'+addZero(date.getMonth())+'/'+addZero(date.getFullYear())+ ' ' +addZero(date.getHours())+':'+addZero(date.getMinutes());
+    return addZero(date.getDate())+'/'+addZero(date.getMonth()+1)+'/'+addZero(date.getFullYear())+ ' ' +addZero(date.getHours())+':'+addZero(date.getMinutes());
+}
+
+function getDateAndFormat(dateString){
+    let date = new Date(dateString);
+    return addZero(date.getDate())+'/'+addZero(date.getMonth()+1)+'/'+addZero(date.getFullYear());
 }
 
 function displayWithLines(string, x, y, lineLength, lineHeight, doc){
@@ -2666,7 +3848,7 @@ function displayWithLines(string, x, y, lineLength, lineHeight, doc){
         y+=lineHeight;
     }
     return y;
- }
+}
 
 function displayTitleAndDetail(title, detail, lineHeight, lineLength, x, y, tFontSize, dFontSize, document, replacer){
     
@@ -2716,7 +3898,7 @@ function drawCircleWithText(text,x,y,r,doc,color){
   doc.setTextColor(0,0,0);
 }
 function drawHorizontalBorder(x,y,margin,doc,color){
-    w = 270-margin*2;
+    w = doc.internal.pageSize.getWidth()-margin*2;
     h=0.5;
     if(color == null){
       color = COLORS.LIGHT;
