@@ -9,7 +9,7 @@ var tFontSize = dFontSize;
 var iFontSize = dFontSize*1.3;
 var headerFontSize = 24;
 
-pdf.repression = function(){
+pdf.warRepressionAndAfterWar = function(){
   doc = new jsPDF({orientation: 'landscape'});
   
   sectionSpacing = (doc.internal.pageSize.getWidth()-margin*2)/4;
@@ -83,56 +83,6 @@ pdf.repression = function(){
               "id": 16,
               "value": "rodzic"
             }
-          },
-          {
-            "firstName": "Bartosz",
-            "lastName": "Kubacki",
-            "fatherName": "Bolesław",
-            "bornDate": "2019-05-27",
-            "kinship": {
-              "id": 16,
-              "value": "rodzic"
-            }
-          },
-          {
-            "firstName": "Bartosz",
-            "lastName": "Kubacki",
-            "fatherName": "Bolesław",
-            "bornDate": "2019-05-27",
-            "kinship": {
-              "id": 16,
-              "value": "rodzic"
-            }
-          },
-          {
-            "firstName": "Bartosz",
-            "lastName": "Kubacki",
-            "fatherName": "Bolesław",
-            "bornDate": "2019-05-27",
-            "kinship": {
-              "id": 16,
-              "value": "rodzic"
-            }
-          },
-          {
-            "firstName": "Bartosz",
-            "lastName": "Kubacki",
-            "fatherName": "Bolesław",
-            "bornDate": "2019-05-27",
-            "kinship": {
-              "id": 16,
-              "value": "rodzic"
-            }
-          },
-          {
-            "firstName": "Bartosz",
-            "lastName": "Kubacki",
-            "fatherName": "Bolesław",
-            "bornDate": "2019-05-27",
-            "kinship": {
-              "id": 16,
-              "value": "rodzic"
-            }
           }
         ],
         "repressionInfo": {
@@ -140,7 +90,7 @@ pdf.repression = function(){
             "id": 31,
             "value": "wysiedlenie"
           },
-          "customInfo": "aaa aaa aaaaa  aaaa aaa aaa aaa aaaa aaaa aaaa "
+          "customInfo": "aaa"
         },
         "residenceAddressBeforeArrest": {
           "place": "Szubin",
@@ -166,46 +116,6 @@ pdf.repression = function(){
             "street": "qqq",
             "houseNumber": "ww2",
             "flatNumber": "3"
-          },
-          {
-            "place": "Warszawa",
-            "community": "Aleksandrów",
-            "county": "bełchatowski",
-            "street": "qqq",
-            "houseNumber": "ww2",
-            "flatNumber": "3"
-          },
-          {
-            "place": "Warszawa",
-            "community": "Aleksandrów",
-            "county": "bełchatowski",
-            "street": "qqq",
-            "houseNumber": "ww2",
-            "flatNumber": "3"
-          },
-          {
-            "place": "Warszawa",
-            "community": "Aleksandrów",
-            "county": "bełchatowski",
-            "street": "qqq",
-            "houseNumber": "ww2",
-            "flatNumber": "3"
-          },
-          {
-            "place": "Warszawa",
-            "community": "Aleksandrów",
-            "county": "bełchatowski",
-            "street": "qqq",
-            "houseNumber": "ww2",
-            "flatNumber": "3"
-          },
-          {
-            "place": "Warszawa",
-            "community": "Aleksandrów",
-            "county": "bełchatowski",
-            "street": "qqq",
-            "houseNumber": "ww2",
-            "flatNumber": "3"
           }
         ],
         "registrationAddressAfterRelease": {
@@ -224,11 +134,18 @@ pdf.repression = function(){
 
   function displayOrder() {
     currentY = addPageIfContentToLong(currentY,30,doc);
-      
+    
+    if(json.order === undefined) json.order = {};
+    if(json.order.repression === undefined) json.order.repression = {};  
+    if(json.order.repression.repressedPersonList === undefined) json.order.repression.repressedPersonList = [];
+    if(json.order.repression.repressionInfo === undefined) json.order.repression.repressionInfo = {};
+    if(json.order.repression.repressionInfo.repressionType === undefined) json.order.repression.repressionInfo.repressionType = {};
+    if(json.order.repression.residenceAddressBeforeArrest === undefined) json.order.repression.residenceAddressBeforeArrest = {};
+    if(json.order.repression.arrestAddress === undefined) json.order.repression.arrestAddress = {};
+    if(json.order.repression.depositionAddessList === undefined) json.order.repression.depositionAddessList = [];
+    if(json.order.repression.registrationAddressAfterRelease === undefined) json.order.repression.registrationAddressAfterRelease = {};
 
     createSubtitle("Przedmiot zamówienia",margin,currentY,dFontSize,doc);
-    //currentY+=lineHeight*1.5;
-    //titleAndDetail("test", json.test.order, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
     currentY+=lineHeight*1.5;
 
     var list1 = json.order.repression.repressedPersonList;
@@ -242,12 +159,13 @@ pdf.repression = function(){
       createSubtitle("Informacja o osobie represjonowanej",margin,currentY,dFontSize*0.9,doc);
       currentY+=lineHeight;
       currentY = addPageIfContentToLong(currentY,5,doc);
-      titleAndDetail("Imię", s.firstName, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
-      titleAndDetail("Nazwisko", s.lastName, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
-      titleAndDetail("Imię ojca", s.fatherName, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Imię", s.firstName, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Nazwisko", s.lastName, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Imię ojca", s.fatherName, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
       currentY+=lineHeight*2;
       currentY = addPageIfContentToLong(currentY,5,doc);
-      titleAndDetail("Stopień pokrewieństwa wnioskodawcy", s.kinship.value, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      if(s.kinship === undefined) s.kinship = {};
+      titleAndDetailDeprecated("Stopień pokrewieństwa wnioskodawcy", s.kinship.value, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
       currentY+=lineHeight*2;
     }
 
@@ -256,43 +174,43 @@ pdf.repression = function(){
     createSubtitle("Informacja o charakterze represji",margin,currentY,dFontSize*0.9,doc);
     currentY+=lineHeight;
     currentY = addPageIfContentToLong(currentY,10,doc);
-    currentY=titleAndDetail("Charakter represji", repression.repressionInfo.repressionType.value.repeat(10), lineHeight, sectionSpacing*3,margin,currentY,tFontSize,iFontSize,doc,replacer);
+    currentY=titleAndDetailDeprecated("Charakter represji", repression.repressionInfo.repressionType.value, lineHeight, sectionSpacing*3,margin,currentY,tFontSize,iFontSize,doc,replacer);
     currentY = addPageIfContentToLong(currentY,10,doc);
-    currentY=titleAndDetail("Dodatkowe informacje", repression.repressionInfo.customInfo.repeat(10), lineHeight, sectionSpacing*3,margin,currentY,tFontSize,iFontSize,doc,replacer);
+    currentY=titleAndDetailDeprecated("Dodatkowe informacje", repression.repressionInfo.customInfo, lineHeight, sectionSpacing*3,margin,currentY,tFontSize,iFontSize,doc,replacer);
     
     currentY+=lineHeight;
     currentY = addPageIfContentToLong(currentY,10,doc);
     createSubtitle("Adres zamieszkania przed wysiedleniem/aresztowaniem",margin,currentY,dFontSize*0.9,doc);
     currentY+=lineHeight;
     currentY = addPageIfContentToLong(currentY,10,doc);
-    titleAndDetail("Miejscowość", repression.residenceAddressBeforeArrest.place, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
-    titleAndDetail("Gmina", repression.residenceAddressBeforeArrest.community, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
-    titleAndDetail("Powiat", repression.residenceAddressBeforeArrest.county, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+    titleAndDetailDeprecated("Miejscowość", repression.residenceAddressBeforeArrest.place, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+    titleAndDetailDeprecated("Gmina", repression.residenceAddressBeforeArrest.community, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
+    titleAndDetailDeprecated("Powiat", repression.residenceAddressBeforeArrest.county, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
     currentY+=lineHeight*2;
     currentY = addPageIfContentToLong(currentY,10,doc);
-    titleAndDetail("Ulica", repression.residenceAddressBeforeArrest.street, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
-    titleAndDetail("Numer domu", repression.residenceAddressBeforeArrest.houseNumber, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
-    titleAndDetail("Numer mieszkania", repression.residenceAddressBeforeArrest.flatNumber, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+    titleAndDetailDeprecated("Ulica", repression.residenceAddressBeforeArrest.street, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+    titleAndDetailDeprecated("Numer domu", repression.residenceAddressBeforeArrest.houseNumber, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
+    titleAndDetailDeprecated("Numer mieszkania", repression.residenceAddressBeforeArrest.flatNumber, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
     
     currentY+=lineHeight*3;
     currentY = addPageIfContentToLong(currentY,10,doc);
     createSubtitle("Miejsce zatrzymania/aresztowania",margin,currentY,dFontSize*0.9,doc);
     currentY+=lineHeight;
     currentY = addPageIfContentToLong(currentY,10,doc);
-    titleAndDetail("Taki jak adres zamieszkania", "DO NAPrawy", lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+    titleAndDetailDeprecated("Taki jak adres zamieszkania", compareAddresses(repression.arrestAddress,repression.residenceAddressBeforeArrest) ? "TAK" : "NIE", lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
     currentY+=lineHeight*2;
     currentY = addPageIfContentToLong(currentY,10,doc);
-    titleAndDetail("Miejscowość", repression.arrestAddress.place, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
-    titleAndDetail("Gmina", repression.arrestAddress.community, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
-    titleAndDetail("Powiat", repression.arrestAddress.county, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+    titleAndDetailDeprecated("Miejscowość", repression.arrestAddress.place, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+    titleAndDetailDeprecated("Gmina", repression.arrestAddress.community, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
+    titleAndDetailDeprecated("Powiat", repression.arrestAddress.county, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
     currentY+=lineHeight*2;
     currentY = addPageIfContentToLong(currentY,10,doc);
-    titleAndDetail("Ulica", repression.arrestAddress.street, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
-    titleAndDetail("Numer domu", repression.arrestAddress.houseNumber, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
-    titleAndDetail("Numer mieszkania", repression.arrestAddress.flatNumber, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+    titleAndDetailDeprecated("Ulica", repression.arrestAddress.street, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+    titleAndDetailDeprecated("Numer domu", repression.arrestAddress.houseNumber, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
+    titleAndDetailDeprecated("Numer mieszkania", repression.arrestAddress.flatNumber, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
     currentY+=lineHeight*2;
     currentY = addPageIfContentToLong(currentY,10,doc);
-    titleAndDetail("Data zatrzymania/aresztowania", null, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+    titleAndDetailDeprecated("Data zatrzymania/aresztowania", repression.arrestAddress.date, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
     currentY+=lineHeight*2;
 
     for(e in list2){
@@ -301,15 +219,15 @@ pdf.repression = function(){
       createSubtitle("Miejsce osadzenia/wysiedlenia",margin,currentY,dFontSize*0.9,doc);
       currentY+=lineHeight;
       currentY = addPageIfContentToLong(currentY,10,doc);
-      titleAndDetail("Miejscowość", s.place, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
-      titleAndDetail("Gmina", s.community, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
-      titleAndDetail("Powiat", s.county, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Miejscowość", s.place, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Gmina", s.community, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Powiat", s.county, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
       
       currentY+=lineHeight*2;
       currentY = addPageIfContentToLong(currentY,10,doc);
-      titleAndDetail("Ulica", s.street, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
-      titleAndDetail("Numer domu", s.houseNumber, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
-      titleAndDetail("Numer mieszkania", s.flatNumber, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Ulica", s.street, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Numer domu", s.houseNumber, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Numer mieszkania", s.flatNumber, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
       currentY+=lineHeight*2;
     }
 
@@ -318,29 +236,29 @@ pdf.repression = function(){
     createSubtitle("Miejsce zameldowania po uwolnieniu/powrocie do kraju",margin,currentY,dFontSize*0.9,doc);
     currentY+=lineHeight;
     currentY = addPageIfContentToLong(currentY,10,doc);
-    titleAndDetail("Miejscowość", repression.registrationAddressAfterRelease.place, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer),
-    titleAndDetail("Gmina", repression.registrationAddressAfterRelease.community, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer),
-    titleAndDetail("Powiat", repression.registrationAddressAfterRelease.county, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer),
+    titleAndDetailDeprecated("Miejscowość", repression.registrationAddressAfterRelease.place, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer),
+    titleAndDetailDeprecated("Gmina", repression.registrationAddressAfterRelease.community, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer),
+    titleAndDetailDeprecated("Powiat", repression.registrationAddressAfterRelease.county, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer),
     currentY+=lineHeight*2;
     currentY = addPageIfContentToLong(currentY,10,doc);
-    titleAndDetail("Ulica", repression.registrationAddressAfterRelease.street, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer),
-    titleAndDetail("Numer domu", repression.registrationAddressAfterRelease.houseNumber, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer),
-    titleAndDetail("Numer mieszkania", repression.registrationAddressAfterRelease.flatNumber, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer)
+    titleAndDetailDeprecated("Ulica", repression.registrationAddressAfterRelease.street, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer),
+    titleAndDetailDeprecated("Numer domu", repression.registrationAddressAfterRelease.houseNumber, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer),
+    titleAndDetailDeprecated("Numer mieszkania", repression.registrationAddressAfterRelease.flatNumber, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer)
     currentY+=lineHeight*2;
     currentY = addPageIfContentToLong(currentY,10,doc);
-    titleAndDetail("Data uwolnienia/powrotu do kraju", repression.registrationAddressAfterRelease.date, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer)
+    titleAndDetailDeprecated("Data uwolnienia/powrotu do kraju", repression.registrationAddressAfterRelease.date, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer)
   
 
     currentY+=lineHeight*2;
    
     currentY = addPageIfContentToLong(currentY,10,doc);
-    currentY=titleAndDetail("Informacje dodatkowe",repression.customInfo, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+    currentY=titleAndDetailDeprecated("Informacje dodatkowe",repression.customInfo, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
     currentY+=lineHeight;
 
     
   }
 
-  generatePdfHeader("Wniosek o wykonanie kwerendy ID: "+json.userIdentifier,doc);
+  generatePdfHeader("Wniosek o wykonanie kwerendy ID: ",json.userIdentifier,doc);
   currentY = margin*1.5;
 
   currentY = generateQueryHeader(json,doc,currentY,sectionSpacing);
@@ -375,9 +293,9 @@ pdf.notarialDeedResearch = function(){
 
 
   var json = {
-    "id": 4503,
-    "userIdentifier": "2019/05/24/020661",
-    "createDate": "2019-05-24T14:43:39.89",
+    "id": 4601,
+    "userIdentifier": "2019/05/24/063518",
+    "createDate": "2019-05-24T15:17:23.639",
     "createdBy": {
       "id": 2,
       "firstName": "Adam",
@@ -393,19 +311,6 @@ pdf.notarialDeedResearch = function(){
       "value": "NEW",
       "label": "Nowy"
     },
-    "caseId": "TO JEST ZNAK SPRAWY",
-	"executionDate": "2020-01-01",
-    "assignee": {
-      "id": 2,
-      "firstName": "Adam",
-      "lastName": "Archiwista",
-      "email": "a@a.pl",
-      "unitId": 2,
-      "effectiveUnitId": 2,
-      "unitName": "NDAP",
-      "login": "1",
-      "fullName": "Adam Archiwista"
-    },
     "applicant": {
       "type": {
         "value": "PRIVATE_USER",
@@ -413,9 +318,9 @@ pdf.notarialDeedResearch = function(){
       },
       "postCode": "89-200",
       "city": "Szubin",
-      "street": "K, 22",
-      "streetNumber": "22",
-      "flatNumber": "K",
+      "street": "Wiejska",
+      "streetNumber": "887",
+      "flatNumber": "96",
       "firstName": "Bartosz",
       "lastName": "Kubacki",
       "email": "bartosz.kubacki@primigenius.pl",
@@ -426,59 +331,22 @@ pdf.notarialDeedResearch = function(){
       "name": "AP Gliwice"
     },
     "queryType": {
-      "value": "CONFIRMATION_OF_REGISTRATION",
-      "label": "Potwierdzenie zameldowania"
+      "value": "NOTARIAL_DEED_SEARCH",
+      "label": "Poszukiwania aktu notarialnego"
     },
     "queryPurpose": {
-      "value": "INHERITANCE",
-      "label": "Spadkowy"
+      "value": "ESTABLISHMENT_OF_REGISTRY",
+      "label": "Założenie księgi wieczystej"
     },
     "issuingType": {
-      "value": "DIGITAL_COPY",
-      "label": "Kopia cyfrowa"
+      "value": "DIGITAL_COPY_PRINT",
+      "label": "wydruk kopii cyfrowej (odbiór w archiwum)"
     },
     "legalRule": {
-      "value": "praca naukowa"
+      "value": "pokrewieństwo"
     },
-    "subsititation": "ala ma kota",
-    "attachments": [
-      {
-        "fileName": "S3+eyJpZCI6NDUwMywiYXR0SWQiOjI4MDQsIm9yaWdpbmFsRmlsZU5hbWUiOiJwb2RwaXNfanMueG1sIn0=",
-        "originalFileName": "podpis_js.xml"
-      },
-      {
-        "fileName": "S3+eyJpZCI6NDUwMywiYXR0SWQiOjI4MDQsIm9yaWdpbmFsRmlsZU5hbWUiOiJwb2RwaXNfanMueG1sIn0=",
-        "originalFileName": "podpis_js.xml"
-      },
-      {
-        "fileName": "S3+eyJpZCI6NDUwMywiYXR0SWQiOjI4MDQsIm9yaWdpbmFsRmlsZU5hbWUiOiJwb2RwaXNfanMueG1sIn0=",
-        "originalFileName": "podpis_js.xml"
-      },
-      {
-        "fileName": "S3+eyJpZCI6NDUwMywiYXR0SWQiOjI4MDQsIm9yaWdpbmFsRmlsZU5hbWUiOiJwb2RwaXNfanMueG1sIn0=",
-        "originalFileName": "podpis_js.xml"
-      },
-      {
-        "fileName": "S3+eyJpZCI6NDUwMywiYXR0SWQiOjI4MDQsIm9yaWdpbmFsRmlsZU5hbWUiOiJwb2RwaXNfanMueG1sIn0=",
-        "originalFileName": "podpis_js.xml"
-      },
-      {
-        "fileName": "S3+eyJpZCI6NDUwMywiYXR0SWQiOjI4MDQsIm9yaWdpbmFsRmlsZU5hbWUiOiJwb2RwaXNfanMueG1sIn0=",
-        "originalFileName": "podpis_js.xml"
-      },
-      {
-        "fileName": "S3+eyJpZCI6NDUwMywiYXR0SWQiOjI4MDQsIm9yaWdpbmFsRmlsZU5hbWUiOiJwb2RwaXNfanMueG1sIn0=",
-        "originalFileName": "podpis_js.xml"
-      },
-      {
-        "fileName": "S3+eyJpZCI6NDUwMywiYXR0SWQiOjI4MDQsIm9yaWdpbmFsRmlsZU5hbWUiOiJwb2RwaXNfanMueG1sIn0=",
-        "originalFileName": "podpis_js.xml"
-      },
-      {
-        "fileName": "S3+eyJpZCI6NDUwMywiYXR0SWQiOjI4MDQsIm9yaWdpbmFsRmlsZU5hbWUiOiJwb2RwaXNfanMueG1sIn0=",
-        "originalFileName": "podpis_js.xml"
-      }
-    ],
+    "subsititation": "fsdfsdfsdfsdfsdfsd",
+    "attachments": [],
     "order": {
       "notarialDeedResearch": {
         "notarialDeedList": [
@@ -493,7 +361,6 @@ pdf.notarialDeedResearch = function(){
         "notarialDeedSideList": [
           {
             "firstName": "Janusz",
-            "lastName":"Januszowy",
             "role": {
               "value": "BUYER",
               "label": "kupujący"
@@ -511,7 +378,11 @@ pdf.notarialDeedResearch = function(){
   };
   
   function displayOrder() {
-    
+    if(json.order === undefined) json.order = {};
+    if(json.order.notarialDeedResearch === undefined) json.order.notarialDeedResearch = {};
+    if(json.order.notarialDeedResearch.notarialDeedList === undefined) json.order.notarialDeedResearch.notarialDeedList = [];  
+    if(json.order.notarialDeedResearch.notarialDeedSideList === undefined) json.order.notarialDeedResearch.notarialDeedSideList = [];
+
     currentY = addPageIfContentToLong(currentY,30,doc);
     createSubtitle("Przedmiot zamówienia",margin,currentY,dFontSize,doc);
     currentY+=lineHeight*1.5;
@@ -524,12 +395,12 @@ pdf.notarialDeedResearch = function(){
       s = list1[e];
       createSubtitle("Akt notarialny",margin,currentY,dFontSize*0.9,doc);
       currentY+=lineHeight;
-      titleAndDetail("Imię notariusza", s.notaryFirstName, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
-      titleAndDetail("Nazwisko notariusza", s.notaryLastName, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
-      titleAndDetail("Numer repozytorium", s.repositoryNumber, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Imię notariusza", s.notaryFirstName, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Nazwisko notariusza", s.notaryLastName, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Numer repozytorium", s.repositoryNumber, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
       currentY+=lineHeight*2;
-      titleAndDetail("Miejsowość sporządzenia aktu", s.place, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
-      titleAndDetail("Data sporządzenia", getDateAndFormat(s.createDate), lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Miejsowość sporządzenia aktu", s.place, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Data sporządzenia", getDateAndFormat(s.createDate), lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
       currentY+=lineHeight*2;
     }
     currentY+=lineHeight;
@@ -539,24 +410,26 @@ pdf.notarialDeedResearch = function(){
       s = list2[e];
       createSubtitle("Strona aktu",margin,currentY,dFontSize*0.9,doc);
       currentY+=lineHeight;
-      titleAndDetail("Imię", s.firstName, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
-      titleAndDetail("Nazwisko", s.lastName, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
-      titleAndDetail("Rola", s.role.label, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Imię", s.firstName, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Nazwisko", s.lastName, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
+      if(s.role === undefined) s.role = {};
+      titleAndDetailDeprecated("Rola", s.role.label, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
       currentY+=lineHeight*2;
-      titleAndDetail("Stopień pokrewieństwa", s.kinship.value, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      if(s.kinship === undefined) s.kinship = {};
+      titleAndDetailDeprecated("Stopień pokrewieństwa", s.kinship.value, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
       currentY+=lineHeight*2;
     }
     currentY+=lineHeight;
-    currentY=titleAndDetail("Przedmiot umowy (aktu)", json.order.notarialDeedResearch.subject, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+    currentY=titleAndDetailDeprecated("Przedmiot umowy (aktu)", json.order.notarialDeedResearch.subject, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
     currentY+=lineHeight;
-    currentY=titleAndDetail("Informacje dodatkowe", json.order.notarialDeedResearch.customInfo, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+    currentY=titleAndDetailDeprecated("Informacje dodatkowe", json.order.notarialDeedResearch.customInfo, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
     currentY+=lineHeight;
   }
 
   
 
   
-  generatePdfHeader("Wniosek o wykonanie kwerendy ID: "+json.userIdentifier,doc);
+  generatePdfHeader("Wniosek o wykonanie kwerendy ID: ",json.userIdentifier,doc);
   currentY = margin*1.5;
   
   currentY = generateQueryHeader(json,doc,currentY,sectionSpacing);
@@ -590,9 +463,9 @@ pdf.propSearch = function(){
   var t0 = performance.now();
 
   var json = {
-    "id": 4503,
-    "userIdentifier": "2019/05/24/020661",
-    "createDate": "2019-05-24T14:43:39.89",
+    "id": 4505,
+    "userIdentifier": "2019/05/24/038842",
+    "createDate": "2019-05-24T14:58:53.955",
     "createdBy": {
       "id": 2,
       "firstName": "Adam",
@@ -608,19 +481,6 @@ pdf.propSearch = function(){
       "value": "NEW",
       "label": "Nowy"
     },
-    "caseId": "TO JEST ZNAK SPRAWY",
-	"executionDate": "2020-01-01",
-    "assignee": {
-      "id": 2,
-      "firstName": "Adam",
-      "lastName": "Archiwista",
-      "email": "a@a.pl",
-      "unitId": 2,
-      "effectiveUnitId": 2,
-      "unitName": "NDAP",
-      "login": "1",
-      "fullName": "Adam Archiwista"
-    },
     "applicant": {
       "type": {
         "value": "PRIVATE_USER",
@@ -628,9 +488,9 @@ pdf.propSearch = function(){
       },
       "postCode": "89-200",
       "city": "Szubin",
-      "street": "K, 22",
-      "streetNumber": "22",
-      "flatNumber": "K",
+      "street": "Wiejska",
+      "streetNumber": "58",
+      "flatNumber": "554",
       "firstName": "Bartosz",
       "lastName": "Kubacki",
       "email": "bartosz.kubacki@primigenius.pl",
@@ -641,12 +501,12 @@ pdf.propSearch = function(){
       "name": "AP Gliwice"
     },
     "queryType": {
-      "value": "CONFIRMATION_OF_REGISTRATION",
-      "label": "Potwierdzenie zameldowania"
+      "value": "PROPERTY_RESEARCH",
+      "label": "Poszukiwania własnościowe"
     },
     "queryPurpose": {
-      "value": "INHERITANCE",
-      "label": "Spadkowy"
+      "value": "ESTABLISHMENT_OF_REGISTRY",
+      "label": "Założenie księgi wieczystej"
     },
     "issuingType": {
       "value": "DIGITAL_COPY",
@@ -655,13 +515,8 @@ pdf.propSearch = function(){
     "legalRule": {
       "value": "praca naukowa"
     },
-    "subsititation": "ala ma kota",
-    "attachments": [
-      {
-        "fileName": "S3+eyJpZCI6NDUwMywiYXR0SWQiOjI4MDQsIm9yaWdpbmFsRmlsZU5hbWUiOiJwb2RwaXNfanMueG1sIn0=",
-        "originalFileName": "podpis_js.xml"
-      }
-    ],
+    "subsititation": "aaaaaaaaaaaaaa",
+    "attachments": [],
     "order": {
       "propertyResearch": {
         "propertyOwnerList": [
@@ -701,6 +556,11 @@ pdf.propSearch = function(){
   
   function displayOrder() {
     
+    if(json.order === undefined) json.order = {};
+    if(json.order.propertyResearch === undefined) json.order.propertyResearch = {};
+    if(json.order.propertyResearch.propertyOwnerList === undefined) json.order.propertyResearch.propertyOwnerList = [];  
+    if(json.order.propertyResearch.propertyList === undefined) json.order.propertyResearch.propertyList = [];
+    
     currentY = addPageIfContentToLong(currentY,30,doc);
     createSubtitle("Przedmiot zamówienia",margin,currentY,dFontSize,doc);
     currentY+=lineHeight*1.5;
@@ -713,12 +573,13 @@ pdf.propSearch = function(){
       s = list1[e];
       createSubtitle("Właściciel/współwłaściciel nieruchomości",margin,currentY,dFontSize*0.9,doc);
       currentY+=lineHeight;
-      titleAndDetail("Imię", s.firstName, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
-      titleAndDetail("Nazwisko", s.lastName, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
-      titleAndDetail("Imię ojca", s.fatherName, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
-      titleAndDetail("Data urodzenia", getDateAndFormat(s.bornDate), lineHeight, sectionSpacing,margin+sectionSpacing*3,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Imię", s.firstName, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Nazwisko", s.lastName, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Imię ojca", s.fatherName, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Data urodzenia", getDateAndFormat(s.bornDate), lineHeight, sectionSpacing,margin+sectionSpacing*3,currentY,tFontSize,iFontSize,doc,replacer);
       currentY+=lineHeight*2;
-      titleAndDetail("Stopień pokrewieństwa dla wnioskodawcy", s.kinship.value, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      if(s.kinship === undefined) s.kinship  = {};
+      titleAndDetailDeprecated("Stopień pokrewieństwa dla wnioskodawcy", s.kinship.value, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
       currentY+=lineHeight*2;
     }
     currentY+=lineHeight;
@@ -728,17 +589,19 @@ pdf.propSearch = function(){
       s = list2[e];
       createSubtitle("Określenie nieruchomości",margin,currentY,dFontSize*0.9,doc);
       currentY+=lineHeight;
-      titleAndDetail("Miejscowość", s.place, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
-      titleAndDetail("Gmina", s.community, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
-      titleAndDetail("Powiat", s.county, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Miejscowość", s.place, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Gmina", s.community, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Powiat", s.county, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
       currentY+=lineHeight*2;
-      titleAndDetail("Numer hipoteczny nieruchomości lub księgi wieczystej", s.propertyNumber, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Numer hipoteczny nieruchomości lub księgi wieczystej", s.propertyNumber, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
       currentY+=lineHeight*2;
-      titleAndDetail("Okoliczności nabycia nieruchomości", s.purchaseContext.value, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
-      titleAndDetail("Rok nabycia", s.purchaseYear.toString(), lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+      if(s.purchaseContext === undefined) s.purchaseContext  = {};
+      titleAndDetailDeprecated("Okoliczności nabycia nieruchomości", s.purchaseContext.value, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Rok nabycia", s.purchaseYear, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
       currentY+=lineHeight*2;
-      titleAndDetail("Okoliczności zbycia nieruchomości", s.sellContext.value, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
-      titleAndDetail("Rok zbycia", s.sellYear.toString(), lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+      if(s.sellContext === undefined) s.sellContext  = {};
+      titleAndDetailDeprecated("Okoliczności zbycia nieruchomości", s.sellContext.value, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Rok zbycia", s.sellYear, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
       currentY+=lineHeight*2;
     }
   }
@@ -746,7 +609,7 @@ pdf.propSearch = function(){
   
 
   
-  generatePdfHeader("Wniosek o wykonanie kwerendy ID: "+json.userIdentifier,doc);
+  generatePdfHeader("Wniosek o wykonanie kwerendy ID: ",json.userIdentifier,doc);
   currentY = margin*1.5;
   
   currentY = generateQueryHeader(json,doc,currentY,sectionSpacing);
@@ -780,9 +643,9 @@ pdf.citizenshipConfirmation = function(){
   var t0 = performance.now();
 
   var json = {
-    "id": 4503,
-    "userIdentifier": "2019/05/24/020661",
-    "createDate": "2019-05-24T14:43:39.89",
+    "id": 4504,
+    "userIdentifier": "2019/05/24/098735",
+    "createDate": "2019-05-24T14:51:10.488",
     "createdBy": {
       "id": 2,
       "firstName": "Adam",
@@ -798,19 +661,6 @@ pdf.citizenshipConfirmation = function(){
       "value": "NEW",
       "label": "Nowy"
     },
-    "caseId": "TO JEST ZNAK SPRAWY",
-	"executionDate": "2020-01-01",
-    "assignee": {
-      "id": 2,
-      "firstName": "Adam",
-      "lastName": "Archiwista",
-      "email": "a@a.pl",
-      "unitId": 2,
-      "effectiveUnitId": 2,
-      "unitName": "NDAP",
-      "login": "1",
-      "fullName": "Adam Archiwista"
-    },
     "applicant": {
       "type": {
         "value": "PRIVATE_USER",
@@ -818,7 +668,7 @@ pdf.citizenshipConfirmation = function(){
       },
       "postCode": "89-200",
       "city": "Szubin",
-      "street": "K, 22",
+      "street": "Wiejska",
       "streetNumber": "22",
       "flatNumber": "K",
       "firstName": "Bartosz",
@@ -831,12 +681,12 @@ pdf.citizenshipConfirmation = function(){
       "name": "AP Gliwice"
     },
     "queryType": {
-      "value": "CONFIRMATION_OF_REGISTRATION",
-      "label": "Potwierdzenie zameldowania"
+      "value": "CONFIRMATION_OF_CITIZENSHIP",
+      "label": "Potwierdzenie obywatelstwa"
     },
     "queryPurpose": {
-      "value": "INHERITANCE",
-      "label": "Spadkowy"
+      "value": "OBTAINING_POLISH_CARD",
+      "label": "Uzyskanie Karty Polaka"
     },
     "issuingType": {
       "value": "DIGITAL_COPY",
@@ -845,13 +695,8 @@ pdf.citizenshipConfirmation = function(){
     "legalRule": {
       "value": "praca naukowa"
     },
-    "subsititation": "ala ma kota",
-    "attachments": [
-      {
-        "fileName": "S3+eyJpZCI6NDUwMywiYXR0SWQiOjI4MDQsIm9yaWdpbmFsRmlsZU5hbWUiOiJwb2RwaXNfanMueG1sIn0=",
-        "originalFileName": "podpis_js.xml"
-      }
-    ],
+    "subsititation": "moje uzasadnienie",
+    "attachments": [],
     "order": {
       "citizenshipConfirmation": {
         "personList": [
@@ -906,6 +751,42 @@ pdf.citizenshipConfirmation = function(){
               "id": 16,
               "value": "rodzic"
             }
+          },
+          {
+            "period": {
+              "from": "2019-05-14",
+              "to": "2019-05-22"
+            },
+            "address": {
+              "place": "Szubin",
+              "community": "Aleksandrów Kujawski",
+              "county": "białobrzeski",
+              "street": "Wiejska",
+              "houseNumber": "45",
+              "flatNumber": "2"
+            },
+            "passportNumber": "pas 1222",
+            "passportIssueDate": "2019-05-28",
+            "leavingCountryInfo": "Polska",
+            "leavingCountryDate": "2019-05-20",
+            "firstName": "Bartosz",
+            "lastName": "Kubacki",
+            "fatherName": "Bolesław",
+            "bornDate": "2019-05-21",
+            "kinship": {
+              "id": 16,
+              "value": "rodzic"
+            }
+          },
+
+          {
+            "passportNumber": "pas 1222",
+            "passportIssueDate": "2019-05-28",
+            "leavingCountryInfo": "Polska",
+            "leavingCountryDate": "2019-05-20",
+            "firstName": "Bartosz",
+            "lastName": "Kubacki",
+            "bornDate": "2019-05-21"
           }
         ],
         "additionalInfo": "to są informacje dodatkowe"
@@ -915,7 +796,16 @@ pdf.citizenshipConfirmation = function(){
   
   
   function displayOrder() {
-    
+    if(json.order === undefined) json.order = {};
+    if(json.order.citizenshipConfirmation === undefined) json.order.citizenshipConfirmation = {};
+    if(json.order.citizenshipConfirmation.personList === undefined) json.order.citizenshipConfirmation.personList = [];  
+    for(e in json.order.citizenshipConfirmation.personList){
+      el=json.order.citizenshipConfirmation.personList[e];
+      if(el.period === undefined) el.period = {};
+      if(el.address === undefined) el.address = {};
+      if(el.kinship === undefined) el.kinship = {};
+    }
+
     currentY = addPageIfContentToLong(currentY,30,doc);
     createSubtitle("Przedmiot zamówienia",margin,currentY,dFontSize,doc);
     currentY+=lineHeight*1.5;
@@ -926,40 +816,40 @@ pdf.citizenshipConfirmation = function(){
       s = list[e];
       createSubtitle("Potwierdzenie obywatelstwa dla",margin,currentY,dFontSize*0.9,doc);
       currentY+=lineHeight;
-      titleAndDetail("Imię", s.firstName, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
-      titleAndDetail("Nazwisko", s.lastName, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
-      titleAndDetail("Imię ojca", s.fatherName.toString(), lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
-      titleAndDetail("Data urodzenia", getDateAndFormat(s.bornDate), lineHeight, sectionSpacing,margin+sectionSpacing*3,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Imię", s.firstName, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Nazwisko", s.lastName, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Imię ojca", s.fatherName, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Data urodzenia", getDateAndFormat(s.bornDate), lineHeight, sectionSpacing,margin+sectionSpacing*3,currentY,tFontSize,iFontSize,doc,replacer);
       currentY+=lineHeight*2;
-      titleAndDetail("Stopień pokrewieństwa dla wnioskodawcy", s.kinship.value, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Stopień pokrewieństwa dla wnioskodawcy", s.kinship.value, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
       currentY+=lineHeight*2;
-      titleAndDetail("Okres zameldowania/zamieszkania", getDateAndFormat(s.period.from)+'-'+getDateAndFormat(s.period.to), lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Okres zameldowania/zamieszkania", getDateAndFormat(s.period.from)+'-'+getDateAndFormat(s.period.to), lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
       currentY+=lineHeight*3;
       createSubtitle("Miejsce zamieszkania",margin,currentY,dFontSize*0.9,doc);
       currentY+=lineHeight;
-      titleAndDetail("Miejscowość", s.address.place, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
-      titleAndDetail("Gmina", s.address.community, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
-      titleAndDetail("Powiat", s.address.county, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Miejscowość", s.address.place, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Gmina", s.address.community, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Powiat", s.address.county, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
       currentY+=lineHeight*2;
-      titleAndDetail("Ulica", s.address.street, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
-      titleAndDetail("Numer domu", s.address.houseNumber, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
-      titleAndDetail("Numer mieszkania", s.address.flatNumber, lineHeight, sectionSpacing,margin+sectionSpacing*3,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Ulica", s.address.street, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Numer domu", s.address.houseNumber, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Numer mieszkania", s.address.flatNumber, lineHeight, sectionSpacing,margin+sectionSpacing*3,currentY,tFontSize,iFontSize,doc,replacer);
       currentY+=lineHeight*2;
-      titleAndDetail("Numer paszportu", s.passportNumber, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
-      titleAndDetail("Data wydania paszportu", getDateAndFormat(s.passportIssueDate), lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Numer paszportu", s.passportNumber, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Data wydania paszportu", getDateAndFormat(s.passportIssueDate), lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
       currentY+=lineHeight*2;
-      titleAndDetail("Data wyjazdu z kraju",getDateAndFormat(s.leavingCountryDate), lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
-      currentY=titleAndDetail("Okoliczności wyjazdu z kraju", s.leavingCountryInfo, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+      titleAndDetailDeprecated("Data wyjazdu z kraju",getDateAndFormat(s.leavingCountryDate), lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+      currentY=titleAndDetailDeprecated("Okoliczności wyjazdu z kraju", s.leavingCountryInfo, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
       drawHorizontalBorder(margin,currentY,margin,doc);
       currentY+=lineHeight*2;
     }
 
     currentY = addPageIfContentToLong(currentY,10,doc);
-    currentY=titleAndDetail("Informacje dodatkowe",  json.order.citizenshipConfirmation.additionalInfo.repeat(12), lineHeight, sectionSpacing*4,margin,currentY,tFontSize,iFontSize,doc,replacer);
+    currentY=titleAndDetailDeprecated("Informacje dodatkowe",  json.order.citizenshipConfirmation.additionalInfo, lineHeight, sectionSpacing*4,margin,currentY,tFontSize,iFontSize,doc,replacer);
     currentY+=lineHeight;
   }
 
-  generatePdfHeader("Wniosek o wykonanie kwerendy ID: "+json.userIdentifier,doc);
+  generatePdfHeader("Wniosek o wykonanie kwerendy ID: ",json.userIdentifier,doc);
   currentY = margin*1.5;
   
   currentY = generateQueryHeader(json,doc,currentY,sectionSpacing);
@@ -990,7 +880,7 @@ pdf.regConfirmation = function(){
   currentY = 0;
   var t0 = performance.now();
 
-  var json = {
+  var json ={
     "id": 4503,
     "userIdentifier": "2019/05/24/020661",
     "createDate": "2019-05-24T14:43:39.89",
@@ -1008,19 +898,6 @@ pdf.regConfirmation = function(){
     "status": {
       "value": "NEW",
       "label": "Nowy"
-    },
-    "caseId": "TO JEST ZNAK SPRAWY",
-	"executionDate": "2020-01-01",
-    "assignee": {
-      "id": 2,
-      "firstName": "Adam",
-      "lastName": "Archiwista",
-      "email": "a@a.pl",
-      "unitId": 2,
-      "effectiveUnitId": 2,
-      "unitName": "NDAP",
-      "login": "1",
-      "fullName": "Adam Archiwista"
     },
     "applicant": {
       "type": {
@@ -1084,82 +961,6 @@ pdf.regConfirmation = function(){
               "id": 16,
               "value": "rodzic"
             }
-          },
-          {
-            "firstName": "Bartosz",
-            "lastName": "Kubacki",
-            "fatherName": "Bolesław",
-            "bornDate": "2019-05-22",
-            "place": "Szubin",
-            "community": "Aleksandrów Łódzki",
-            "county": "białobrzeski",
-            "street": "Wawelska",
-            "houseNumber": "45",
-            "flatNumber": "K",
-            "faith": "takie tam",
-            "parish": "Szubin",
-            "other": "bla bla bla ",
-            "kinship": {
-              "id": 16,
-              "value": "rodzic"
-            }
-          },
-          {
-            "firstName": "Bartosz",
-            "lastName": "Kubacki",
-            "fatherName": "Bolesław",
-            "bornDate": "2019-05-22",
-            "place": "Szubin",
-            "community": "Aleksandrów Łódzki",
-            "county": "białobrzeski",
-            "street": "Wawelska",
-            "houseNumber": "45",
-            "flatNumber": "K",
-            "faith": "takie tam",
-            "parish": "Szubin",
-            "other": "bla bla bla ",
-            "kinship": {
-              "id": 16,
-              "value": "rodzic"
-            }
-          },
-          {
-            "firstName": "Bartosz",
-            "lastName": "Kubacki",
-            "fatherName": "Bolesław",
-            "bornDate": "2019-05-22",
-            "place": "Szubin",
-            "community": "Aleksandrów Łódzki",
-            "county": "białobrzeski",
-            "street": "Wawelska",
-            "houseNumber": "45",
-            "flatNumber": "K",
-            "faith": "takie tam",
-            "parish": "Szubin",
-            "other": "bla bla bla ",
-            "kinship": {
-              "id": 16,
-              "value": "rodzic"
-            }
-          },
-          {
-            "firstName": "Bartosz",
-            "lastName": "Kubacki",
-            "fatherName": "Bolesław",
-            "bornDate": "2019-05-22",
-            "place": "Szubin",
-            "community": "Aleksandrów Łódzki",
-            "county": "białobrzeski",
-            "street": "Wawelska",
-            "houseNumber": "45",
-            "flatNumber": "K",
-            "faith": "takie tam",
-            "parish": "Szubin",
-            "other": "bla bla bla ",
-            "kinship": {
-              "id": 16,
-              "value": "rodzic"
-            }
           }
         ]
       }
@@ -1167,6 +968,14 @@ pdf.regConfirmation = function(){
   };
 
   function displayOrder(){
+    if(json.order === undefined) json.order = {};
+    if(json.order.registrationConfirmation === undefined) json.order.registrationConfirmation = {};
+    if(json.order.registrationConfirmation.registrationConfirmationList === undefined) json.order.registrationConfirmation.registrationConfirmationList = [];  
+    for(e in json.order.registrationConfirmation.registrationConfirmationList){
+      el=json.order.registrationConfirmation.registrationConfirmationList[e];
+      if(el.kinship === undefined) el.kinship = {};
+    }
+
     currentY = addPageIfContentToLong(currentY,30,doc);
     createSubtitle("Przedmiot zamówienia",margin,currentY,dFontSize,doc);
     currentY+=lineHeight*1.5;
@@ -1177,25 +986,25 @@ pdf.regConfirmation = function(){
         s = list[e];
         createSubtitle("Potwierdzenie",margin,currentY,dFontSize*0.9,doc);
         currentY+=lineHeight;
-        titleAndDetail("Imię", s.firstName, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
-        titleAndDetail("Nazwisko", s.lastName, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
-        titleAndDetail("Imię ojca", s.fatherName.toString(), lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
-        titleAndDetail("Data urodzenia", getDateAndFormat(s.bornDate), lineHeight, sectionSpacing,margin+sectionSpacing*3,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Imię", s.firstName, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Nazwisko", s.lastName, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Imię ojca", s.fatherName.toString(), lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Data urodzenia", getDateAndFormat(s.bornDate), lineHeight, sectionSpacing,margin+sectionSpacing*3,currentY,tFontSize,iFontSize,doc,replacer);
         currentY+=lineHeight*2;
-        titleAndDetail("Miejscowość", s.place, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
-        titleAndDetail("Gmina", s.community, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
-        titleAndDetail("Powiat", s.county, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Miejscowość", s.place, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Gmina", s.community, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Powiat", s.county, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
         currentY+=lineHeight*2;
-        titleAndDetail("Ulica", s.street, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
-        titleAndDetail("Numer domu", s.houseNumber, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
-        titleAndDetail("Numer mieszkania", s.flatNumber, lineHeight, sectionSpacing,margin+sectionSpacing*3,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Ulica", s.street, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Numer domu", s.houseNumber, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Numer mieszkania", s.flatNumber, lineHeight, sectionSpacing,margin+sectionSpacing*3,currentY,tFontSize,iFontSize,doc,replacer);
         currentY+=lineHeight*2;
-        titleAndDetail("Wyznanie", s.faith, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
-        titleAndDetail("Parafia", s.parish, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Wyznanie", s.faith, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Parafia", s.parish, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
         currentY+=lineHeight*2;
-        currentY=titleAndDetail("Informacje dot. pochodzenia, zawodu etc.", s.other, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        currentY=titleAndDetailDeprecated("Informacje dot. pochodzenia, zawodu etc.", s.other, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
         
-        currentY=titleAndDetail("Stopień pokrewieństwa dla wnioskodawcy", s.kinship.value, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        currentY=titleAndDetailDeprecated("Stopień pokrewieństwa dla wnioskodawcy", s.kinship.value, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
         drawHorizontalBorder(margin,currentY,margin,doc);
         currentY+=lineHeight*2;
       }
@@ -1203,7 +1012,7 @@ pdf.regConfirmation = function(){
 
 
   
-  generatePdfHeader("Wniosek o wykonanie kwerendy ID: "+json.userIdentifier,doc);
+  generatePdfHeader("Wniosek o wykonanie kwerendy ID: ",json.userIdentifier,doc);
   currentY = margin*1.5;
   
   currentY = generateQueryHeader(json,doc,currentY,sectionSpacing);
@@ -1232,23 +1041,10 @@ pdf.civilRegistry = function(){
   currentY = 0;
   var t0 = performance.now();
   
-  var json = {
+  var json ={
     "id": 4502,
     "userIdentifier": "2019/05/24/097281",
     "createDate": "2019-05-24T14:37:08.939",
-    "executionDate": "2020-01-01",
-    "caseId": "TO JEST ZNAK SPRAWY",
-    "assignee": {
-      "id": 2,
-      "firstName": "Adam",
-      "lastName": "Archiwista",
-      "email": "a@a.pl",
-      "unitId": 2,
-      "effectiveUnitId": 2,
-      "unitName": "NDAP",
-      "login": "1",
-      "fullName": "Adam Archiwista"
-    },
     "createdBy": {
       "id": 2,
       "firstName": "Adam",
@@ -1326,44 +1122,6 @@ pdf.civilRegistry = function(){
               "id": 16,
               "value": "rodzic"
             }
-          },
-          {
-            "registryType": {
-              "id": 40,
-              "value": "akt urodzenia"
-            },
-            "firstName": "Bartosz",
-            "lastName": "Kubacki",
-            "year": 1599,
-            "number": "1233/4444",
-            "place": "Warszawa",
-            "community": "Szubin",
-            "county": "nakielski",
-            "faith": "jakieś tam",
-            "parish": "Szubin",
-            "kinship": {
-              "id": 16,
-              "value": "rodzic"
-            }
-          },
-          {
-            "registryType": {
-              "id": 40,
-              "value": "akt urodzenia"
-            },
-            "firstName": "Bartosz",
-            "lastName": "Kubacki",
-            "year": 1599,
-            "number": "1233/4444",
-            "place": "Warszawa",
-            "community": "Szubin",
-            "county": "nakielski",
-            "faith": "jakieś tam",
-            "parish": "Szubin",
-            "kinship": {
-              "id": 16,
-              "value": "rodzic"
-            }
           }
         ]
       }
@@ -1371,6 +1129,15 @@ pdf.civilRegistry = function(){
   };
   
   function displayOrder(){
+    if(json.order === undefined) json.order = {};
+    if(json.order.civilRegistry === undefined) json.order.civilRegistry = {};
+    if(json.order.civilRegistry.civilRegistryList === undefined) json.order.civilRegistry.civilRegistryList = [];  
+    for(e in json.order.civilRegistry.civilRegistryList){
+      el=json.order.civilRegistry.civilRegistryList[e];
+      if(el.kinship === undefined) el.kinship = {};
+      if(el.registryType === undefined) el.registryType = {};
+    }
+
     currentY = addPageIfContentToLong(currentY,30,doc);
       if(currentY == 0)
         currentY = margin;
@@ -1382,25 +1149,25 @@ pdf.civilRegistry = function(){
       for(e in list){
         currentY = addPageIfContentToLong(currentY,40,doc);
         s = list[e];
-        titleAndDetail("Rodzaj akt", s.registryType.value, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Rodzaj akt", s.registryType.value, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
         currentY+=lineHeight*2;
-        titleAndDetail("Imię", s.firstName, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
-        titleAndDetail("Nazwisko", s.lastName, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
-        titleAndDetail("Rok", s.year.toString(), lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
-        titleAndDetail("Numer aktu", s.number, lineHeight, sectionSpacing,margin+sectionSpacing*3,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Imię", s.firstName, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Nazwisko", s.lastName, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Rok", s.year.toString(), lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Numer aktu", s.number, lineHeight, sectionSpacing,margin+sectionSpacing*3,currentY,tFontSize,iFontSize,doc,replacer);
         currentY+=lineHeight*2;
-        titleAndDetail("Miejsce zdarzenia", s.place, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
-        titleAndDetail("Gmina", s.community, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
-        titleAndDetail("Powiat", s.county, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Miejsce zdarzenia", s.place, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Gmina", s.community, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Powiat", s.county, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
         currentY+=lineHeight*2;
-        titleAndDetail("Wyznanie", s.faith, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
-        titleAndDetail("Parafia", s.parish, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Wyznanie", s.faith, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Parafia", s.parish, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
         currentY+=lineHeight*2;
-        titleAndDetail("Stopień pokrewieństwa", s.kinship.value, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Stopień pokrewieństwa", s.kinship.value, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
         currentY+=lineHeight*3;
         createSubtitle("Zakres przedmiotowy poszukiwań",margin,currentY,dFontSize*0.9,doc);
         currentY+=lineHeight;
-        currentY=titleAndDetail("Fakty i zdarzenia, których mają dotyczyć poszukiwania", "Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. ", lineHeight, sectionSpacing*4,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        currentY=titleAndDetailDeprecated("Fakty i zdarzenia, których mają dotyczyć poszukiwania", "Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. Brak w jsonie. ", lineHeight, sectionSpacing*4,margin,currentY,tFontSize,iFontSize,doc,replacer);
         drawHorizontalBorder(margin,currentY,margin,doc);
         currentY+=lineHeight*2;
       }
@@ -1410,7 +1177,7 @@ pdf.civilRegistry = function(){
   var t0 = performance.now();
 
   
-  generatePdfHeader("Wniosek o wykonanie kwerendy ID: "+json.userIdentifier,doc);
+  generatePdfHeader("Wniosek o wykonanie kwerendy ID: ",json.userIdentifier,doc);
   currentY = margin*1.5;
   
   currentY = generateQueryHeader(json,doc,currentY,sectionSpacing);
@@ -1544,161 +1311,7 @@ pdf.applicationForQuery = function(){
     }
   }
 
-  var json = {
-    "id": 4501,
-    "userIdentifier": "2019/05/24/049930",
-    "createDate": "2019-05-24T02:12:54.497",
-    "createdBy": {
-      "id": 2,
-      "firstName": "Adam",
-      "lastName": "Archiwista",
-      "email": "a@a.pl",
-      "unitId": 2,
-      "effectiveUnitId": 2,
-      "unitName": "NDAP",
-      "login": "1",
-      "fullName": "Adam Archiwista"
-    },
-    "assignee": {
-      "id": 2,
-      "firstName": "Adam",
-      "lastName": "Archiwista",
-      "email": "a@a.pl",
-      "unitId": 2,
-      "effectiveUnitId": 2,
-      "unitName": "NDAP",
-      "login": "1",
-      "fullName": "Adam Archiwista"
-    },
-    "caseId": "TO JEST ZNAK SPRAWY",
-    "executionDate": "2020-01-01",
-    "status": {
-      "value": "NEW",
-      "label": "Nowy"
-    },
-    "applicant": {
-      "type": {
-        "value": "PRIVATE_USER",
-        "label": "Użytkownik prywatny"
-      },
-      "postCode": "89-200",
-      "city": "Szubin Szubiński",
-      "street": "Jana janowego jankowskiego",
-      "streetNumber": "22",
-      "flatNumber": "21",
-      "firstName": "Bartosz",
-      "lastName":"Testowy2",
-      "email": "bartosz.kubacki@primigenius.pl",
-      "phone": "789789456"
-    },
-    "stateArchive": {
-      "id": 2,
-      "name": "AP Gliwice"
-    },
-    "queryType": {
-      "value": "GENEALOGICAL_RESEARCH",
-      "label": "Poszukiwania genealogiczne"
-    },
-    "queryPurpose": {
-      "value": "CONFIRMATION_OF_PL_CITIZENSHIP",
-      "label": "Potwierdzenie obywatelstwa polskiego"
-    },
-    "legalRule": {
-      "value": "pokrewieństwo"
-    },
-    "subsititation": "to jest uzasadnienie zamównienia",
-    "attachments": [
-      {
-        "fileName": "S3+eyJpZCI6NDUwMSwiYXR0SWQiOjI4MDEsIm9yaWdpbmFsRmlsZU5hbWUiOiJjb3JlLmxvZy0xODEzMTQ1LnR4dCJ9",
-        "originalFileName": "core.log-1813145.txt"
-      },
-      {
-        "fileName": "S3+eyJpZCI6NDUwMSwiYXR0SWQiOjI4MDIsIm9yaWdpbmFsRmlsZU5hbWUiOiJjb3JlLmxvZy0xODEzMTYzLnR4dCJ9",
-        "originalFileName": "core.log-1813163.txt"
-      },
-      
-      {
-        "fileName": "S3+eyJpZCI6NDUwMSwiYXR0SWQiOjI4MDIsIm9yaWdpbmFsRmlsZU5hbWUiOiJjb3JlLmxvZy0xODEzMTYzLnR4dCJ9",
-        "originalFileName": "core.log-1813163.txt"
-      },
-      
-      {
-        "fileName": "S3+eyJpZCI6NDUwMSwiYXR0SWQiOjI4MDIsIm9yaWdpbmFsRmlsZU5hbWUiOiJjb3JlLmxvZy0xODEzMTYzLnR4dCJ9",
-        "originalFileName": "core.log-1813163.txt"
-      },
-      {
-        "fileName": "S3+eyJpZCI6NDUwMSwiYXR0SWQiOjI4MDIsIm9yaWdpbmFsRmlsZU5hbWUiOiJjb3JlLmxvZy0xODEzMTYzLnR4dCJ9",
-        "originalFileName": "core.log-1813163.txt"
-      }
-    ],
-    "order": {
-      "genealogicalResearch": {
-        "searchedPersonList": [
-          {
-            "firstName": "Jan",
-            "lastName": "Jankowski",
-            "fatherName": "Wiesław",
-            "bornDate": "2019-05-01",
-            "residencePlace": "Żnin",
-            "community": "Żnin",
-            "county": "żniński",
-            "faith": "takie tam",
-            "parish": "Szubin",
-            "kinship": "matka",
-            "other": "kowal"
-          },
-                  {
-            "firstName": "Jan",
-            "lastName": "Jankowski",
-            "fatherName": "Wiesław",
-            "bornDate": "2019-05-01",
-            "residencePlace": "Żnin",
-            "community": "Żnin",
-            "county": "żniński",
-            "faith": "takie tam",
-            "parish": "Szubin",
-            "kinship": "matka",
-            "other": "kowal"
-          },
-                  {
-            "firstName": "Jan",
-            "lastName": "Jankowski",
-            "fatherName": "Wiesław",
-            "bornDate": "2019-05-01",
-            "residencePlace": "Żnin",
-            "community": "Żnin",
-            "county": "żniński",
-            "faith": "takie tam",
-            "parish": "Szubin",
-            "kinship": "matka",
-            "other": "kowal"
-          }
-        ],
-        "searchPeriodList": [
-          {
-            "from": "2019-05-06",
-            "to": "2019-05-23"
-          },
-                  {
-            "from": "2019-05-06",
-            "to": "2019-05-23"
-          }
-        ],
-        "searchFactList": [
-          {
-            "value": "Mateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono mu kłamstwo. Okazuje się jednak, że premier mógł zostać wprowadzony w błąd. Urzędnik z Krakowa przeprasza teraz premiera i tłumaczy sytuację."
-          },
-                  {
-            "value": "Mateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono mu kłamstwo. Okazuje się jednak, że premier mógł zostać wprowadzony w błąd. Urzędnik z Krakowa przeprasza teraz premiera i tłumaczy sytuacjęMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono mu kłamstwo. Okazuje się jednak, że premier mógł zostać wprowadzony w błąd. Urzędnik z Krakowa przeprasza teraz premiera i tłumaczy sytuacjęMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono mu kłamstwo. Okazuje się jednak, że premier mógł zostać wprowadzony w błąd. Urzędnik z Krakowa przeprasza teraz premiera i tłumaczy sytuację."
-          },
-                  {
-            "value": "Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko sssssssssssssssssssssssssssssssssss zarzucsssssssssssssssssssssssssssssssssss sssssssssssssssssssssssssssssssssss sssssssssssssssssssssssssssssssssss sssssssssssssssssssssssssssssssssssono muMateusz Morawiecki mówił dziś o zbiornikMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiornikMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiornikMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiornikMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiornikMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiornikMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiornikMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiornikMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiornikMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiornikMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiornikMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiornikMateusz  dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiornikretencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono muMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono mu kłamstwo. Okazuje się jednak, że premier mógł zostać wprowadzony w błąd. Urzędnik z Krakowa przeprasza teraz premiera i tłumaczy sytuację.Mateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono mu kłamstwo. Okazuje się jednak, że premier mógł zostać wprowadzony w błąd. Urzędnik z Krakowa przeprasza teraz premiera i tłumaczy sytuacjęMateusz Morawiecki mówił dziś o zbiorniku retencyjnym w Krakowie. Szybko zarzucono mu kłamstwo. Okazuje się jednak, że premier mógł zostać wprowadzony w błąd. Urzędnik z Krakowa przeprasza teraz premiera i tłumaczy sytuację"
-          }
-                  
-        ]
-      }
-    }
-  };
+  var json = {};
   
   doc.setFont('roboto');
   var t0 = performance.now();
@@ -1706,7 +1319,14 @@ pdf.applicationForQuery = function(){
   
 
   function displayOrder(){
-    var genealogicalResearch = json.order.genealogicalResearch;
+
+    if(json.order === undefined) json.order = {};
+    if(json.order.genealogicalResearch === undefined) json.order.genealogicalResearch = {};
+    if(json.order.genealogicalResearch.searchedPersonList === undefined) json.order.genealogicalResearch.searchedPersonList = [];  
+    if(json.order.genealogicalResearch.searchPeriodList === undefined) json.order.genealogicalResearch.searchPeriodList = []; 
+    if(json.order.genealogicalResearch.searchFactList === undefined) json.order.genealogicalResearch.searchFactList = []; 
+
+      var genealogicalResearch = json.order.genealogicalResearch;
       var searchPersonList = genealogicalResearch.searchedPersonList;
       var searchPeriodList = genealogicalResearch.searchPeriodList;
       var searchFactList = genealogicalResearch.searchFactList;
@@ -1718,20 +1338,20 @@ pdf.applicationForQuery = function(){
         s = searchPersonList[e];
         createSubtitle("Poszukiwana osoba",margin,currentY,dFontSize*0.9,doc);
         currentY+=lineHeight;
-        titleAndDetail("Imię", s.firstName, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
-        titleAndDetail("Nazwisko", s.lastName, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
-        titleAndDetail("Imię ojca", s.fatherName, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
-        titleAndDetail("Data urodzenia", getDateAndFormat(s.bornDate), lineHeight, sectionSpacing,margin+sectionSpacing*3,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Imię", s.firstName, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Nazwisko", s.lastName, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Imię ojca", s.fatherName, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Data urodzenia", getDateAndFormat(s.bornDate), lineHeight, sectionSpacing,margin+sectionSpacing*3,currentY,tFontSize,iFontSize,doc,replacer);
         currentY+=lineHeight*2;
-        titleAndDetail("Miejsce zamieszkania", s.residencePlace, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
-        titleAndDetail("Gmina", s.community, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
-        titleAndDetail("Powiat", s.county, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Miejsce zamieszkania", s.residencePlace, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Gmina", s.community, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Powiat", s.county, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
         currentY+=lineHeight*2;
-        titleAndDetail("Wyznanie", s.faith, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
-        titleAndDetail("Parafia", s.parish, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Wyznanie", s.faith, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Parafia", s.parish, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
         currentY+=lineHeight*2;
-        titleAndDetail("Stopień pokrewieństwa", s.kinship, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
-        titleAndDetail("Informacje dot. pochodzenia, zawodu etc.", s.other, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Stopień pokrewieństwa", s.kinship, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Informacje dot. pochodzenia, zawodu etc.", s.other, lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
         currentY+=lineHeight*2;
       }
 
@@ -1742,7 +1362,7 @@ pdf.applicationForQuery = function(){
         s = searchPeriodList[e];
         createSubtitle("Okres poszukiwania",margin,currentY,dFontSize*0.9,doc);
         currentY+=lineHeight;
-        titleAndDetail("Daty graniczne", getDateAndFormat(s.from)+' - '+getDateAndFormat(s.to) , lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        titleAndDetailDeprecated("Daty graniczne", getDateAndFormat(s.from)+' - '+getDateAndFormat(s.to) , lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
         currentY+=lineHeight*2;
       }
 
@@ -1759,7 +1379,7 @@ pdf.applicationForQuery = function(){
         y1 = currentY;
         createSubtitle("Zakres przedmiotowy poszukiwań",margin,currentY,dFontSize*0.9,doc);
         currentY+=lineHeight;
-        currentY = titleAndDetail("Fakty i zdarzenia, których mają dotyczyć poszukiwania", s.value, lineHeight, sectionSpacing*4,margin,currentY,tFontSize,iFontSize,doc,replacer);
+        currentY = titleAndDetailDeprecated("Fakty i zdarzenia, których mają dotyczyć poszukiwania", s.value, lineHeight, sectionSpacing*4,margin,currentY,tFontSize,iFontSize,doc,replacer);
         
         currentY+=lineHeight*2;
       }
@@ -1768,20 +1388,13 @@ pdf.applicationForQuery = function(){
 
   
 
-  generatePdfHeader("Wniosek o wykonanie kwerendy ID: "+json.userIdentifier,doc);
+  generatePdfHeader("Wniosek o wykonanie kwerendy ID: ",json.userIdentifier,doc);
   currentY = margin*1.5;
 
   
   
-  generateQueryHeader(json,doc,currentY,sectionSpacing);
+  currentY = generateQueryHeader(json,doc,currentY,sectionSpacing);
 
-  currentY = Math.max(currentY,doc.autoTable.previous.finalY);
-  currentY+=lineHeight*2;
-  drawHorizontalBorder(margin,currentY,margin,doc);
-  currentY+=lineHeight*2;
-  createSubtitle("Przedmiot zamówienia",margin,currentY,dFontSize,doc);
-  currentY+=lineHeight*1.5;
-  
   displayOrder();
 
   drawHorizontalBorder(margin,currentY,margin,doc);
@@ -1802,8 +1415,6 @@ pdf.applicationForQuery = function(){
     return doc;
   });
 }
-
-
 
 pdf.autoVerificationReports = function(){
   doc = new jsPDF();
@@ -1848,11 +1459,11 @@ pdf.autoVerificationReports = function(){
 
   currentY+=margin+lineHeight*5;
 
-  titleAndDetail("Data",getDateAndTime(raport.date), lineHeight,sectionSpacing*2,margin,currentY,tFontSize,iFontSize,doc);
+  titleAndDetailDeprecated("Data",getDateAndTime(raport.date), lineHeight,sectionSpacing*2,margin,currentY,tFontSize,iFontSize,doc);
 
   currentY+=lineHeight*3;
-  titleAndDetail("Weryfikator",raport.verifiedBy.firstName+' '+raport.verifiedBy.lastName,lineHeight,sectionSpacing*2,margin,currentY,tFontSize,iFontSize,doc);
-  titleAndDetail("Nazwa jednostki",raport.verifiedBy.unitName,lineHeight,sectionSpacing*2,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc);
+  titleAndDetailDeprecated("Weryfikator",raport.verifiedBy.firstName+' '+raport.verifiedBy.lastName,lineHeight,sectionSpacing*2,margin,currentY,tFontSize,iFontSize,doc);
+  titleAndDetailDeprecated("Nazwa jednostki",raport.verifiedBy.unitName,lineHeight,sectionSpacing*2,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc);
   
 
   currentY+=lineHeight*4;
@@ -2562,9 +2173,9 @@ pdf.orderDetails = function(){
 
       y+=lineHeight*3;
 
-      titleAndDetail("Osoba odpowiedzialna",r.assignee.firstName+' '+r.assignee.lastName, lineHeight, sectionSpacing, x, y, titleSize, infoSize, doc);
-      titleAndDetail("Stan systemu po wdrożeniu zmiany",r.details.systemStatus.label, lineHeight, sectionSpacing, x+sectionSpacing, y, titleSize, infoSize, doc);
-      titleAndDetail("Termin przeprowadzenia prac",r.workPeriodStart+' - '+r.workPeriodEnd, lineHeight, sectionSpacing*1.5, x+sectionSpacing*3, y, titleSize, infoSize, doc);
+      titleAndDetailDeprecated("Osoba odpowiedzialna",r.assignee.firstName+' '+r.assignee.lastName, lineHeight, sectionSpacing, x, y, titleSize, infoSize, doc);
+      titleAndDetailDeprecated("Stan systemu po wdrożeniu zmiany",r.details.systemStatus.label, lineHeight, sectionSpacing, x+sectionSpacing, y, titleSize, infoSize, doc);
+      titleAndDetailDeprecated("Termin przeprowadzenia prac",r.workPeriodStart+' - '+r.workPeriodEnd, lineHeight, sectionSpacing*1.5, x+sectionSpacing*3, y, titleSize, infoSize, doc);
 
       
       y = addPageIfContentToLong(y,65,doc);
@@ -2637,16 +2248,16 @@ pdf.orderDetails = function(){
 
   EndingY+=lineHeight*3;
 
-  titleAndDetail("Tytuł zlecenia", details.title,lineHeight, 50, margin,EndingY+=lineHeight*2, titleSize ,infoSize, doc);
-  titleAndDetail("Priorytet",details.title,lineHeight, 50, margin+sectionSpacing*2,EndingY, titleSize, infoSize, doc);
-  titleAndDetail("Kategoria zlecenia",details.title,lineHeight, 50, margin+sectionSpacing*3,EndingY, titleSize, infoSize, doc);
+  titleAndDetailDeprecated("Tytuł zlecenia", details.title,lineHeight, 50, margin,EndingY+=lineHeight*2, titleSize ,infoSize, doc);
+  titleAndDetailDeprecated("Priorytet",details.title,lineHeight, 50, margin+sectionSpacing*2,EndingY, titleSize, infoSize, doc);
+  titleAndDetailDeprecated("Kategoria zlecenia",details.title,lineHeight, 50, margin+sectionSpacing*3,EndingY, titleSize, infoSize, doc);
 
-  titleAndDetail("Status",details.statusString , lineHeight, 50, margin,EndingY+=lineHeight*3, titleSize, infoSize, doc);
-  titleAndDetail("Priorytet",details.priorityString , lineHeight, 50, margin+sectionSpacing,EndingY, titleSize, infoSize, doc);
-  titleAndDetail("Termin wykonania", getDateAndTime(details.deadline) , lineHeight, 50, margin+sectionSpacing*2,EndingY, titleSize, infoSize, doc);
-  titleAndDetail("Powiązany błąd, zgłoszony przez użytkownika", checkExistValue(details.relatedError), lineHeight, 50, margin+sectionSpacing*3,EndingY, titleSize, infoSize, doc);
+  titleAndDetailDeprecated("Status",details.statusString , lineHeight, 50, margin,EndingY+=lineHeight*3, titleSize, infoSize, doc);
+  titleAndDetailDeprecated("Priorytet",details.priorityString , lineHeight, 50, margin+sectionSpacing,EndingY, titleSize, infoSize, doc);
+  titleAndDetailDeprecated("Termin wykonania", getDateAndTime(details.deadline) , lineHeight, 50, margin+sectionSpacing*2,EndingY, titleSize, infoSize, doc);
+  titleAndDetailDeprecated("Powiązany błąd, zgłoszony przez użytkownika", checkExistValue(details.relatedError), lineHeight, 50, margin+sectionSpacing*3,EndingY, titleSize, infoSize, doc);
 
-  titleAndDetail("Zlecone przez", details.orderedBy.firstName+' '+details.orderedBy.lastName , lineHeight, 50, margin,EndingY+=lineHeight*3, titleSize, infoSize, doc);
+  titleAndDetailDeprecated("Zlecone przez", details.orderedBy.firstName+' '+details.orderedBy.lastName , lineHeight, 50, margin,EndingY+=lineHeight*3, titleSize, infoSize, doc);
 
   createRectWithText( "Szczegóły zlecenia", 10, EndingY+=lineHeight*3, 70,12,doc,COLORS.DARK_GRAY);
   EndingY+=lineHeight/2;
@@ -3413,7 +3024,7 @@ pdf.autoverificatbasicion = function () {
         return arr;
     }
 
-    function titleAndDetail(title, detail, lineHeight, x, y, tFontSize, dFontSize){
+    function titleAndDetailDeprecated(title, detail, lineHeight, x, y, tFontSize, dFontSize){
         doc.setFontSize(tFontSize);
         doc.text(title, x, y);
         doc.setFontSize(dFontSize);
@@ -3426,9 +3037,9 @@ pdf.autoverificatbasicion = function () {
     
     EndingY+= lineHeight*6;
 
-    titleAndDetail("Typ walidacji",verificationRaport1.validationType , lineHeight , margin, EndingY,16,10);
+    titleAndDetailDeprecated("Typ walidacji",verificationRaport1.validationType , lineHeight , margin, EndingY,16,10);
     
-    EndingY = titleAndDetail("Status", (verificationRaport1.success ? 'Poprawny' : 'Niepoprawny') , lineHeight , margin+60, EndingY,16,10);
+    EndingY = titleAndDetailDeprecated("Status", (verificationRaport1.success ? 'Poprawny' : 'Niepoprawny') , lineHeight , margin+60, EndingY,16,10);
     
     content = [];
 
@@ -3778,26 +3389,26 @@ pdf.errorDetails = function () {
 
     EndingY+=lineHeight*6;
 
-    titleAndDetail('Kategoria', details.category, lineHeight,sectionSpacing, margin, EndingY,tFontSize,dFontSize,doc);
+    titleAndDetailDeprecated('Kategoria', details.category, lineHeight,sectionSpacing, margin, EndingY,tFontSize,dFontSize,doc);
 
-    titleAndDetail('Podategoria', details.subcategory, lineHeight, sectionSpacing, margin*12, EndingY, tFontSize, dFontSize,doc);
-
-    EndingY+=lineHeight*3;
-
-    titleAndDetail('Kto zgłosił',details.createdBy.firstName+' '+details.createdBy.lastName, lineHeight, sectionSpacing, margin, EndingY, tFontSize, dFontSize,doc);
-
-    titleAndDetail('Data zgłoszenia', getDateAndTime(details.createdDate), lineHeight, sectionSpacing, margin*6, EndingY, tFontSize, dFontSize,doc);
-
-    titleAndDetail('Status błędu' , errorOrderStatusEnum[details.status], lineHeight, sectionSpacing, margin*12, EndingY, tFontSize, dFontSize,doc);
+    titleAndDetailDeprecated('Podategoria', details.subcategory, lineHeight, sectionSpacing, margin*12, EndingY, tFontSize, dFontSize,doc);
 
     EndingY+=lineHeight*3;
 
-    titleAndDetail('Przypisane do' , (details.assignee ? details.assignee.firstName +' '+ details.assignee.lastName: 'nieprzypisany'), lineHeight, sectionSpacing*2, margin, EndingY, tFontSize, dFontSize,doc);
+    titleAndDetailDeprecated('Kto zgłosił',details.createdBy.firstName+' '+details.createdBy.lastName, lineHeight, sectionSpacing, margin, EndingY, tFontSize, dFontSize,doc);
+
+    titleAndDetailDeprecated('Data zgłoszenia', getDateAndTime(details.createdDate), lineHeight, sectionSpacing, margin*6, EndingY, tFontSize, dFontSize,doc);
+
+    titleAndDetailDeprecated('Status błędu' , errorOrderStatusEnum[details.status], lineHeight, sectionSpacing, margin*12, EndingY, tFontSize, dFontSize,doc);
+
+    EndingY+=lineHeight*3;
+
+    titleAndDetailDeprecated('Przypisane do' , (details.assignee ? details.assignee.firstName +' '+ details.assignee.lastName: 'nieprzypisany'), lineHeight, sectionSpacing*2, margin, EndingY, tFontSize, dFontSize,doc);
 
     EndingY+=lineHeight*4;
-    EndingY = titleAndDetail('Tytuł błędu', details.title, lineHeight, sectionSpacing, margin, EndingY, tFontSize, dFontSize,doc);
+    EndingY = titleAndDetailDeprecated('Tytuł błędu', details.title, lineHeight, sectionSpacing, margin, EndingY, tFontSize, dFontSize,doc);
     EndingY+=lineHeight/2;
-    EndingY = titleAndDetail('Opis błędu', details.content, lineHeight, 277,margin, EndingY,tFontSize,dFontSize,doc);
+    EndingY = titleAndDetailDeprecated('Opis błędu', details.content, lineHeight, 277,margin, EndingY,tFontSize,dFontSize,doc);
 
 
     EndingY+=lineHeight;
@@ -3875,11 +3486,28 @@ function generateQueryHeader(json,doc,currentY,sectionSpacing){
 
   if(json.assignee === undefined)
     json.assignee = {};
-  titleAndDetail("Status", json.status.label, lineHeight, sectionSpacing/2,margin,currentY,tFontSize,iFontSize,doc,replacer);
-  titleAndDetail("Data wykonania", getDateAndFormat(json.executionDate), lineHeight, sectionSpacing/2,margin+sectionSpacing/2,currentY,tFontSize,iFontSize,doc,replacer);
-  titleAndDetail("Znak sprawy", json.caseId, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
-  titleAndDetail("Przypisany pracownik", getFullName(json.assignee.firstName,json.assignee.lastName), lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
-  titleAndDetail("Data utworzenia", getDateAndFormat(json.createDate), lineHeight, sectionSpacing,margin+sectionSpacing*3,currentY,tFontSize,iFontSize,doc,replacer);
+  if(json.applicant === undefined)
+    json.applicant = {};  
+  if(json.applicant.type === undefined)
+    json.applicant.type = {};
+  if(json.stateArchive === undefined)
+    json.stateArchive = {};
+  if(json.status === undefined)
+    json.status = {};
+  if(json.queryType === undefined)
+    json.queryType = {};
+  if(json.queryPurpose === undefined)
+    json.queryPurpose = {};
+  if(json.issuingType === undefined)
+    json.issuingType = {};
+  if(json.legalRule === undefined)
+    json.legalRule = {};
+
+  titleAndDetailDeprecated("Status", json.status.label, lineHeight, sectionSpacing/2,margin,currentY,tFontSize,iFontSize,doc,replacer);
+  titleAndDetailDeprecated("Data wykonania", getDateAndFormat(json.executionDate), lineHeight, sectionSpacing/2,margin+sectionSpacing/2,currentY,tFontSize,iFontSize,doc,replacer);
+  titleAndDetailDeprecated("Znak sprawy", json.caseId, lineHeight, sectionSpacing,margin+sectionSpacing,currentY,tFontSize,iFontSize,doc,replacer);
+  titleAndDetailDeprecated("Przypisany pracownik", getFullName(json.assignee.firstName,json.assignee.lastName), lineHeight, sectionSpacing,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+  titleAndDetailDeprecated("Data utworzenia", getDateAndFormat(json.createDate), lineHeight, sectionSpacing,margin+sectionSpacing*3,currentY,tFontSize,iFontSize,doc,replacer);
 
   currentY = margin*2.5;
   createRectWithText( "Szczegóły zamówienia", margin, currentY, 60,10,doc,COLORS.DARK_GRAY);
@@ -3888,19 +3516,19 @@ function generateQueryHeader(json,doc,currentY,sectionSpacing){
   createSubtitle("Dane wnioskodawcy",margin,currentY,dFontSize,doc);
   createSubtitle("Adres zamieszkania",margin+sectionSpacing*2,currentY,dFontSize,doc);
   currentY+=lineHeight*1.5;
-  titleAndDetail("Typ wnioskodawcy", json.applicant.type.label, lineHeight, sectionSpacing*1.25,margin,currentY,tFontSize,iFontSize,doc,replacer);
-  titleAndDetail("Imię i nazwisko", json.applicant.firstName+' '+json.applicant.lastName, lineHeight, sectionSpacing,margin+sectionSpacing*1.25,currentY,tFontSize,iFontSize,doc,replacer);
+  titleAndDetailDeprecated("Typ wnioskodawcy", json.applicant.type.label, lineHeight, sectionSpacing*1.25,margin,currentY,tFontSize,iFontSize,doc,replacer);
+  titleAndDetailDeprecated("Imię i nazwisko", getFullName(json.applicant.firstName,json.applicant.lastName), lineHeight, sectionSpacing,margin+sectionSpacing*1.25,currentY,tFontSize,iFontSize,doc,replacer);
 
-  titleAndDetail("Miasto", json.applicant.city, lineHeight, sectionSpacing*0.7,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
-  titleAndDetail("Kod-pocztowy", json.applicant.postCode, lineHeight, sectionSpacing,margin+sectionSpacing*2.7,currentY,tFontSize,iFontSize,doc,replacer);
+  titleAndDetailDeprecated("Miasto", json.applicant.city, lineHeight, sectionSpacing*0.7,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+  titleAndDetailDeprecated("Kod-pocztowy", json.applicant.postCode, lineHeight, sectionSpacing,margin+sectionSpacing*2.7,currentY,tFontSize,iFontSize,doc,replacer);
   currentY+=lineHeight*2.5;
-  titleAndDetail("E-mail", json.applicant.email, lineHeight, sectionSpacing*1.25,margin,currentY,tFontSize,iFontSize,doc,replacer);
-  titleAndDetail("Telefon", json.applicant.phone, lineHeight, sectionSpacing,margin+sectionSpacing*1.25,currentY,tFontSize,iFontSize,doc,replacer);
+  titleAndDetailDeprecated("E-mail", json.applicant.email, lineHeight, sectionSpacing*1.25,margin,currentY,tFontSize,iFontSize,doc,replacer);
+  titleAndDetailDeprecated("Telefon", json.applicant.phone, lineHeight, sectionSpacing,margin+sectionSpacing*1.25,currentY,tFontSize,iFontSize,doc,replacer);
 
   
-  titleAndDetail("Ulica", json.applicant.street, lineHeight, sectionSpacing*0.7,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
-  titleAndDetail("Nr. domu", json.applicant.streetNumber, lineHeight, sectionSpacing/2,margin+sectionSpacing*2.7,currentY,tFontSize,iFontSize,doc,replacer);
-  titleAndDetail("Nr. mieszkania", json.applicant.flatNumber, lineHeight, sectionSpacing/2,margin+sectionSpacing*3.2,currentY,tFontSize,iFontSize,doc,replacer);
+  titleAndDetailDeprecated("Ulica", json.applicant.street, lineHeight, sectionSpacing*0.7,margin+sectionSpacing*2,currentY,tFontSize,iFontSize,doc,replacer);
+  titleAndDetailDeprecated("Nr. domu", json.applicant.streetNumber, lineHeight, sectionSpacing/2,margin+sectionSpacing*2.7,currentY,tFontSize,iFontSize,doc,replacer);
+  titleAndDetailDeprecated("Nr. mieszkania", json.applicant.flatNumber, lineHeight, sectionSpacing/2,margin+sectionSpacing*3.2,currentY,tFontSize,iFontSize,doc,replacer);
 
   currentY+=lineHeight*3;
   drawHorizontalBorder(margin,currentY,margin,doc);
@@ -3908,19 +3536,19 @@ function generateQueryHeader(json,doc,currentY,sectionSpacing){
   createSubtitle("Dane kwerendy",margin,currentY,dFontSize,doc);
 
   currentY+=lineHeight*1.5;
-  titleAndDetail("Archiwum państwowe", json.stateArchive.name, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc);
-  titleAndDetail("Podstawa prawna", json.legalRule.value, lineHeight, sectionSpacing*1.5,margin+sectionSpacing*2.7,currentY,tFontSize,iFontSize,doc);
+  titleAndDetailDeprecated("Archiwum państwowe", json.stateArchive.name, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+  titleAndDetailDeprecated("Podstawa prawna", json.legalRule.value, lineHeight, sectionSpacing*1.5,margin+sectionSpacing*2.7,currentY,tFontSize,iFontSize,doc,replacer);
 
   currentY+=lineHeight*2.5;
-  titleAndDetail("Rodzaj kwerendy", json.queryType.label, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc);
-  titleAndDetail("Uzasadnienie zamówienia", json.subsititation, lineHeight, sectionSpacing*1.5,margin+sectionSpacing*2.7,currentY,tFontSize,iFontSize,doc);
+  titleAndDetailDeprecated("Rodzaj kwerendy", json.queryType.label, lineHeight, sectionSpacing,margin,currentY,tFontSize,iFontSize,doc,replacer);
+  titleAndDetailDeprecated("Uzasadnienie zamówienia", json.subsititation, lineHeight, sectionSpacing*1.5,margin+sectionSpacing*2.7,currentY,tFontSize,iFontSize,doc,replacer);
   currentY+=lineHeight*3;
   y=currentY;
   currentY = displayLongString("Kwerenda w archiwum państwowym przeprowadzana jest w całym zasobie archiwalnym niezależnie od postaci przechowywanych materiałów archiwalnych.",margin, currentY,sectionSpacing*2.5,lineHeight,doc);
   
   doc.autoTable({
     startY: y-lineHeight,
-    tableWidth: 'wrap',
+    tableWidth: sectionSpacing,
     head: [
         ['Dokumenty']
     ],
@@ -3936,11 +3564,13 @@ function generateQueryHeader(json,doc,currentY,sectionSpacing){
 
   currentY = doc.autoTable.previous.finalY;
   currentY+=lineHeight*2;
-  titleAndDetail("Cel kwerendy", json.queryPurpose.label, lineHeight, sectionSpacing*2.5,margin,currentY,tFontSize,iFontSize,doc);
+  titleAndDetailDeprecated("Cel kwerendy", json.queryPurpose.label, lineHeight, sectionSpacing*2.5,margin,currentY,tFontSize,iFontSize,doc,replacer);
   currentY+=lineHeight*3;
+
+  currentY = addPageIfContentToLong(currentY,5,doc);
   createSubtitle("Sposób wydania aktu",margin,currentY,dFontSize,doc);
   currentY+=lineHeight;
-  doc.text(json.issuingType.label,margin,currentY);
+  displayLongString(json.issuingType.label,margin,currentY,sectionSpacing*4,lineHeight,doc);
   currentY+=lineHeight*1.5;
   drawHorizontalBorder(margin,currentY,margin,doc);
   currentY+=lineHeight*2;
@@ -3949,13 +3579,14 @@ function generateQueryHeader(json,doc,currentY,sectionSpacing){
   function getOriginalFileNames(){
     files = json.attachments;
     let arr = new Array();
-    let content = json.attachments;
+    let content = json.attachments || [];
     let contentLength = content.length;
       
       for(var i=0; i < contentLength ; i++){
           let con = content[i];
           arr.push([con.originalFileName]);
       }
+
       return arr;
   }
 }
@@ -4084,7 +3715,7 @@ function generateHistoryTable(history,doc){
     columnStyles:{
         0: {cellWidth: 30},
         1: {cellWidth: 30},
-        2: {cellWidth: 45},
+        2: {cellWidth: 40},
         3: {cellWidth: 150},
       },
     body: historyToTableData(),
@@ -4092,9 +3723,11 @@ function generateHistoryTable(history,doc){
 });
 }
 
-function generatePdfHeader(content,doc){
+function generatePdfHeader(content,variable,doc){
   doc.setFontSize(headerFontSize);
-  doc.text(content,margin,margin);
+  if(variable===undefined)
+    variable = replacer;
+  doc.text(content+variable,margin,margin);
   doc.setFontSize(dFontSize);
 }
 
@@ -4126,7 +3759,8 @@ function getFullName(firstName,lastName){
 }
 
 function displayLongString(string, x, y, lineLength, lineHeight, doc){
-    if(string){
+
+    if(string != "" && string !== undefined){
       var words = doc.splitTextToSize(string, lineLength);  
       for(var i=0;i<words.length; i++){
           y = addPageIfContentToLong(y,lineHeight,doc);
@@ -4135,21 +3769,30 @@ function displayLongString(string, x, y, lineLength, lineHeight, doc){
           doc.text(words[i], x, y);
           y+=lineHeight;
       }
-    }
-    
+    } else
+       doc.text(replacer, x, y);
     return y;
 }
 
-function titleAndDetail(title, detail, lineHeight, lineLength, x, y, tFontSize, dFontSize, document, replacer){
-    if(detail === undefined)
-      detail = replacer;
-    document.setFontSize(tFontSize);
-    document.text(title, x, y);
-    document.setFontSize(dFontSize);
-    if(detail == ""){
-      doc.text(replacer, x,y+lineHeight);
-    }else
-      return displayLongString(detail, x, y+lineHeight, lineLength, lineHeight, document);
+function titleAndDetailDeprecated(title, detail, lineHeight, lineLength, x, y, tFontSize, dFontSize, document, replacer){
+if(detail === undefined)
+  detail = replacer;
+  
+doc.setFontSize(tFontSize);
+doc.text(title, x, y);
+doc.setFontSize(dFontSize);
+
+return displayLongString(detail.toString(), x, y+lineHeight, lineLength, lineHeight, document);
+}
+
+function titleAndDetail(title, detail,x,y,doc){
+  if(detail === undefined || detail == "")
+    detail = replacer;
+  doc.setFontSize(tFontSize);
+  doc.text(title, x, y);
+  doc.setFontSize(dFontSize);
+
+  return displayLongString(detail.toString(), x, y+lineHeight, lineLength, lineHeight, document);
 }
 
 function checkExistValue(val){
@@ -4211,6 +3854,18 @@ function addPageIfContentToLong(y,contentHeight, doc) {
 
 function createRow(tableOfSections){
   return Math.max.apply(null,tableOfSections);
+}
+
+function compareAddresses(ad1,ad2){
+  return _.isEqual(ad1,ad2);
+}
+
+function isEmpty(obj) {
+  for(var key in obj) {
+      if(obj.hasOwnProperty(key))
+          return false;
+  }
+  return true;
 }
 
 //enums
